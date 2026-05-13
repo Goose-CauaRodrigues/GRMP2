@@ -11,7 +11,7 @@ namespace ProjBancoDados.BancoDados
         public int idUsuario;
         public string nome;
         public string senha;
-        public string cpf;
+        public string email;
         public int nvAcesso;
 
         SqlConnection con;
@@ -30,7 +30,6 @@ namespace ProjBancoDados.BancoDados
 
                 string strConexao = o_Config.GetConnectionString(@"StringConexaoSQLServer");
 
-                // Prepara a conexão com o BD
                 con = new SqlConnection(strConexao);
             }
             catch (Exception ex)
@@ -40,131 +39,98 @@ namespace ProjBancoDados.BancoDados
         }
 
         //-----------------------------
-        // Métodos
+        // Inserir
         //-----------------------------
         public void Inserir()
         {
             try
             {
-                // Prepara o comando SQL
-                string cmdSQL = "Insert Into Usuario(Nome, Senha, CPF, NvAcesso) " +
-                                "Values(@Nome, @Senha, @CPF, @NvAcesso)";
+                string cmdSQL = @"INSERT INTO Usuario (Nome, Senha, Email, NvAcesso)
+                                  VALUES (@Nome, @Senha, @Email, @NvAcesso)";
 
-                // Prepara SqlCommand
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
 
                 cmd.Parameters.AddWithValue("@Nome", nome);
                 cmd.Parameters.AddWithValue("@Senha", senha);
-                cmd.Parameters.AddWithValue("@CPF", cpf);
+                cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@NvAcesso", nvAcesso);
 
-                // Abre a conexão com o BD
                 con.Open();
-
-                // Executa o comando SQL
                 cmd.ExecuteNonQuery();
-
-                // Fecha a conexão com o BD
-                con.Close();
             }
-            catch (Exception ex)
+            finally
             {
-                throw new Exception(ex.Message);
+                con.Close();
             }
         }
 
+        //-----------------------------
+        // Alterar
+        //-----------------------------
         public void Alterar()
         {
             try
             {
-                // Prepara o comando SQL
-                string cmdSQL = "Update Usuario Set " +
-                                "Nome = @Nome, " +
-                                "Senha = @Senha, " +
-                                "CPF = @CPF, " +
-                                "NvAcesso = @NvAcesso " +
-                                "Where IdUsuario = @IdUsuario";
+                string cmdSQL = @"UPDATE Usuario SET
+                                    Nome = @Nome,
+                                    Senha = @Senha,
+                                    Email = @Email,
+                                    NvAcesso = @NvAcesso
+                                  WHERE IdUsuario = @IdUsuario";
 
-                // Prepara SqlCommand
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
 
                 cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
                 cmd.Parameters.AddWithValue("@Nome", nome);
                 cmd.Parameters.AddWithValue("@Senha", senha);
-                cmd.Parameters.AddWithValue("@CPF", cpf);
+                cmd.Parameters.AddWithValue("@Email", email);
                 cmd.Parameters.AddWithValue("@NvAcesso", nvAcesso);
 
-                // Abre a conexão com o BD
                 con.Open();
-
-                // Executa o comando SQL
                 cmd.ExecuteNonQuery();
-
-                // Fecha a conexão com o BD
-                con.Close();
             }
-            catch (Exception ex)
+            finally
             {
-                throw new Exception(ex.Message);
+                con.Close();
             }
         }
 
+        //-----------------------------
+        // Excluir
+        //-----------------------------
         public void Excluir()
         {
             try
             {
-                // Prepara o comando SQL
-                string cmdSQL = "Delete From Usuario Where IdUsuario = @IdUsuario";
+                string cmdSQL = "DELETE FROM Usuario WHERE IdUsuario = @IdUsuario";
 
-                // Prepara SqlCommand
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
-
                 cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
 
-                // Abre a conexão com o BD
                 con.Open();
-
-                // Executa o comando SQL
                 cmd.ExecuteNonQuery();
-
-                // Fecha a conexão com o BD
-                con.Close();
             }
-            catch (Exception ex)
+            finally
             {
-                throw new Exception(ex.Message);
+                con.Close();
             }
         }
 
+        //-----------------------------
+        // Selecionar
+        //-----------------------------
         public DataTable Selecionar()
         {
             try
             {
-                // Prepara o comando SQL
-                string cmdSQL = "Select * From Usuario Order By IdUsuario";
+                string cmdSQL = "SELECT * FROM Usuario ORDER BY IdUsuario";
 
-                // Prepara SqlDataAdapter
-                SqlDataAdapter o_DataAdapter = new SqlDataAdapter(cmdSQL, con);
+                SqlDataAdapter da = new SqlDataAdapter(cmdSQL, con);
 
-                // Abre a conexão com o BD
-                con.Open();
+                DataTable dt = new DataTable();
+                da.Fill(dt);
 
-                DataTable dtPesquisa = new DataTable();
-
-                // Executa o Select no banco de dados
-                int qtdLinhasAfetada = o_DataAdapter.Fill(dtPesquisa);
-
-                // Fecha a conexão com o BD
-                con.Close();
-
-                if (qtdLinhasAfetada > 0)
-                {
-                    return dtPesquisa;
-                }
-                else
-                {
-                    return null;
-                }
+                return dt.Rows.Count > 0 ? dt : null;
             }
             catch (Exception ex)
             {
@@ -172,5 +138,4 @@ namespace ProjBancoDados.BancoDados
             }
         }
     }
-
 }
