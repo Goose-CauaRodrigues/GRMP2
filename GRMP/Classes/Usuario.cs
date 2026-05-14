@@ -25,7 +25,7 @@ namespace ProjBancoDados.BancoDados
             {
                 IConfigurationRoot o_Config = new ConfigurationBuilder()
                     .SetBasePath(Directory.GetCurrentDirectory())
-                    .AddJsonFile(@".\Configuration\SistemaRH.json")
+                    .AddJsonFile(@".\Configuration\GRMPBD.json")
                     .Build();
 
                 string strConexao = o_Config.GetConnectionString(@"StringConexaoSQLServer");
