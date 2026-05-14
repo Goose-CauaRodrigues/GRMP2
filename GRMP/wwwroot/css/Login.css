@@ -1,0 +1,173 @@
+﻿
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at 20% 30%, #c0201a 0%, #8b0a0a 45%, #4a0000 100%);
+    font-family: 'Inter', sans-serif;
+    padding: 24px;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 48px;
+}
+
+/* ── Esquerda ── */
+.left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.logo-badge {
+    display: inline-flex;
+    align-items: center;
+    background: #fff;
+    padding: 5px 12px;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+    .logo-badge span {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 20px;
+        color: #cc0000;
+        letter-spacing: 2px;
+    }
+
+.left h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 800;
+    font-size: 42px;
+    color: #ffffff;
+    line-height: 1.2;
+}
+
+/* ── Card branco ── */
+.card {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 48px 44px 44px;
+    width: 440px;
+    flex-shrink: 0;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+}
+
+    .card h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+        font-size: 26px;
+        color: #1a1a1a;
+        letter-spacing: 0.5px;
+    }
+
+    .card .subtitle {
+        margin-top: 8px;
+        font-size: 14px;
+        color: #555;
+        line-height: 1.5;
+    }
+
+.field {
+    margin-top: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+label {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+input {
+    padding: 14px 16px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 10px;
+    background: #f2f2f2;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    color: #1a1a1a;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s, background .2s;
+}
+
+    input::placeholder {
+        color: #b0b0b0;
+    }
+
+    input:focus {
+        border-color: #cc0000;
+        background: #fff;
+        box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.1);
+    }
+
+.btn {
+    margin-top: 32px;
+    width: 100%;
+    padding: 15px;
+    background: #cc0000;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background .2s, transform .15s;
+}
+
+    .btn:hover {
+        background: #aa0000;
+        transform: translateY(-1px);
+    }
+
+    .btn:active {
+        background: #990000;
+        transform: translateY(0);
+    }
+
+    .btn svg {
+        transition: transform .2s;
+    }
+
+    .btn:hover svg {
+        transform: translateX(4px);
+    }
+
+@media (max-width: 720px) {
+    .container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    .left h1 {
+        font-size: 30px;
+    }
+}
