@@ -137,5 +137,27 @@ namespace ProjBancoDados.BancoDados
                 throw new Exception(ex.Message);
             }
         }
+
+        public DataTable BuscarPorEmail(string email)
+        {
+            try
+            {
+                string cmdSQL = "SELECT * FROM Usuario WHERE Email = @Email";
+
+                SqlCommand cmd = new SqlCommand(cmdSQL, con);
+                cmd.Parameters.AddWithValue("@Email", email);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                return dt.Rows.Count > 0 ? dt : null;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
     }
 }

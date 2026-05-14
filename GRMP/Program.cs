@@ -3,18 +3,23 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddAuthentication("Cookies")
-    .AddCookie("Cookies", options =>
-    {
-        // Caminho para a página de login
-        options.LoginPath = "/Login/Login";
 
-        // Caminho para logout
-        options.LogoutPath = "/Login/Logout";
+// ============================
+// CONFIGURAÇÃO DA SESSION
+// ============================
 
-        // Opcional: define onde o usuário será redirecionado após login
-        options.AccessDeniedPath = "/Login/Login";
-    });
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+
+    options.Cookie.HttpOnly = true;
+
+    options.Cookie.IsEssential = true;
+});
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -22,7 +27,15 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
 }
+
 app.UseRouting();
+
+
+// ============================
+// ATIVAR SESSION
+// ============================
+
+app.UseSession();
 
 app.UseAuthorization();
 
@@ -32,6 +45,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Login}/{action=Login}")
     .WithStaticAssets();
-
 
 app.Run();

@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using GRMP.Classes;
+﻿using GRMP.Classes;
 using GRMP.Models;
-using System.Data;
-using System.Security.Cryptography;
-using System.Text;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Mvc;
+using ProjBancoDados.BancoDados;
+using System.Data;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace GRMP.Controllers
 {
@@ -17,11 +18,39 @@ namespace GRMP.Controllers
             return View("LoginView");
         }
 
+
+
         public IActionResult LoginProcessar(LoginViewModel Vm_Login)
         {
+            string senhaHash = GerarHash(Vm_Login.Senha);
 
-            
-            return View();
+            try
+            {
+                //string senhaHash = GerarHash(Vm_Login.Senha);
+ 
+                Usuario usuario = new Usuario();
+                DataTable dt = usuario.BuscarPorEmail(Vm_Login.Email);
+
+                if (dt != null)
+                {
+                    DataRow row = dt.Rows[0];
+
+                    if (row["Senha"].ToString() == senhaHash)
+                    {
+                        HttpContext.Session.SetString("Usuario", row["Nome"].ToString());
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+
+                ViewBag.Erro = "Email ou senha inválidos.";
+                return View("LoginView");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erro = ex.Message + senhaHash;
+                return View("LoginView");
+            }
         }
 
         private string GerarHash(string senha)
