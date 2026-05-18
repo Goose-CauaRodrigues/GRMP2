@@ -37,9 +37,9 @@ namespace GRMP.Controllers
 
                     if (row["Senha"].ToString() == senhaHash)
                     {
-                        HttpContext.Session.SetString("Usuario", row["Nome"].ToString());
+                        HttpContext.Session.SetString("idUsuario", row["idUsuario"].ToString());
 
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("InicioExibir", "Usuario");
                     }
                 }
 
