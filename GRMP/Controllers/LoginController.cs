@@ -48,7 +48,7 @@ namespace GRMP.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Erro = ex.Message + senhaHash;
+                ViewBag.Erro = ex.Message;
                 return View("LoginView");
             }
         }
