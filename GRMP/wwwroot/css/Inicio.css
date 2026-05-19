@@ -1,74 +1,69 @@
-﻿*, *::before, *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: 'Inter', sans-serif;
-    background: #f4f4f5;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
+﻿/* ==========================================
+   HEADER / TOPBAR (Ajustado para Desktop)
+   ========================================== */
 .topbar {
     background: #8b0000;
     color: white;
     height: 60px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding: 0 25px;
+    justify-content: center; /* Centraliza o bloco de conteúdo na tela */
+    padding: 0 20px;
     flex-shrink: 0;
+    width: 100%;
 }
+
+main {
+    width: 100vw;
+    margin-top: -2.5em;
+}
+
+/* Essa classe vai alinhar o topo perfeitamente com os cartões de baixo */
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 1200px; /* Mesma largura máxima do container de baixo */
+}
+
+    .topbar-left h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        font-size: 18px;
+        margin: 0;
+    }
 
 .logo-badge {
     background: white;
-    padding: 3px 10px;
+    padding: 4px 10px;
     border-radius: 5px;
+    display: flex;
+    align-items: center;
 }
 
     .logo-badge span {
         color: #cc0000;
         font-family: 'Montserrat', sans-serif;
         font-weight: 800;
+        font-size: 14px;
     }
 
-.topbar-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
-
-.btn-nav {
-    background: rgba(255,255,255,0.15);
-    color: white;
-    border: 1px solid rgba(255,255,255,0.3);
-    padding: 8px 18px;
-    border-radius: 30px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.2s;
-}
-
-    .btn-nav:hover {
-        background: rgba(255,255,255,0.28);
-    }
-
+/* ==========================================
+   CONTAINER E CONTEÚDO (Expandido para 1200px)
+   ========================================== */
 .container {
     flex: 1;
     padding: 40px 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
 }
 
 .page-header {
     width: 100%;
-    max-width: 700px;
+    max-width: 1200px; /* Mudado de 700px para 1200px */
     margin-bottom: 24px;
 }
 
@@ -76,53 +71,58 @@ body {
         font-family: 'Montserrat', sans-serif;
         font-weight: 800;
         color: #1a1a1a;
+        font-size: 26px;
     }
 
     .page-header p {
         color: #888;
-        font-size: 13px;
+        font-size: 14px;
         margin-top: 4px;
     }
 
 .historico {
     width: 100%;
-    max-width: 700px;
+    max-width: 1200px; /* Mudado de 700px para 1200px */
 }
-
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: #aaa;
-}
-
-    .empty-state .icon {
-        font-size: 48px;
-        margin-bottom: 16px;
-    }
-
-    .empty-state p {
-        font-size: 15px;
-    }
 
 .card-chamado {
     background: white;
     border-radius: 12px;
-    padding: 18px 20px;
+    padding: 20px 24px;
     margin-bottom: 14px;
     border: 1px solid #eee;
-    border-left: 4px solid transparent;
+    border-left: 4px solid #ccc; /* Cor padrão cinza para quando não tiver status mapeado */
     cursor: pointer;
     transition: border-color 0.3s, box-shadow 0.3s;
 }
 
     .card-chamado:hover {
-        border-left-color: #cc0000;
         box-shadow: 0 4px 16px rgba(0,0,0,0.07);
     }
 
-    .card-chamado.expandido {
-        border-left: 6px solid #cc0000;
-        background: #fffcfc;
+    /* Cores dinâmicas baseadas no status que você colocou no C# */
+    .card-chamado .status.andamento {
+        background: #ff9800; /* Laranja para Em Andamento */
+    }
+
+    .card-chamado .status.resolvido {
+        background: #2e7d32; /* Verde para Concluída */
+    }
+
+    .card-chamado .status.cancelado {
+        background: #d32f2f; /* Vermelho escuro para Cancelada */
+    }
+
+    /* Mantém o padrão vermelho caso seja "Aberta" (sem classe específica) */
+    .card-chamado .status {
+        background: #cc0000;
+        color: white;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
     }
 
 .card-top {
@@ -132,11 +132,12 @@ body {
 }
 
 .card-date {
-    font-size: 12px;
-    color: #999;
-    margin-top: 5px;
+    font-size: 13px;
+    color: #666;
+    margin-top: 6px;
 }
 
+/* Detalhes expansíveis */
 .detalhes {
     max-height: 0;
     overflow: hidden;
@@ -145,30 +146,9 @@ body {
 }
 
 .card-chamado.expandido .detalhes {
-    max-height: 500px;
+    max-height: 800px; /* Aumentado para caber todos os dados do seu HTML */
     opacity: 1;
     margin-top: 15px;
     padding-top: 12px;
     border-top: 1px solid #eee;
-}
-
-.detalhes p {
-    font-size: 14px;
-    color: #555;
-    line-height: 1.6;
-}
-
-    .detalhes p + p {
-        margin-top: 8px;
-    }
-
-.status {
-    background: #cc0000;
-    color: white;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
 }
