@@ -39,7 +39,20 @@ namespace GRMP.Controllers
                     {
                         HttpContext.Session.SetString("idUsuario", row["idUsuario"].ToString());
 
-                        return RedirectToAction("InicioExibir", "Usuario");
+                        string nvAcesso = row["nvAcesso"].ToString();
+
+                        if (nvAcesso == "3")
+                        {
+
+                        }
+                        else if (nvAcesso == "2")
+                        {
+
+                        }
+                        else
+                        {
+                            return RedirectToAction("InicioExibir", "Usuario");
+                        }
                     }
                 }
 
