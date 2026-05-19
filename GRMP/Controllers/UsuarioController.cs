@@ -2,12 +2,7 @@
 using GRMP.Classes;
 using GRMP.Models;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-using ProjBancoDados.BancoDados;
 using System.Data;
-using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace GRMP.Controllers
@@ -28,5 +23,6 @@ namespace GRMP.Controllers
 
             return View("InicioView" , dt);
         }
+
     }
 }
