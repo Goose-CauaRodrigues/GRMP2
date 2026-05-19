@@ -1,8 +1,184 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using System.Data;
+@model DataTable
+
 @{
+    ViewData["Title"] = "Histórico de Ordens de Serviço";
 }
 
+<link href="~/css/Inicio.css" rel="stylesheet" />
 
+<header class="topbar">
+    <div class="topbar-left">
+        <div class="logo-badge"><span>GRMP</span></div>
+        <h3>Histórico de Ordens de Serviço</h3>
+    </div>
+</header>
 
+<div class="container">
+
+    <div class="page-header">
+        <h2>Ordens de Serviço Registradas</h2>
+        <p>Visualização de todos os chamados do sistema</p>
+    </div>
+
+    <div class="historico">
+
+        @if (Model == null || Model.Rows.Count == 0)
+        {
+            <div class="empty-state">
+                <div class="icon">📭</div>
+                <p>Nenhuma ordem de serviço encontrada.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (DataRow c in Model.Rows)
+            {
+                // =========================
+                // STATUS
+                // =========================
+                int statusValor = c["status"] != DBNull.Value
+                    ? Convert.ToInt32(c["status"])
+                    : -1;
+
+                string status = statusValor switch
+                {
+                    0 => "Aberta",
+                    1 => "Em andamento",
+                    2 => "Concluída",
+                    3 => "Cancelada",
+                    _ => "Não definido"
+                };
+
+                // Classe CSS do status
+                string statusClass = statusValor switch
+                {
+                    2 => "resolvido",
+                    1 => "andamento",
+                    3 => "cancelado",
+                    _ => ""
+                };
+
+                // =========================
+                // PRIORIDADE
+                // =========================
+                int prioridadeValor = c["prioridade"] != DBNull.Value
+                    ? Convert.ToInt32(c["prioridade"])
+                    : -1;
+
+                string prioridade = prioridadeValor switch
+                {
+                    1 => "Baixa",
+                    2 => "Média",
+                    3 => "Alta",
+                    _ => "Não definida"
+                };
+
+                // =========================
+                // CATEGORIA
+                // =========================
+                int categoriaValor = c["categoria"] != DBNull.Value
+                    ? Convert.ToInt32(c["categoria"])
+                    : -1;
+
+                string categoria = categoriaValor switch
+                {
+                    1 => "Predial",
+                    2 => "Ativo",
+                    _ => "Não definida"
+                };
+
+                <div class="card-chamado" onclick="expandir(this)">
+
+                    <div class="card-top">
+                        <strong>
+                            @c["bloco"] - @c["local"]
+                        </strong>
+
+                        <span class="status @statusClass">
+                            @status
+                        </span>
+                    </div>
+
+                    <p class="card-date">
+                        <strong>Solicitação:</strong>
+                        @(c["dataSolicitacao"] != DBNull.Value
+                            ? Convert.ToDateTime(c["dataSolicitacao"]).ToString("dd/MM/yyyy")
+                            : "-")
+                    </p>
+
+                    <p class="card-date">
+                        <strong>Início:</strong>
+                        @(c["dataInicio"] != DBNull.Value
+                            ? Convert.ToDateTime(c["dataInicio"]).ToString("dd/MM/yyyy")
+                            : "-")
+                    </p>
+
+                    <p class="card-date">
+                        <strong>Finalização:</strong>
+                        @(c["dataFinalizacao"] != DBNull.Value
+                            ? Convert.ToDateTime(c["dataFinalizacao"]).ToString("dd/MM/yyyy")
+                            : "-")
+                    </p>
+
+                    <div class="detalhes">
+
+                        <p>
+                            <strong>Descrição:</strong><br>
+                            @c["descricaoServico"]
+                        </p>
+
+                        <p>
+                            <strong>Categoria:</strong><br>
+                            @categoria
+                        </p>
+
+                        <p>
+                            <strong>Nº Patrimônio:</strong><br>
+                            @(c["numeroPatrimonio"] != DBNull.Value ? c["numeroPatrimonio"] : "-")
+                        </p>
+
+                        <p>
+                            <strong>Bloco:</strong><br>
+                            @c["bloco"]
+                        </p>
+
+                        <p>
+                            <strong>Local:</strong><br>
+                            @c["local"]
+                        </p>
+
+                        <p>
+                            <strong>Prioridade:</strong><br>
+                            @prioridade
+                        </p>
+
+                        <p>
+                            <strong>Observações:</strong><br>
+                            @(c["observacoes"] != DBNull.Value ? c["observacoes"] : "-")
+                        </p>
+
+                        <p>
+                            <strong>Status:</strong><br>
+                            @status
+                        </p>
+
+                        <p>
+                            <strong>Ativo:</strong><br>
+                            @(Convert.ToBoolean(c["ativo"]) ? "Sim" : "Não")
+                        </p>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+</div>
+
+<script>
+    function expandir(card) {
+        card.classList.toggle("expandido");
+    }
+</script>
