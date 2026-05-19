@@ -21,7 +21,7 @@ namespace GRMP.Controllers
             Os Os = new Os();
             DataTable dt = Os.Selecionar();
 
-            return View("InicioView" , dt);
+            return View("InicioView" , dt);// teste 234
         }
 
     }
