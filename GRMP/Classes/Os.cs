@@ -244,6 +244,56 @@ namespace GRMP.Classes
                 con.Close();
             }
         }
+
+        public DataTable SelecionarOS()
+        {
+            try
+            {
+                string sql = @"
+SELECT
+    os.idOrdemServico,
+    os.descricaoServico,
+    os.categoria,
+    os.numeroPatrimonio,
+    os.bloco,
+    os.local,
+    os.prioridade,
+    os.status,
+    os.dataSolicitacao,
+    os.dataInicio,
+    os.dataFinalizacao,
+    os.observacoes,
+    os.ativo,
+
+    criador.nome AS nomeCriador,
+    criador.email AS emailCriador,
+
+    executor.nome AS nomeExecutor,
+    executor.email AS emailExecutor
+
+FROM OrdemServico os
+
+INNER JOIN Usuario criador
+    ON os.fk_idUsuario = criador.idUsuario
+
+LEFT JOIN Usuario executor
+    ON os.fk_executor = executor.idUsuario
+
+ORDER BY os.idOrdemServico";
+
+                SqlDataAdapter da = new SqlDataAdapter(sql, con);
+
+                DataTable dt = new DataTable();
+
+                da.Fill(dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
 
