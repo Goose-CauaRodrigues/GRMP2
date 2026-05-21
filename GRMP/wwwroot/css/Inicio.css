@@ -80,6 +80,14 @@ main {
         margin-top: 4px;
     }
 
+    button {
+        color: black;
+        background-color: #cc0000;
+        border: 2px solid red;
+        border-radius: 12px;
+        margin-left: 7em;
+    }
+
 .historico {
     width: 100%;
     max-width: 1200px; /* Mudado de 700px para 1200px */
@@ -154,5 +162,4 @@ main {
 }
 
 .teste {
-
 }
