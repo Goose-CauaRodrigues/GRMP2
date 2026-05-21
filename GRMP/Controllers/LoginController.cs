@@ -43,7 +43,7 @@ namespace GRMP.Controllers
 
                         if (nvAcesso == "3")
                         {
-
+                            return RedirectToAction("Index", "Dashboard");
                         }
                         else if (nvAcesso == "2")
                         {

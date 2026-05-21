@@ -1,0 +1,681 @@
+﻿@* Dashboard.cshtml *@
+@model List<GRMP.Models.RelatorioModel>
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Dashboard OS";
+
+    // ===== PROCESSAMENTO DOS FILTROS NO SERVIDOR =====
+    var fSolicitante = Context.Request.Query["solicitante"].ToString();
+    var fExecutor = Context.Request.Query["executor"].ToString();
+    var fPeriodo = Context.Request.Query["periodo"].ToString();
+    var fStatus = Context.Request.Query["status"].ToString();
+    var fPrioridade = Context.Request.Query["prioridade"].ToString();
+    var fBloco = Context.Request.Query["bloco"].ToString();
+    var fDataDe = Context.Request.Query["dataDe"].ToString();
+    var fDataAte = Context.Request.Query["dataAte"].ToString();
+
+    if (string.IsNullOrWhiteSpace(fPeriodo)) fPeriodo = "todos";
+
+    // Lógica de filtragem de data
+    DateTime? dataInicio = null;
+    DateTime? dataFim = null;
+
+    if (!string.IsNullOrWhiteSpace(fDataDe) && DateTime.TryParse(fDataDe, out var dtDe))
+    {
+        dataInicio = dtDe;
+    }
+    if (!string.IsNullOrWhiteSpace(fDataAte) && DateTime.TryParse(fDataAte, out var dtAte))
+    {
+        dataFim = dtAte.Date.AddDays(1).AddTicks(-1); // Até o final do dia selecionado
+    }
+
+    // Se as datas customizadas não foram preenchidas, usa o combo de Período fixo
+    if (dataInicio == null && dataFim == null && fPeriodo != "todos")
+    {
+        int? dias = fPeriodo switch
+        {
+            "mensal" => 30,
+            "trimestral" => 90,
+            "semestral" => 180,
+            "anual" => 365,
+            _ => (int?)null
+        };
+        if (dias.HasValue)
+        {
+            dataInicio = DateTime.Now.Date.AddDays(-dias.Value);
+        }
+    }
+
+    // Listas para os selects dinâmicos
+    var solicitantes = (Model ?? new List<GRMP.Models.RelatorioModel>()).Select(x => x.solicitante).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().OrderBy(x => x).ToList();
+    var executores = (Model ?? new List<GRMP.Models.RelatorioModel>()).Select(x => x.executor).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().OrderBy(x => x).ToList();
+    var blocos = (Model ?? new List<GRMP.Models.RelatorioModel>()).Select(x => x.bloco).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().OrderBy(x => x).ToList();
+
+    // Aplicação dos Filtros na coleção
+    var filtradas = (Model ?? new List<GRMP.Models.RelatorioModel>()).AsEnumerable();
+
+    if (!string.IsNullOrWhiteSpace(fSolicitante)) filtradas = filtradas.Where(x => x.solicitante == fSolicitante);
+    if (!string.IsNullOrWhiteSpace(fExecutor)) filtradas = filtradas.Where(x => x.executor == fExecutor);
+    if (!string.IsNullOrWhiteSpace(fStatus)) filtradas = filtradas.Where(x => x.status == fStatus);
+    if (!string.IsNullOrWhiteSpace(fPrioridade)) filtradas = filtradas.Where(x => x.prioridade == fPrioridade);
+    if (!string.IsNullOrWhiteSpace(fBloco)) filtradas = filtradas.Where(x => x.bloco == fBloco);
+    if (dataInicio.HasValue) filtradas = filtradas.Where(x => x.dataSolicitacao >= dataInicio.Value);
+    if (dataFim.HasValue) filtradas = filtradas.Where(x => x.dataSolicitacao <= dataFim.Value);
+
+    var lista = filtradas.ToList();
+
+    // ===== Métricas para os Cards =====
+    var total = lista.Count;
+    var abertas = lista.Count(x => x.status == "Aberta");
+    var emAndamento = lista.Count(x => x.status == "Em andamento");
+    var concluidas = lista.Count(x => x.status == "Concluída");
+    var canceladas = lista.Count(x => x.status == "Cancelada");
+
+    Func<int, string> pct = n => total > 0 ? Math.Round(n * 100.0 / total) + "% do filtro" : "—";
+    Func<int, int> pctSimples = n => total > 0 ? (int)Math.Round(n * 100.0 / total) : 0;
+
+    var prBaixa = lista.Count(x => x.prioridade == "Baixa");
+    var prMedia = lista.Count(x => x.prioridade == "Média");
+    var prAlta = lista.Count(x => x.prioridade == "Alta");
+
+    var filtrosAtivos = (!string.IsNullOrWhiteSpace(fSolicitante) ? 1 : 0) +
+                        (!string.IsNullOrWhiteSpace(fExecutor) ? 1 : 0) +
+                        (fPeriodo != "todos" && dataInicio == null ? 1 : 0) +
+                        (!string.IsNullOrWhiteSpace(fStatus) ? 1 : 0) +
+                        (!string.IsNullOrWhiteSpace(fPrioridade) ? 1 : 0) +
+                        (!string.IsNullOrWhiteSpace(fBloco) ? 1 : 0) +
+                        (!string.IsNullOrWhiteSpace(fDataDe) ? 1 : 0) +
+                        (!string.IsNullOrWhiteSpace(fDataAte) ? 1 : 0);
+}
+
+<style>
+    .db-wrap {
+        padding: 1.5rem 0;
+    }
+
+    .db-title {
+        font-size: 20px;
+        font-weight: 500;
+        color: var(--bs-body-color, #1a1a1a);
+        margin-bottom: 1.25rem;
+    }
+
+    .filter-bar {
+        background: #fff;
+        border: 1px solid rgba(0,0,0,.08);
+        border-radius: 12px;
+        padding: .9rem 1.1rem;
+        margin-bottom: 1rem;
+    }
+
+    .filter-row {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+    }
+
+        .filter-row + .filter-row {
+            margin-top: 10px;
+        }
+
+    .filter-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .filter-label {
+        font-size: 11px;
+        color: #6c757d;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+    }
+
+    .filter-bar select, .filter-bar input[type="date"] {
+        font-size: 13px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        border: 1px solid rgba(0,0,0,.12);
+        background: #f8f9fa;
+        color: #212529;
+        width: 100%;
+        height: 34px;
+    }
+
+        .filter-bar select:focus, .filter-bar input[type="date"]:focus {
+            outline: none;
+            border-color: #378ADD;
+            background: #fff;
+        }
+
+    .btn-clear-filter {
+        font-size: 12px;
+        padding: 6px 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(0,0,0,.12);
+        background: transparent;
+        color: #6c757d;
+        cursor: pointer;
+        white-space: nowrap;
+        align-self: flex-end;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        text-decoration: none;
+        justify-content: center;
+        height: 34px;
+    }
+
+        .btn-clear-filter:hover {
+            background: #f8f9fa;
+            color: #212529;
+        }
+
+    .active-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 1rem;
+    }
+
+    .filter-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: #E6F1FB;
+        color: #185FA5;
+        font-size: 11px;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-weight: 500;
+    }
+
+        .filter-tag a {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #185FA5;
+            font-size: 14px;
+            line-height: 1;
+            padding: 0;
+            text-decoration: none;
+        }
+
+    .metric-card {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: .9rem 1rem;
+        position: relative;
+        overflow: hidden;
+        border: none;
+    }
+
+        .metric-card .mc-bar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 0;
+        }
+
+        .metric-card .mc-label {
+            font-size: 11px;
+            color: #6c757d;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .metric-card .mc-val {
+            font-size: 26px;
+            font-weight: 500;
+            line-height: 1;
+            color: #212529;
+        }
+
+        .metric-card .mc-sub {
+            font-size: 11px;
+            color: #adb5bd;
+            margin-top: 3px;
+        }
+
+    .chart-card {
+        border: 1px solid rgba(0,0,0,.08);
+        border-radius: 12px;
+        background: #fff;
+        padding: 1rem 1.25rem;
+    }
+
+    .chart-title {
+        font-size: 13px;
+        font-weight: 500;
+        color: #6c757d;
+        margin-bottom: .75rem;
+    }
+
+    .chart-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+        .chart-legend span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 11px;
+            color: #6c757d;
+        }
+
+        .chart-legend .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+    .os-table-card {
+        border: 1px solid rgba(0,0,0,.08);
+        border-radius: 12px;
+        overflow: hidden;
+        background: #fff;
+    }
+
+        .os-table-card .card-header {
+            background: transparent;
+            border-bottom: 1px solid rgba(0,0,0,.07);
+            font-size: 13px;
+            font-weight: 500;
+            color: #6c757d;
+            padding: .75rem 1.1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+    .count-badge {
+        font-size: 11px;
+        background: #f8f9fa;
+        color: #6c757d;
+        padding: 2px 8px;
+        border-radius: 20px;
+        border: 1px solid rgba(0,0,0,.08);
+    }
+
+    .os-table th {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .04em;
+        color: #6c757d;
+        font-weight: 500;
+        border-bottom-width: 1px;
+        background: #f8f9fa;
+    }
+
+    .os-table td {
+        font-size: 13px;
+        vertical-align: middle;
+    }
+
+    .os-table tbody tr:hover td {
+        background: #f8f9fa;
+    }
+
+    .os-table td.empty-row {
+        text-align: center;
+        color: #adb5bd;
+        padding: 2rem;
+    }
+
+    .badge-aberta {
+        background: #FAEEDA;
+        color: #854F0B;
+    }
+
+    .badge-andamento {
+        background: #E6F1FB;
+        color: #185FA5;
+    }
+
+    .badge-concluida {
+        background: #EAF3DE;
+        color: #3B6D11;
+    }
+
+    .badge-cancelada {
+        background: #FCEBEB;
+        color: #A32D2D;
+    }
+
+    .pri-alta {
+        color: #A32D2D;
+        font-weight: 500;
+    }
+
+    .pri-media {
+        color: #854F0B;
+    }
+
+    .pri-baixa {
+        color: #3B6D11;
+    }
+</style>
+
+<div class="db-wrap">
+
+    <h2 class="db-title">Dashboard — Ordens de Serviço</h2>
+
+    <div class="filter-bar">
+        <form method="get" id="filterForm">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <span class="filter-label">Período</span>
+                    <select name="periodo" onchange="document.getElementById('filterForm').submit()">
+                        <option value="todos" selected="@(fPeriodo == "todos")">Todos</option>
+                        <option value="mensal" selected="@(fPeriodo == "mensal")">Mensal (30 dias)</option>
+                        <option value="trimestral" selected="@(fPeriodo == "trimestral")">Trimestral (90 dias)</option>
+                        <option value="semestral" selected="@(fPeriodo == "semestral")">Semestral (180 dias)</option>
+                        <option value="anual" selected="@(fPeriodo == "anual")">Anual (365 dias)</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Status</span>
+                    <select name="status" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todos</option>
+                        <option value="Aberta" selected="@(fStatus == "Aberta")">Aberta</option>
+                        <option value="Em andamento" selected="@(fStatus == "Em andamento")">Em andamento</option>
+                        <option value="Concluída" selected="@(fStatus == "Concluída")">Concluída</option>
+                        <option value="Cancelada" selected="@(fStatus == "Cancelada")">Cancelada</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Prioridade</span>
+                    <select name="prioridade" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todas</option>
+                        <option value="Alta" selected="@(fPrioridade == "Alta")">Alta</option>
+                        <option value="Média" selected="@(fPrioridade == "Média")">Média</option>
+                        <option value="Baixa" selected="@(fPrioridade == "Baixa")">Baixa</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Bloco</span>
+                    <select name="bloco" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todos</option>
+                        @foreach (var b in blocos)
+                        {
+                            <option value="@b" selected="@(b == fBloco)">@b</option>
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="filter-row" style="margin-top: 10px;">
+                <div class="filter-group">
+                    <span class="filter-label">Solicitante</span>
+                    <select name="solicitante" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todos</option>
+                        @foreach (var s in solicitantes)
+                        {
+                            <option value="@s" selected="@(s == fSolicitante)">@s</option>
+                        }
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Executor</span>
+                    <select name="executor" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todos</option>
+                        @foreach (var e in executores)
+                        {
+                            <option value="@e" selected="@(e == fExecutor)">@e</option>
+                        }
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Data Inicial (De)</span>
+                    <input type="date" name="dataDe" value="@fDataDe" onchange="document.getElementById('filterForm').submit()" />
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Data Final (Até)</span>
+                    <input type="date" name="dataAte" value="@fDataAte" onchange="document.getElementById('filterForm').submit()" />
+                </div>
+            </div>
+
+            @if (filtrosAtivos > 0)
+            {
+                <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                    <a href="@Url.Action(ViewContext.RouteData.Values["action"]?.ToString(), ViewContext.RouteData.Values["controller"]?.ToString())" class="btn-clear-filter">
+                        <i class="bi bi-x-lg"></i> Limpar Filtros
+                    </a>
+                </div>
+            }
+        </form>
+    </div>
+
+    <div id="active-tags" class="active-tags">
+        @if (dataInicio == null && dataFim == null && fPeriodo != "todos")
+        {
+            <span class="filter-tag">Período ativo <a href="?@Html.Raw(JavaScriptQueryString("periodo"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fStatus))
+        {
+            <span class="filter-tag">Status: @fStatus <a href="?@Html.Raw(JavaScriptQueryString("status"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fPrioridade))
+        {
+            <span class="filter-tag">Prioridade: @fPrioridade <a href="?@Html.Raw(JavaScriptQueryString("prioridade"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fBloco))
+        {
+            <span class="filter-tag">Bloco: @fBloco <a href="?@Html.Raw(JavaScriptQueryString("bloco"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fSolicitante))
+        {
+            <span class="filter-tag">Sol: @fSolicitante <a href="?@Html.Raw(JavaScriptQueryString("solicitante"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fExecutor))
+        {
+            <span class="filter-tag">Exe: @fExecutor <a href="?@Html.Raw(JavaScriptQueryString("executor"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fDataDe))
+        {
+            <span class="filter-tag">De: @fDataDe <a href="?@Html.Raw(JavaScriptQueryString("dataDe"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fDataAte))
+        {
+            <span class="filter-tag">Até: @fDataAte <a href="?@Html.Raw(JavaScriptQueryString("dataAte"))">×</a></span>
+        }
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="mc-bar" style="background:#378ADD;"></div>
+                <div class="mc-label"><i class="bi bi-clipboard-list"></i> Total OS</div>
+                <div class="mc-val">@total</div>
+                <div class="mc-sub">filtrado</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="mc-bar" style="background:#EF9F27;"></div>
+                <div class="mc-label"><i class="bi bi-clock"></i> Abertas</div>
+                <div class="mc-val">@abertas</div>
+                <div class="mc-sub">@pct(abertas)</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="mc-bar" style="background:#1D9E75;"></div>
+                <div class="mc-label"><i class="bi bi-arrow-repeat"></i> Em andamento</div>
+                <div class="mc-val">@emAndamento</div>
+                <div class="mc-sub">@pct(emAndamento)</div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="metric-card">
+                <div class="mc-bar" style="background:#639922;"></div>
+                <div class="mc-label"><i class="bi bi-check-circle"></i> Concluídas</div>
+                <div class="mc-val">@concluidas</div>
+                <div class="mc-sub">@pct(concluidas)</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="chart-card">
+                <p class="chart-title">OS por status</p>
+                <div class="chart-legend" id="leg-status">
+                    <span><span class="dot" style="background:#EF9F27;"></span>Aberta @pctSimples(abertas)%</span>
+                    <span><span class="dot" style="background:#378ADD;"></span>Em andamento @pctSimples(emAndamento)%</span>
+                    <span><span class="dot" style="background:#639922;"></span>Concluída @pctSimples(concluidas)%</span>
+                    <span><span class="dot" style="background:#888780;"></span>Cancelada @pctSimples(canceladas)%</span>
+                </div>
+                <div style="position:relative;height:220px;">
+                    <canvas id="graficoStatus" role="img" aria-label="Gráfico de rosca com OS por status"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chart-card">
+                <p class="chart-title">OS por prioridade</p>
+                <div class="chart-legend">
+                    <span><span class="dot" style="background:#3B6D11;"></span>Baixa</span>
+                    <span><span class="dot" style="background:#EF9F27;"></span>Média</span>
+                    <span><span class="dot" style="background:#A32D2D;"></span>Alta</span>
+                </div>
+                <div style="position:relative;height:220px;">
+                    <canvas id="graficoPrioridade" role="img" aria-label="Gráfico de barras com OS por prioridade"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="os-table-card">
+        <div class="card-header">
+            <span>Ordens de serviço</span>
+            <span class="count-badge">@total registros</span>
+        </div>
+        <div class="table-responsive">
+            <table class="table os-table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Solicitante</th>
+                        <th>Executor</th>
+                        <th>Status</th>
+                        <th>Prioridade</th>
+                        <th>Bloco</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!lista.Any())
+                    {
+                        <tr><td colspan="7" class="empty-row">Nenhuma OS encontrada para os filtros selecionados.</td></tr>
+                    }
+                    else
+                    {
+                        foreach (var item in lista.Take(50))
+                        {
+                            var badgeCls = item.status switch
+                            {
+                                "Aberta" => "badge-aberta",
+                                "Em andamento" => "badge-andamento",
+                                "Concluída" => "badge-concluida",
+                                "Cancelada" => "badge-cancelada",
+                                _ => ""
+                            };
+                            var priCls = item.prioridade switch
+                            {
+                                "Alta" => "pri-alta",
+                                "Média" => "pri-media",
+                                "Baixa" => "pri-baixa",
+                                _ => ""
+                            };
+
+                            <tr>
+                                <td style="font-family:monospace;font-size:11px;color:#6c757d">@item.idOrdemServico</td>
+                                <td>@item.solicitante</td>
+                                <td>@item.executor</td>
+                                <td><span class="badge rounded-pill @badgeCls">@item.status</span></td>
+                                <td class="@priCls">@item.prioridade</td>
+                                <td>@item.bloco</td>
+                                <td style="color:#6c757d">@item.dataSolicitacao.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+@functions {
+    // Helper para remover chaves específicas da querystring ao clicar no "x" das tags de filtro
+    public string JavaScriptQueryString(string keyToRemove)
+    {
+        var queryMap = Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
+        queryMap.Remove(keyToRemove);
+        return string.Join("&", queryMap.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
+    }
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <script>
+        const statusLabels = ['Aberta', 'Em andamento', 'Concluída', 'Cancelada'];
+        const statusCores = ['#EF9F27', '#378ADD', '#639922', '#888780'];
+
+        new Chart(document.getElementById('graficoStatus'), {
+        type: 'doughnut',
+        data: {
+        labels: statusLabels,
+        datasets: [{
+        data: [@abertas, @emAndamento, @concluidas, @canceladas],
+        backgroundColor: statusCores,
+        borderWidth: 0,
+        hoverOffset: 5
+        }]
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        cutout: '65%',
+        plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.parsed } }
+        }
+        }
+        });
+
+        new Chart(document.getElementById('graficoPrioridade'), {
+        type: 'bar',
+        data: {
+        labels: ['Baixa', 'Média', 'Alta'],
+        datasets: [{
+        label: 'Quantidade',
+        data: [@prBaixa, @prMedia, @prAlta],
+        backgroundColor: ['#639922', '#EF9F27', '#A32D2D'],
+        borderRadius: 5,
+        borderSkipped: false
+        }]
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+        x: { grid: { display: false }, ticks: { color: '#888', font: { size: 12 } } },
+        y: { grid: { color: 'rgba(128,128,128,.12)' }, ticks: { color: '#888', font: { size: 12 }, stepSize: 1 }, beginAtZero: true }
+        }
+        }
+        });
+    </script>
+}

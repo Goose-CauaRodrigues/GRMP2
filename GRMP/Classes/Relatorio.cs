@@ -1,5 +1,7 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using GRMP.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
 using System.Data;
 
 namespace GRMP.Classes
@@ -33,7 +35,7 @@ namespace GRMP.Classes
         //-----------------------------
         // Selecionar Filtro
         //-----------------------------
-        public DataTable SelecionarFiltro(
+        public List<RelatorioModel> SelecionarFiltro(
             DateTime? dataInicial,
             DateTime? dataFinal,
             string? executor,
@@ -62,7 +64,7 @@ namespace GRMP.Classes
                         dataFinalizacao,
                         tempoConclusaoHoras,
                         ativo
-                    FROM vw_OrdemServico
+                    FROM relatorio
                     WHERE 1 = 1";
 
                 SqlCommand cmd = new SqlCommand();
@@ -152,7 +154,32 @@ namespace GRMP.Classes
 
                 da.Fill(dt);
 
-                return dt.Rows.Count > 0 ? dt : null;
+                List<RelatorioModel> lista = new List<RelatorioModel>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    lista.Add(new RelatorioModel
+                    {
+                        idOrdemServico = Convert.ToInt32(row["idOrdemServico"]),
+                        solicitante = row["solicitante"].ToString(),
+                        executor = row["executor"].ToString(),
+                        descricaoServico = row["descricaoServico"].ToString(),
+                        categoria = row["categoria"].ToString(),
+                        numeroPatrimonio = row["numeroPatrimonio"].ToString(),
+                        bloco = row["bloco"].ToString(),
+                        local = row["local"].ToString(),
+                        prioridade = row["prioridade"].ToString(),
+                        status = row["status"].ToString(),
+                        observacoes = row["observacoes"].ToString(),
+                        dataSolicitacao = Convert.ToDateTime(row["dataSolicitacao"]),
+                        dataInicio = row["dataInicio"] as DateTime?,
+                        dataFinalizacao = row["dataFinalizacao"] as DateTime?,
+                        tempoConclusaoHoras = row["tempoConclusaoHoras"] as int?,
+                        ativo = Convert.ToBoolean(row["ativo"])
+                    });
+                }
+
+                return lista;
             }
             catch (Exception ex)
             {
