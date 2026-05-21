@@ -1,0 +1,347 @@
+﻿
+
+
+main {
+    width: 100vw;
+    margin-top: -2.5em;
+}
+
+
+.db-wrap {
+    padding: 1.5rem 0;
+}
+
+.db-title {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--bs-body-color, #1a1a1a);
+    margin-bottom: 1.25rem;
+}
+
+.filter-bar {
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 12px;
+    padding: .9rem 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.filter-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+    .filter-row + .filter-row {
+        margin-top: 10px;
+    }
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.filter-label {
+    font-size: 11px;
+    color: #6c757d;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+.filter-bar select, .filter-bar input[type="date"] {
+    font-size: 13px;
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,.12);
+    background: #f8f9fa;
+    color: #212529;
+    width: 100%;
+    height: 34px;
+}
+
+    .filter-bar select:focus, .filter-bar input[type="date"]:focus {
+        outline: none;
+        border-color: #378ADD;
+        background: #fff;
+    }
+
+.btn-clear-filter {
+    font-size: 12px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,.12);
+    background: transparent;
+    color: #6c757d;
+    cursor: pointer;
+    white-space: nowrap;
+    align-self: flex-end;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    justify-content: center;
+    height: 34px;
+}
+
+    .btn-clear-filter:hover {
+        background: #f8f9fa;
+        color: #212529;
+    }
+
+.active-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 1rem;
+}
+
+.filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #E6F1FB;
+    color: #185FA5;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+}
+
+    .filter-tag a {
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: #185FA5;
+        font-size: 14px;
+        line-height: 1;
+        padding: 0;
+        text-decoration: none;
+    }
+
+.metric-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: .9rem 1rem;
+    position: relative;
+    overflow: hidden;
+    border: none;
+}
+
+    .metric-card .mc-bar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        border-radius: 0;
+    }
+
+    .metric-card .mc-label {
+        font-size: 11px;
+        color: #6c757d;
+        margin-bottom: 5px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .metric-card .mc-val {
+        font-size: 26px;
+        font-weight: 500;
+        line-height: 1;
+        color: #212529;
+    }
+
+    .metric-card .mc-sub {
+        font-size: 11px;
+        color: #adb5bd;
+        margin-top: 3px;
+    }
+
+.chart-card {
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 12px;
+    background: #fff;
+    padding: 1rem 1.25rem;
+}
+
+.chart-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6c757d;
+    margin-bottom: .75rem;
+}
+
+.chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+    .chart-legend span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 11px;
+        color: #6c757d;
+    }
+
+    .chart-legend .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 2px;
+        flex-shrink: 0;
+    }
+
+.os-table-card {
+    border: 1px solid rgba(0,0,0,.08);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+}
+
+    .os-table-card .card-header {
+        background: transparent;
+        border-bottom: 1px solid rgba(0,0,0,.07);
+        font-size: 13px;
+        font-weight: 500;
+        color: #6c757d;
+        padding: .75rem 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+.count-badge {
+    font-size: 11px;
+    background: #f8f9fa;
+    color: #6c757d;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,.08);
+}
+
+.os-table th {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #6c757d;
+    font-weight: 500;
+    border-bottom-width: 1px;
+    background: #f8f9fa;
+}
+
+.os-table td {
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.os-table tbody tr:hover td {
+    background: #f8f9fa;
+}
+
+.os-table td.empty-row {
+    text-align: center;
+    color: #adb5bd;
+    padding: 2rem;
+}
+
+.badge-aberta {
+    background: #FAEEDA;
+    color: #854F0B;
+}
+
+.badge-andamento {
+    background: #E6F1FB;
+    color: #185FA5;
+}
+
+.badge-concluida {
+    background: #EAF3DE;
+    color: #3B6D11;
+}
+
+.badge-cancelada {
+    background: #FCEBEB;
+    color: #A32D2D;
+}
+
+.pri-alta {
+    color: #A32D2D;
+    font-weight: 500;
+}
+
+.pri-media {
+    color: #854F0B;
+}
+
+.pri-baixa {
+    color: #3B6D11;
+}
+
+
+.topbar {
+    background: #8b0000;
+    color: white;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza o bloco de conteúdo na tela */
+    padding: 0 20px;
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 1200px; /* Mesma largura máxima do container de baixo */
+}
+
+    .topbar-left h3 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        font-size: 18px;
+        margin: 0;
+    }
+
+.logo-badge {
+    background: white;
+    padding: 4px 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+}
+
+    .logo-badge span {
+        color: #cc0000;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        font-size: 14px;
+    }
+
+.page-header {
+    width: 100%;
+    max-width: 1200px; /* Mudado de 700px para 1200px */
+    margin-bottom: 24px;
+}
+
+    .page-header h2 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 800;
+        color: #1a1a1a;
+        font-size: 26px;
+    }
+
+    .page-header p {
+        color: #888;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+
+
