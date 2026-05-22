@@ -81,11 +81,19 @@ main {
     }
 
     button {
-        color: black;
+        color: white;
         background-color: #cc0000;
         border: 2px solid red;
         border-radius: 12px;
-        margin-left: 7em;
+        margin-top: -5em;
+        margin-bottom: 1em;
+        margin-left: 63.6em;
+        padding: 5px 15px;
+    }
+
+    button:hover {
+        background-color: #8b0000;
+        border: 2px solid rgb(179, 0, 0);
     }
 
 .historico {
