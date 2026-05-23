@@ -26,7 +26,10 @@ namespace GRMP.Controllers
 
         public IActionResult CriarOSExibir()
         {
-            return View("CriarOSExibirView");
+            OrdemServicoViewModel OsVm = new OrdemServicoViewModel();
+            OsVm.DtBlocos = BuscarBlocos();
+
+            return View("CriarOSExibirView", OsVm);
         }
 
         public IActionResult CriarOSProcessar(OrdemServicoViewModel OsVM)
@@ -37,5 +40,56 @@ namespace GRMP.Controllers
 
             return View("CriarOSExibirView");
         }
+
+        public DataTable BuscarBlocos()
+        {
+            try
+            {
+                Bloco bloco = new Bloco();
+
+                return bloco.Selecionar();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        //---------------------------------
+        // Buscar locais por bloco
+        //---------------------------------
+        [HttpGet]
+        public JsonResult BuscarLocaisPorBloco(int idBloco)
+        {
+            try
+            {
+                Local local = new Local();
+
+                local.fk_idBloco = idBloco;
+
+                DataTable dt = local.BuscarLocaisPorBloco();
+
+                List<object> lista = new List<object>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    lista.Add(new
+                    {
+                        idLocal = row["idLocal"],
+                        nome = row["nome"]
+                    });
+                }
+
+                return Json(lista);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    erro = ex.Message
+                });
+            }
+        }
+
     }
 }

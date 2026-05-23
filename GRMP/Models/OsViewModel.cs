@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace GRMP.Models
 {
@@ -40,5 +41,7 @@ namespace GRMP.Models
         public int? Status { get; set; }
 
         public bool Ativo { get; set; }
+
+        public DataTable DtBlocos { get; set; }
     }
 }

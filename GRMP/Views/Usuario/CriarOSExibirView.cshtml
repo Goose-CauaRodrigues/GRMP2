@@ -1,4 +1,5 @@
 ﻿@model OrdemServicoViewModel
+@using System.Data;
 
 @{
     ViewData["Title"] = "Nova Ordem de Serviço";
@@ -20,11 +21,16 @@
 
         <div class="grupo-form">
             <label asp-for="Bloco">Bloco</label>
+
             <select asp-for="Bloco" id="bloco">
                 <option value="">Selecione um bloco</option>
-                <option value="1">Bloco A</option>
-                <option value="2">Bloco B</option>
-                <option value="3">Bloco C</option>
+
+                @foreach (DataRow bloco in Model.DtBlocos.Rows)
+                {
+                    <option value="@bloco["idBloco"]">
+                        @bloco["nome"]
+                    </option>
+                }
             </select>
         </div>
 
@@ -36,12 +42,20 @@
         </div>
 
         <div class="grupo-form">
-            <label asp-for="Categoria">Categoria</label>
+            <label asp-for="Categoria" id="categoria">Categoria</label>
             <select asp-for="Categoria">
                 <option value="">Selecione</option>
                 <option value="Infraestrutura">Infraestrutura</option>
                 <option value="Manutencao">Manutenção</option>
             </select>
+        </div>
+
+        <div class="grupo-form" id="grupoPatrimonio" style="display: none;">
+            <label asp-for="NumeroPatrimonio">Código do Ativo</label>
+
+            <input type="text"
+                   asp-for="NumeroPatrimonio"
+                   placeholder="Digite o código do ativo" />
         </div>
 
         <div class="grupo-form grupo-full">
@@ -54,4 +68,66 @@
         </div>
 
     </form>
+
+    <script>
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+                const selectBloco = document.getElementById("bloco");
+                const selectLocal = document.getElementById("local");
+
+                selectBloco.addEventListener("change", function () {
+
+                    let idBloco = this.value;
+
+                    // Limpa locais
+                    selectLocal.innerHTML = "";
+
+                    // Nenhum bloco selecionado
+                    if (idBloco === "") {
+
+                        selectLocal.disabled = true;
+
+                        selectLocal.innerHTML =
+                            '<option value="">Primeiro selecione um bloco</option>';
+
+                        return;
+                    }
+
+                    // Faz consulta no controller
+                    fetch(`/Usuario/BuscarLocaisPorBloco?idBloco=${idBloco}`)
+
+                        .then(response => response.json())
+
+                        .then(data => {
+
+                            selectLocal.disabled = false;
+
+                            // Option padrão
+                            selectLocal.innerHTML =
+                                '<option value="">Selecione um local</option>';
+
+                            // Adiciona locais
+                            data.forEach(function (local) {
+
+                                selectLocal.innerHTML +=
+                                    `<option value="${local.idLocal}">
+                                        ${local.nome}
+                                    </option>`;
+                            });
+                        })
+
+                        .catch(error => {
+
+                            console.error("Erro ao buscar locais:", error);
+
+                            selectLocal.disabled = true;
+
+                            selectLocal.innerHTML =
+                                '<option value="">Erro ao carregar locais</option>';
+                        });
+                });
+            });
+
+    </script>
 </div>

@@ -1,4 +1,4 @@
-﻿
+﻿﻿
 
 *,
 *::before,
@@ -171,6 +171,7 @@ input {
         font-size: 30px;
     }
 }
+
 .msg-erro {
     background-color: #ffe5e5;
     color: #d8000c;
