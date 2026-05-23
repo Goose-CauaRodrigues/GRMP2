@@ -15,8 +15,8 @@ namespace GRMP.Classes
         public string descricaoServico;
         public int categoria;
         public string? numeroPatrimonio;
-        public string bloco;
-        public string local;
+        public int bloco;
+        public int local;
         public int? prioridade;
         public string? observacoes;
         public DateTime dataSolicitacao;

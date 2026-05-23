@@ -29,5 +29,13 @@ namespace GRMP.Controllers
             return View("CriarOSExibirView");
         }
 
+        public IActionResult CriarOSProcessar(OrdemServicoViewModel OsVM)
+        {
+            
+
+
+
+            return View("CriarOSExibirView");
+        }
     }
 }

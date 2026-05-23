@@ -21,10 +21,10 @@ namespace GRMP.Models
         public string? NumeroPatrimonio { get; set; }
 
         [Required]
-        public string Bloco { get; set; }
+        public int Bloco { get; set; }
 
         [Required]
-        public string Local { get; set; }
+        public int Local { get; set; }
 
         public int? Prioridade { get; set; }
 
