@@ -1,0 +1,276 @@
+﻿@model GRMP.Models.OrdemServicoViewModel
+
+@{
+    ViewData["Title"] = "Novo Chamado – SENAI";
+}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link href="~/css/OsCriar.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <header class="topbar">
+
+        <div class="topbar-left">
+
+            <div class="logo-badge">
+                <span>SENAI</span>
+            </div>
+
+            <h3>Painel do Professor</h3>
+
+        </div>
+
+        <a href="@Url.Action("Historico", "Chamados")"
+           class="btn-nav">
+            📋 Ver Histórico
+        </a>
+
+    </header>
+
+    <div class="container">
+
+        <div class="card-form">
+
+            <h2>Novo Chamado</h2>
+
+            <p class="subtitle">
+                Preencha os dados para registrar uma ordem de serviço.
+            </p>
+
+            <form asp-action="Create"
+                  asp-controller="Chamados"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       asp-for="FkIdUsuario" />
+
+                <input type="hidden"
+                       asp-for="DataSolicitacao"
+                       value="@DateTime.Now" />
+
+                <input type="hidden"
+                       asp-for="Ativo"
+                       value="true" />
+
+                <!-- LOCALIZAÇÃO -->
+                <p class="section-label">
+                    Localização
+                </p>
+
+                <hr class="divider" />
+
+                <div class="field">
+
+                    <label asp-for="Bloco">
+                        Bloco
+                    </label>
+
+                    <select asp-for="Bloco">
+
+                        <option value="">
+                            Selecione...
+                        </option>
+
+                        <option value="Bloco A">
+                            Bloco A
+                        </option>
+
+                        <option value="Bloco B">
+                            Bloco B
+                        </option>
+
+                        <option value="Bloco C">
+                            Bloco C
+                        </option>
+
+                        <option value="Bloco D">
+                            Bloco D
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="Bloco"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+                <div class="field">
+
+                    <label asp-for="Local">
+                        Local
+                    </label>
+
+                    <input asp-for="Local"
+                           type="text"
+                           placeholder="Ex: Sala 101" />
+
+                    <span asp-validation-for="Local"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+                <!-- EQUIPAMENTO -->
+                <p class="section-label">
+                    Equipamento
+                </p>
+
+                <hr class="divider" />
+
+                <div class="field">
+
+                    <label asp-for="NumeroPatrimonio">
+                        Número Patrimônio
+                    </label>
+
+                    <input asp-for="NumeroPatrimonio"
+                           type="text"
+                           placeholder="Ex: PAT-1020" />
+
+                    <span asp-validation-for="NumeroPatrimonio"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+                <!-- DETALHES -->
+                <p class="section-label">
+                    Detalhes
+                </p>
+
+                <hr class="divider" />
+
+                <div class="field">
+
+                    <label asp-for="Categoria">
+                        Categoria
+                    </label>
+
+                    <select asp-for="Categoria">
+
+                        <option value="">
+                            Selecione...
+                        </option>
+
+                        <option value="1">
+                            Projetor
+                        </option>
+
+                        <option value="2">
+                            Computador
+                        </option>
+
+                        <option value="3">
+                            Ar Condicionado
+                        </option>
+
+                        <option value="4">
+                            Limpeza
+                        </option>
+
+                        <option value="5">
+                            Elétrica
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="Categoria"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+                <div class="field">
+
+                    <label asp-for="Prioridade">
+                        Prioridade
+                    </label>
+
+                    <select asp-for="Prioridade">
+
+                        <option value="">
+                            Selecione...
+                        </option>
+
+                        <option value="1">
+                            Baixa
+                        </option>
+
+                        <option value="2">
+                            Média
+                        </option>
+
+                        <option value="3">
+                            Alta
+                        </option>
+
+                    </select>
+
+                    <span asp-validation-for="Prioridade"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+                <div class="field">
+
+                    <label asp-for="DescricaoServico">
+                        Descrição do Problema
+                    </label>
+
+                    <textarea asp-for="DescricaoServico"
+                              rows="4"
+                              placeholder="Descreva o problema...">
+                    </textarea>
+
+                    <span asp-validation-for="DescricaoServico"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+                <div class="field">
+
+                    <label asp-for="Observacoes">
+                        Observações
+                    </label>
+
+                    <textarea asp-for="Observacoes"
+                              rows="3"
+                              placeholder="Informações adicionais...">
+                    </textarea>
+
+                    <span asp-validation-for="Observacoes"
+                          class="validation-error">
+                    </span>
+
+                </div>
+
+                <button type="submit"
+                        class="btn-red">
+
+                    Abrir Chamado
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

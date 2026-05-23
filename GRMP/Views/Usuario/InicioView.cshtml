@@ -19,7 +19,13 @@
     <div class="page-header">
         <h2>Ordens de Serviço Registradas</h2>
         <p>Visualização de todos os chamados do sistema</p>
-        <button class="botao-adicionar">Adicionar Solicitação</button>
+        <button type="button"
+                class="botao-adicionar"
+                onclick="window.location.href='@Url.Action("CriarOSExibir", "Usuario")'">
+
+            Adicionar Solicitação
+
+        </button>
     </div>
 
     <div class="historico">

@@ -11,10 +11,16 @@
 //} Cauã sala gustavo
 
 
-{
-  "ConnectionStrings": {
-    "StringConexaoSQLServer": "Data Source=ECFP602D1248380\\SQLEXPRESS; Database=GRMPBancoDados; User ID=sa; Password=sa; TrustServerCertificate=True"
-  }
-} 
+//{
+//  "ConnectionStrings": {
+//    "StringConexaoSQLServer": "Data Source=ECFP602D1248380\\SQLEXPRESS; Database=GRMPBancoDados; User ID=sa; Password=sa; TrustServerCertificate=True"
+//  }
+//}
 
 //Cauã sala adriano
+
+{
+  "ConnectionStrings": {
+    "StringConexaoSQLServer": "Data Source=DESKTOP-8A0M9R5\\SQLEXPRESS;Database=GRMPBancoDados;User ID=sa;Password=sa;TrustServerCertificate=True"
+  }
+} //Cauã em casa

@@ -24,5 +24,10 @@ namespace GRMP.Controllers
             return View("InicioView" , dt);// teste 234
         }
 
+        public IActionResult CriarOSExibir()
+        {
+            return View("CriarOSExibirView");
+        }
+
     }
 }
