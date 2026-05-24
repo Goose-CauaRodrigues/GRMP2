@@ -4,45 +4,93 @@
     ViewData["Title"] = "Bloco";
 }
 
-<style>
-    .grid-locais {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 16px;
-        padding: 20px;
-    }
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Bloco · SENAI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+    <link href="~/css/Bloco.css" rel="stylesheet" />
+</head>
+<body>
 
-    .local-card {
-        background: white;
-        border-radius: 12px;
-        border: 1px solid #ddd;
-        padding: 20px;
-        transition: .2s;
-        text-decoration: none;
-        color: #111;
-    }
+    <!-- ===== Header SENAI (idêntico ao do mapa) ===== -->
+    <header class="senai-header">
+        <div class="brand">
+            <span class="senai-badge">SENAI</span>
+            <h1>Mapa de Manutenção Predial</h1>
+        </div>
+        <span class="hint">Selecione um local para ver as ordens de serviço</span>
+    </header>
 
-        .local-card:hover {
-            transform: translateY(-4px);
-            border-color: #2563eb;
+    <!-- ===== Conteúdo principal ===== -->
+    <main class="bloco-wrapper">
+
+        <!-- Breadcrumb / título da seção -->
+        <div class="bloco-header">
+            <a class="back-link" href="javascript:history.back()">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Voltar ao mapa
+            </a>
+
+            <div class="bloco-titulo">
+                <span class="bloco-label">Navegando em</span>
+                <h2>@ViewBag.Bloco</h2>
+            </div>
+
+            <p class="bloco-sub">Selecione um local abaixo para visualizar as ordens de serviço.</p>
+        </div>
+
+        <!-- Grade de locais -->
+        @if (Model == null)
+        {
+            <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <p>Nenhum local encontrado para este bloco.</p>
+            </div>
         }
-</style>
+        else
+        {
+            <div class="grid-locais">
+                @foreach (var local in Model)
+                {
+                    <a class="local-card"
+                       asp-controller="OrdemServico"
+                       asp-action="Index"
+                       asp-route-local="@local.Id"
+                       title="Ver OS de @local.Nome">
 
-<h2 style="padding:20px;">
-    Bloco @ViewBag.Bloco
-</h2>
+                        <div class="local-card-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                                      stroke="currentColor" stroke-width="1.8"
+                                      stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="1.8"
+                                      stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </div>
 
-<div class="grid-locais">
+                        <strong class="local-nome">@local.Nome</strong>
 
-    @foreach (var local in Model)
-    {
-        <a class="local-card"
-           asp-controller="OrdemServico"
-           asp-action="Index"
-           asp-route-local="@local.Id">
+                        <span class="local-action">
+                            Ver OS
+                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                                <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2"
+                                      stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                    </a>
+                }
+            </div>
+        }
 
-            <strong>@local.Nome</strong>
-        </a>
-    }
+    </main>
 
-</div>
+</body>
+</html>

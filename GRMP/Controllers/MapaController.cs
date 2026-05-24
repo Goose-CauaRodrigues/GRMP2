@@ -26,18 +26,18 @@ namespace GRMP.Controllers
                 conn.Open();
 
                 string sql = @"
-                    SELECT DISTINCT bloco
-                    FROM OrdemServico
-                    WHERE status != 3
-                    AND ativo = 1
-                ";
+                    SELECT DISTINCT b.nome
+                    FROM OrdemServico os
+                    INNER JOIN Bloco b ON b.idBloco = os.Bloco
+                    WHERE os.status != 3
+                    AND os.ativo = 1";
 
                 using SqlCommand cmd = new SqlCommand(sql, conn);
                 using SqlDataReader dr = cmd.ExecuteReader();
 
                 while (dr.Read())
                 {
-                    blocosComOs.Add(dr["bloco"].ToString());
+                    blocosComOs.Add(dr["nome"].ToString());
                 }
             }
 
