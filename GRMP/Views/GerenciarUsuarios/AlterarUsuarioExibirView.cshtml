@@ -79,39 +79,51 @@
             </label>
 
             <select asp-for="NvAcesso">
-                @{
-                    if (Model.NvAcesso == 1)
-                    {
-                        <option value="1" selected>
-                            Usuário
-                        </option>
 
-                        <option value="3">
-                            Administrador
-                        </option>
+                @if (Model.NvAcesso == 1)
+                {
+                    <option value="1" selected>
+                        Usuário
+                    </option>
 
-                        <option value="2">
-                            Técnico
-                        </option>
-                    }
-                    else
-                    {
-                        <option value="2" selected>
-                            Técnico
-                        </option>
+                    <option value="2">
+                        Técnico
+                    </option>
 
-                        <option value="3">
-                            Administrador
-                        </option>
-
-                        <option value="1">
-                            Usuário
-                        </option>
-                    }
-
-
+                    <option value="3">
+                        Administrador
+                    </option>
                 }
 
+                else if (Model.NvAcesso == 2)
+                {
+                    <option value="2" selected>
+                        Técnico
+                    </option>
+
+                    <option value="1">
+                        Usuário
+                    </option>
+
+                    <option value="3">
+                        Administrador
+                    </option>
+                }
+
+                else
+                {
+                    <option value="3" selected>
+                        Administrador
+                    </option>
+
+                    <option value="1">
+                        Usuário
+                    </option>
+
+                    <option value="2">
+                        Técnico
+                    </option>
+                }
 
             </select>
 
