@@ -138,6 +138,25 @@ namespace ProjBancoDados.BancoDados
             }
         }
 
+        public DataTable SelecionarSeguro()
+        {
+            try
+            {
+                string cmdSQL = "SELECT idUsuario ,Email, nome, nvAcesso FROM Usuario ORDER BY IdUsuario";
+
+                SqlDataAdapter da = new SqlDataAdapter(cmdSQL, con);
+
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                return dt.Rows.Count > 0 ? dt : null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         public DataTable BuscarPorEmail(string email)
         {
             try
@@ -146,6 +165,27 @@ namespace ProjBancoDados.BancoDados
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
                 cmd.Parameters.AddWithValue("@Email", email);
+
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                return dt.Rows.Count > 0 ? dt : null;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public DataTable BuscarPorID(int id)
+        {
+            try
+            {
+                string cmdSQL = "SELECT NvAcesso FROM Usuario WHERE IdUsuario = @id";
+
+                SqlCommand cmd = new SqlCommand(cmdSQL, con);
+                cmd.Parameters.AddWithValue("@id", id);
 
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
 
