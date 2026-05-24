@@ -32,13 +32,85 @@ namespace GRMP.Controllers
             return View("CriarOSExibirView", OsVm);
         }
 
+        [HttpPost]
         public IActionResult CriarOSProcessar(OrdemServicoViewModel OsVM)
         {
-            
+            try
+            {
+                //---------------------------------
+                // Verifica sessão
+                //---------------------------------
 
+                string idUsuario = HttpContext.Session.GetString("idUsuario");
 
+                if (string.IsNullOrEmpty(idUsuario))
+                {
+                    return RedirectToAction("Login", "Login");
+                }
 
-            return View("CriarOSExibirView");
+                //---------------------------------
+                // Cria objeto OS
+                //---------------------------------
+
+                Os os = new Os();
+
+                os.fk_idUsuario = Convert.ToInt32(idUsuario);
+
+                os.descricaoServico = OsVM.DescricaoServico;
+
+                //---------------------------------
+                // Categoria
+                //---------------------------------
+
+                os.categoria = OsVM.Categoria;
+                //---------------------------------
+                // Patrimônio
+                //---------------------------------
+
+                os.numeroPatrimonio = string.IsNullOrEmpty(OsVM.NumeroPatrimonio)
+                    ? null
+                    : OsVM.NumeroPatrimonio;
+
+                //---------------------------------
+                // Localização
+                //---------------------------------
+
+                os.bloco = OsVM.Bloco;
+
+                os.local = OsVM.Local;
+
+                //---------------------------------
+                // Dados padrão
+                //---------------------------------
+
+                os.dataSolicitacao = DateTime.Now;
+
+                os.status = 1;
+
+                os.ativo = true;
+
+                //---------------------------------
+                // Inserir
+                //---------------------------------
+
+                os.Inserir();
+
+                //---------------------------------
+                // Redireciona
+                //---------------------------------
+
+                return RedirectToAction("InicioExibir");
+            }
+            catch (Exception ex)
+            {
+                OrdemServicoViewModel model = new OrdemServicoViewModel();
+
+                model.DtBlocos = BuscarBlocos();
+
+                ViewBag.Erro = ex.Message;
+
+                return View("CriarOSExibirView", model);
+            }
         }
 
         public DataTable BuscarBlocos()

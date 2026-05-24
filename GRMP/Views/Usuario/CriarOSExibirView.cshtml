@@ -14,11 +14,15 @@
             <h1>Nova Ordem de Serviço</h1>
             <p>Registrar uma nova solicitação no sistema</p>
         </div>
-        <a href="@Url.Action("InicioExibir", "Usuario")" class="btn-voltar">Voltar</a>
+
+        <a href="@Url.Action("InicioExibir", "Usuario")" class="btn-voltar">
+            Voltar
+        </a>
     </div>
 
-    <form asp-action="Create" method="post" class="card-formulario">
+    <form asp-action="CriarOSProcessar" asp-controller="Usuario" method="post" class="card-formulario">
 
+        <!-- BLOCO -->
         <div class="grupo-form">
             <label asp-for="Bloco">Bloco</label>
 
@@ -34,100 +38,162 @@
             </select>
         </div>
 
+        <!-- LOCAL -->
         <div class="grupo-form">
             <label asp-for="Local">Local</label>
+
             <select asp-for="Local" id="local" disabled>
-                <option value="">Primeiro selecione um bloco</option>
+                <option value="">
+                    Primeiro selecione um bloco
+                </option>
             </select>
         </div>
 
+        <!-- CATEGORIA -->
         <div class="grupo-form">
-            <label asp-for="Categoria" id="categoria">Categoria</label>
-            <select asp-for="Categoria">
+            <label asp-for="Categoria">Categoria</label>
+
+            <select asp-for="Categoria" id="categoria">
                 <option value="">Selecione</option>
-                <option value="Infraestrutura">Infraestrutura</option>
-                <option value="Manutencao">Manutenção</option>
+
+                <option value="1">
+                    Infraestrutura
+                </option>
+
+                <option value="2">
+                    Manutenção
+                </option>
             </select>
         </div>
 
-        <div class="grupo-form" id="grupoPatrimonio" style="display: none;">
-            <label asp-for="NumeroPatrimonio">Código do Ativo</label>
+        <!-- PATRIMÔNIO -->
+        <div class="grupo-form"
+             id="grupoPatrimonio"
+             style="display: none;">
+
+            <label asp-for="NumeroPatrimonio">
+                Código do Ativo
+            </label>
 
             <input type="text"
                    asp-for="NumeroPatrimonio"
                    placeholder="Digite o código do ativo" />
         </div>
 
+        <!-- DESCRIÇÃO -->
         <div class="grupo-form grupo-full">
-            <label asp-for="DescricaoServico">Descrição do Problema</label>
-            <textarea asp-for="DescricaoServico" rows="5" placeholder="Descreva o problema encontrado..."></textarea>
+            <label asp-for="DescricaoServico">
+                Descrição do Problema
+            </label>
+
+            <textarea asp-for="DescricaoServico"
+                      rows="5"
+                      placeholder="Descreva o problema encontrado...">
+            </textarea>
         </div>
 
+        <!-- BOTÃO -->
         <div class="acoes-form">
-            <button type="submit" class="btn-salvar">Criar Solicitação</button>
+            <button type="submit" class="btn-salvar">
+                Criar Solicitação
+            </button>
         </div>
 
     </form>
-
-    <script>
-
-            document.addEventListener("DOMContentLoaded", function () {
-
-                const selectBloco = document.getElementById("bloco");
-                const selectLocal = document.getElementById("local");
-
-                selectBloco.addEventListener("change", function () {
-
-                    let idBloco = this.value;
-
-                    // Limpa locais
-                    selectLocal.innerHTML = "";
-
-                    // Nenhum bloco selecionado
-                    if (idBloco === "") {
-
-                        selectLocal.disabled = true;
-
-                        selectLocal.innerHTML =
-                            '<option value="">Primeiro selecione um bloco</option>';
-
-                        return;
-                    }
-
-                    // Faz consulta no controller
-                    fetch(`/Usuario/BuscarLocaisPorBloco?idBloco=${idBloco}`)
-
-                        .then(response => response.json())
-
-                        .then(data => {
-
-                            selectLocal.disabled = false;
-
-                            // Option padrão
-                            selectLocal.innerHTML =
-                                '<option value="">Selecione um local</option>';
-
-                            // Adiciona locais
-                            data.forEach(function (local) {
-
-                                selectLocal.innerHTML +=
-                                    `<option value="${local.idLocal}">
-                                        ${local.nome}
-                                    </option>`;
-                            });
-                        })
-
-                        .catch(error => {
-
-                            console.error("Erro ao buscar locais:", error);
-
-                            selectLocal.disabled = true;
-
-                            selectLocal.innerHTML =
-                                '<option value="">Erro ao carregar locais</option>';
-                        });
-                });
-            });
-
-    </script>
 </div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        //-----------------------------------
+        // ELEMENTOS
+        //-----------------------------------
+
+        const selectBloco = document.getElementById("bloco");
+        const selectLocal = document.getElementById("local");
+
+        const selectCategoria =
+            document.getElementById("categoria");
+
+        const grupoPatrimonio =
+            document.getElementById("grupoPatrimonio");
+
+        //-----------------------------------
+        // BLOCO -> LOCAIS
+        //-----------------------------------
+
+        selectBloco.addEventListener("change", function () {
+
+            let idBloco = this.value;
+
+            selectLocal.innerHTML = "";
+
+            //-----------------------------------
+            // SEM BLOCO
+            //-----------------------------------
+
+            if (idBloco === "") {
+
+                selectLocal.disabled = true;
+
+                selectLocal.innerHTML =
+                    '<option value="">Primeiro selecione um bloco</option>';
+
+                return;
+            }
+
+            //-----------------------------------
+            // BUSCAR LOCAIS
+            //-----------------------------------
+
+            fetch(`/Usuario/BuscarLocaisPorBloco?idBloco=${idBloco}`)
+
+                .then(response => response.json())
+
+                .then(data => {
+
+                    selectLocal.disabled = false;
+
+                    selectLocal.innerHTML =
+                        '<option value="">Selecione um local</option>';
+
+                    data.forEach(function (local) {
+
+                        selectLocal.innerHTML +=
+                            `<option value="${local.idLocal}">
+                                ${local.nome}
+                            </option>`;
+                    });
+                })
+
+                .catch(error => {
+
+                    console.error(error);
+
+                    selectLocal.disabled = true;
+
+                    selectLocal.innerHTML =
+                        '<option value="">Erro ao carregar locais</option>';
+                });
+        });
+
+        //-----------------------------------
+        // CATEGORIA -> PATRIMÔNIO
+        //-----------------------------------
+
+        selectCategoria.addEventListener("change", function () {
+
+            if (this.value === "2") {
+
+                grupoPatrimonio.style.display = "flex";
+            }
+            else {
+
+                grupoPatrimonio.style.display = "none";
+            }
+        });
+
+    });
+
+</script>

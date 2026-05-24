@@ -250,36 +250,47 @@ namespace GRMP.Classes
             try
             {
                 string sql = @"
-SELECT
-    os.idOrdemServico,
-    os.descricaoServico,
-    os.categoria,
-    os.numeroPatrimonio,
-    os.bloco,
-    os.local,
-    os.prioridade,
-    os.status,
-    os.dataSolicitacao,
-    os.dataInicio,
-    os.dataFinalizacao,
-    os.observacoes,
-    os.ativo,
+            SELECT
+                os.idOrdemServico,
+                os.descricaoServico,
+                os.categoria,
+                os.numeroPatrimonio,
 
-    criador.nome AS nomeCriador,
-    criador.email AS emailCriador,
+                os.bloco,
+                b.nome AS nomeBloco,
 
-    executor.nome AS nomeExecutor,
-    executor.email AS emailExecutor
+                os.local,
+                l.nome AS nomeLocal,
 
-FROM OrdemServico os
+                os.prioridade,
+                os.status,
+                os.dataSolicitacao,
+                os.dataInicio,
+                os.dataFinalizacao,
+                os.observacoes,
+                os.ativo,
 
-INNER JOIN Usuario criador
-    ON os.fk_idUsuario = criador.idUsuario
+                criador.nome AS nomeCriador,
+                criador.email AS emailCriador,
 
-LEFT JOIN Usuario executor
-    ON os.fk_executor = executor.idUsuario
+                executor.nome AS nomeExecutor,
+                executor.email AS emailExecutor
 
-ORDER BY os.idOrdemServico";
+            FROM OrdemServico os
+
+            INNER JOIN Usuario criador
+                ON os.fk_idUsuario = criador.idUsuario
+
+            LEFT JOIN Usuario executor
+                ON os.fk_executor = executor.idUsuario
+
+            LEFT JOIN Bloco b
+                ON os.bloco = b.idBloco
+
+            LEFT JOIN Local l
+                ON os.local = l.idLocal
+
+            ORDER BY os.idOrdemServico";
 
                 SqlDataAdapter da = new SqlDataAdapter(sql, con);
 
