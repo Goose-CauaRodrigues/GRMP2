@@ -1,0 +1,362 @@
+﻿/* =========================================================
+   SENAI · Mapa de Manutenção Predial
+   Paleta oficial (mesma do projeto Building Care MVP)
+   ========================================================= */
+:root {
+    --senai-red: hsl(0, 75%, 35%);
+    --senai-red-glow: hsl(0, 80%, 48%);
+    --senai-red-deep: hsl(0, 70%, 22%);
+    --senai-red-soft: hsl(0, 75%, 96%);
+    --bg: hsl(0, 0%, 98%);
+    --surface: hsl(0, 0%, 100%);
+    --surface-muted: hsl(0, 0%, 96%);
+    --text: hsl(0, 0%, 10%);
+    --text-muted: hsl(0, 0%, 40%);
+    --border: hsl(0, 0%, 90%);
+    --status-open: hsl(0, 75%, 45%);
+    --status-progress: hsl(38, 92%, 50%);
+    --status-done: hsl(150, 60%, 40%);
+    --radius: 14px;
+    --radius-sm: 8px;
+    --shadow-soft: 0 10px 30px -10px hsl(0 70% 15% / 0.18);
+    --shadow-elegant: 0 25px 60px -20px hsl(0 70% 15% / 0.35);
+    --transition: .25s cubic-bezier(.4, 0, .2, 1);
+    --gradient-hero: linear-gradient(135deg, hsl(0 70% 22%) 0%, hsl(0 75% 35%) 50%, hsl(0 80% 28%) 100%);
+}
+
+/* ---------- Base ---------- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Header SENAI (opcional) ---------- */
+.senai-header {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px 28px;
+    background: var(--gradient-hero);
+    color: #fff;
+    box-shadow: var(--shadow-soft);
+}
+
+    .senai-header .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+.senai-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    background: #fff;
+    color: var(--senai-red);
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: .08em;
+    font-size: 18px;
+    transform: skewX(-8deg);
+    box-shadow: 0 4px 12px hsl(0 70% 10% / .35);
+}
+
+.senai-header h1 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: .02em;
+}
+
+.senai-header .hint {
+    font-size: 13px;
+    opacity: .85;
+}
+
+/* ---------- Layout ---------- */
+.map-wrapper {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 420px;
+    gap: 24px;
+    padding: 42px 28px 28px;
+    align-items: stretch;
+}
+
+@media (max-width: 1100px) {
+    .map-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Mapa ---------- */
+.map-area {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0; /* ← era 12px */
+    box-shadow: var(--shadow-soft);
+    overflow: hidden; /* ← garante que a img respeita o border-radius */
+}
+
+    .map-area img {
+        width: 100%;
+        display: block;
+        border-radius: var(--radius); /* ← assume o radius direto */
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    /* Áreas clicáveis — cada <a> cobre TODO o mapa, mas o clip-path
+   do .bloco interno limita tanto a área visual quanto o clique */
+    .map-area a {
+        position: absolute;
+        inset: 0; /* cobre o mapa inteiro (posicionamento base) */
+        display: block;
+        text-decoration: none;
+        pointer-events: none; /* desativa clique na âncora; só o .bloco responde */
+    }
+
+.bloco {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background: transparent;
+    pointer-events: all; /* reativa o clique apenas dentro do clip-path */
+    transition: background var(--transition), filter var(--transition);
+}
+
+    .bloco:hover {
+        background: hsl(0 75% 45% / .22);
+        filter: drop-shadow(0 0 6px hsl(0 80% 48% / .35));
+    }
+
+/* ---------- Pin ---------- */
+.pin {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: var(--senai-red-glow);
+    border-radius: 50% 50% 50% 0;
+    transform: translate(-50%, -100%) rotate(-45deg);
+    box-shadow: 0 4px 10px hsl(0 80% 30% / .45);
+    animation: pin-pulse 1.6s ease-in-out infinite;
+}
+
+    .pin::after {
+        content: '';
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 8px;
+        height: 8px;
+        background: #fff;
+        border-radius: 50%;
+    }
+
+@keyframes pin-pulse {
+    0%, 100% {
+        box-shadow: 0 4px 10px hsl(0 80% 30% / .45), 0 0 0 0 hsl(0 80% 48% / .55);
+    }
+
+    50% {
+        box-shadow: 0 4px 10px hsl(0 80% 30% / .45), 0 0 0 14px hsl(0 80% 48% / 0);
+    }
+}
+
+/* Variações por status (use a classe que preferir no <div class="pin status-…">) */
+.pin.status-aberto {
+    background: var(--status-open);
+}
+
+.pin.status-andamento {
+    background: var(--status-progress);
+}
+
+.pin.status-resolvido {
+    background: var(--status-done);
+}
+
+/* ---------- Painel lateral ---------- */
+.side-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    padding: 20px;
+    height: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+    .side-panel h3 {
+        margin: 0 0 4px;
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+    }
+
+    .side-panel p {
+        margin: 0 0 16px;
+        font-size: 13px;
+        color: var(--text-muted);
+        line-height: 1.5;
+    }
+
+/* Abas (opcional) */
+.tabs {
+    display: flex;
+    gap: 4px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 14px;
+}
+
+    .tabs button {
+        flex: 1;
+        background: none;
+        border: 0;
+        padding: 10px 6px;
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-muted);
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: var(--transition);
+    }
+
+        .tabs button:hover {
+            color: var(--text);
+        }
+
+        .tabs button.active {
+            color: var(--senai-red);
+            border-bottom-color: var(--senai-red);
+        }
+
+/* Cards de chamados */
+.chamado-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    background: var(--surface);
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+    .chamado-card:hover {
+        border-color: var(--senai-red);
+        box-shadow: var(--shadow-soft);
+        transform: translateY(-1px);
+    }
+
+    .chamado-card .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 6px;
+    }
+
+    .chamado-card .id {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-variant-numeric: tabular-nums;
+    }
+
+    .chamado-card .titulo {
+        font-weight: 600;
+        font-size: 14px;
+        margin: 2px 0;
+    }
+
+    .chamado-card .meta {
+        font-size: 12px;
+        color: var(--text-muted);
+    }
+
+/* Badge de status */
+.status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    border-radius: 4px;
+    color: #fff;
+}
+
+    .status-badge.aberto {
+        background: var(--status-open);
+    }
+
+    .status-badge.andamento {
+        background: var(--status-progress);
+    }
+
+    .status-badge.resolvido {
+        background: var(--status-done);
+    }
+
+/* ---------- Legenda (canto inferior esquerdo) ---------- */
+.legend {
+    position: fixed;
+    left: 24px;
+    bottom: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-soft);
+    font-size: 12px;
+    z-index: 5;
+}
+
+    .legend .item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 4px 0;
+        color: var(--text);
+    }
+
+    .legend .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    }
+
+        .legend .dot.aberto {
+            background: var(--status-open);
+        }
+
+        .legend .dot.andamento {
+            background: var(--status-progress);
+        }
+
+        .legend .dot.resolvido {
+            background: var(--status-done);
+        }
+
+/* ---------- Scrollbar discreta ---------- */
+.side-panel ::-webkit-scrollbar {
+    width: 6px;
+}
+
+.side-panel ::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 3px;
+}
