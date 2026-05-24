@@ -43,7 +43,9 @@ namespace GRMP.Controllers
 
                         if (nvAcesso == "3")
                         {
-                            return RedirectToAction("Index", "Mapa");
+                            //return RedirectToAction("Index", "Mapa");
+
+                            return RedirectToAction("ListaUsuariosExibir", "GerenciarUsuarios");
                         }
                         else if (nvAcesso == "2")
                         {
@@ -56,7 +58,7 @@ namespace GRMP.Controllers
                     }
                 }
 
-                ViewBag.Erro = "Email ou senha inválidos." + senhaHash;
+                ViewBag.Erro = "Email ou senha inválidos.";
                 return View("LoginView");
             }
             catch (Exception ex)

@@ -17,6 +17,13 @@ namespace GRMP.Controllers
         // =========================
         public IActionResult Index()
         {
+            string idUsuario = HttpContext.Session.GetString("idUsuario");
+
+            if (string.IsNullOrEmpty(idUsuario))
+            {
+                return RedirectToAction("Login", "Login");
+            }
+
             var blocosComOs = new List<string>();
 
             string connStr = _configuration.GetConnectionString("StringConexaoSQLServer");

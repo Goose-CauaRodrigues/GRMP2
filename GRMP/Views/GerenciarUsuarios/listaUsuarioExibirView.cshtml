@@ -1,0 +1,94 @@
+﻿@using System.Data;
+@model DataTable
+
+@{
+    ViewData["Title"] = "Usuários";
+}
+
+<link href="~/css/ListaUsuario.css" rel="stylesheet" />
+
+<header class="topbar">
+    <div class="topbar-left">
+        <div class="logo-badge"><span>GRMP</span></div>
+        <h3>Lista de Usuários</h3>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="page-header">
+        <h2>Usuários Registrados</h2>
+        <p>Visualização de usuários do sistema</p>
+    </div>
+    <button type="button"
+            class="botao-adicionar"
+            onclick="window.location.href='@Url.Action("CriarUsuarioExibir", "GerenciarUsuarios")'">
+
+        Adicionar Usuário
+
+    </button>
+
+    <div class="historico">
+
+        @if (Model == null || Model.Rows.Count == 0)
+        {
+            <div class="empty-state">
+                <div class="icon">📭</div>
+                <p>Nenhum usuário encontrado.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (DataRow c in Model.Rows)
+            {
+                // =========================
+                // NÍVEL DE ACESSO
+                // =========================
+                int acessoValor = c["nvAcesso"] != DBNull.Value
+                    ? Convert.ToInt32(c["nvAcesso"])
+                    : -1;
+
+                string nivelAcesso = acessoValor switch
+                {
+                    1 => "Usuário",
+                    3 => "Administrador",
+                    2 => "Funcionario"
+                };
+
+                <div class="card-chamado">
+
+                    <div class="card-top">
+                        <strong>
+                            @c["nome"]
+                        </strong>
+
+                        <span class="status">
+                            @nivelAcesso
+                        </span>
+                    </div>
+
+                    <div class="detalhes">
+
+                        <p>
+                            <strong>Nome:</strong><br>
+                            @c["nome"]
+                        </p>
+
+                        <p>
+                            <strong>Email:</strong><br>
+                            @c["Email"]
+                        </p>
+
+                        <p>
+                            <strong>Nível de Acesso:</strong><br>
+                            @nivelAcesso
+                        </p>
+
+                    </div>
+
+                </div>
+            }
+        }
+
+    </div>
+</div>
