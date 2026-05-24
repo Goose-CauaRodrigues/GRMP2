@@ -51,7 +51,7 @@ namespace GRMP.Controllers
             // Carrega lista de usuários
             dt = Us.SelecionarSeguro();
 
-            return View("ListaUsuariosExibirView", dt);
+            return View("listaUsuarioExibirView", dt);
         }
     }
 }
