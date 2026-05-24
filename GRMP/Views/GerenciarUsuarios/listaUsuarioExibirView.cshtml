@@ -43,9 +43,9 @@
 
                 string nivelAcesso = acessoValor switch
                 {
-                    0 => "Usuário",
-                    1 => "Administrador",
-                    _ => "Não definido"
+                    1 => "Usuário",
+                    3 => "Administrador",
+                    2 => "Funcionario"
                 };
 
                 <div class="card-chamado">
@@ -59,11 +59,6 @@
                             @nivelAcesso
                         </span>
                     </div>
-
-                    <p class="card-date">
-                        <strong>ID:</strong>
-                        @c["idUsuario"]
-                    </p>
 
                     <div class="detalhes">
 
