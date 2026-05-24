@@ -32,16 +32,21 @@ namespace GRMP.Controllers
             {
                 int nvAcesso = Convert.ToInt32(dr["nvAcesso"]);
 
-                // Se for nível 1 -> redireciona
-                if (nvAcesso == 1)
-                {
-                    return RedirectToAction("InicioNivelDoisMapa", "Usuario");
-                }
-
                 // Se for nível 3 -> continua normalmente
                 if (nvAcesso == 3)
                 {
                     break;
+                }
+                // Se for nível 1 -> redireciona
+                else if(nvAcesso == 1)
+                {
+                    return RedirectToAction("InicioNivelDoisMapa", "Usuario");
+
+                }
+                else
+                {
+                    return RedirectToAction("InicioNivelDoisMapa", "Usuario");
+
                 }
 
                 // Qualquer outro nível sem permissão
@@ -56,6 +61,12 @@ namespace GRMP.Controllers
 
         public IActionResult CriarUsuarioExibir()
         {
+            string idUsuario = HttpContext.Session.GetString("idUsuario");
+
+            if (string.IsNullOrEmpty(idUsuario))
+            {
+                return RedirectToAction("Login", "Login");
+            }
             return View("CriarUsuarioExibirView");
         }
 
@@ -123,6 +134,12 @@ namespace GRMP.Controllers
 
         public IActionResult AlterarUsuarioExibir(int id)
         {
+            string idUsuario = HttpContext.Session.GetString("idUsuario");
+
+            if (string.IsNullOrEmpty(idUsuario))
+            {
+                return RedirectToAction("Login", "Login");
+            }
             UsuarioViewModel USVM = new UsuarioViewModel();
             USVM.IdUsuario = id;
             return View("AlterarUsuarioExibirView", USVM);
@@ -152,13 +169,13 @@ namespace GRMP.Controllers
                 // PREENCHER
                 //-----------------------------------
 
-
+                Us.idUsuario = USVM.IdUsuario;
 
                 Us.nome = USVM.Nome;
 
                 Us.email = USVM.Email;
 
-                Us.senha = GerarHash("Senha123");
+                Us.senha = GerarHash(USVM.Senha);
 
                 Us.nvAcesso = USVM.NvAcesso;
 
@@ -166,7 +183,7 @@ namespace GRMP.Controllers
                 // INSERIR
                 //-----------------------------------
 
-                Us.Inserir();
+                Us.Alterar();
 
                 //-----------------------------------
                 // REDIRECIONAR

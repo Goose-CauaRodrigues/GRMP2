@@ -11,11 +11,11 @@
     <div class="header-pagina">
 
         <div>
-            <h1>Novo Usuário</h1>
-            <p>Registrar um novo usuário no sistema</p>
+            <h1>Alterar Usuário</h1>
+            <p>Alterar um usuário no sistema</p>
         </div>
 
-        <a href="@Url.Action("InicioExibir", "Usuario")"
+        <a href="@Url.Action("ListaUsuariosExibir", "GerenciarUsuarios")"
            class="btn-voltar">
 
             Voltar
@@ -41,7 +41,8 @@
 
             <input type="text"
                    asp-for="Nome"
-                   value="@Model.Nome" />
+                   value="@Model.Nome" 
+                   placeholder="@Model.Nome" />
 
         </div>
 
@@ -54,7 +55,8 @@
 
             <input type="email"
                    asp-for="Email"
-                   value="@Model.Email" />
+                   value="@Model.Email"
+                   placeholder="@Model.Email" />
 
         </div>
 
@@ -67,7 +69,8 @@
 
             <input type="password"
                    asp-for="Senha"
-                   value="@Model.Senha"/>
+                   value="@Model.Senha"
+                   placeholder="@Model.Senha" />
 
         </div>
 
@@ -135,7 +138,7 @@
             <button type="submit"
                     class="btn-salvar">
 
-                Criar Usuário
+                Alterar Usuário
 
             </button>
 

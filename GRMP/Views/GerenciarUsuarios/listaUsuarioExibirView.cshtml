@@ -24,7 +24,7 @@
             </div>
             <button type="button"
                     class="botao-adicionar"
-                    onclick="window.location.href='@Url.Action("CriarUsuarioExibir", "GerenciarUsuarios")'">
+                    onclick="@Url.Action("ListaUsuariosExibir", "GerenciarUsuarios")">
                 Adicionar Usuário
             </button>
         </div>
@@ -89,7 +89,7 @@
                     <div class="card-actions">
                         <button type="button"
                                 class="botao-gerenciar"
-                                onclick="window.location.href='@Url.Action("GerenciarUsuario", "GerenciarUsuarios", new { id = c["idUsuario"] })'">
+                                onclick="window.location.href='@Url.Action("AlterarUsuarioExibir", "GerenciarUsuarios", new { id = c["idUsuario"] })'">
                             Gerenciar
                         </button>
                     </div>
