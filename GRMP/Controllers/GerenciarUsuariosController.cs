@@ -53,5 +53,78 @@ namespace GRMP.Controllers
 
             return View("listaUsuarioExibirView", dt);
         }
+
+        public IActionResult CriarUsuarioExibir()
+        {
+            return View("CriarUsuarioExibirView");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CriarUsuarioProcessar(UsuarioViewModel USVM)
+        {
+            try
+            {
+                //-----------------------------------
+                // VALIDAR MODEL
+                //-----------------------------------
+
+                if (!ModelState.IsValid)
+                {
+                    return View(
+                        "CriarUsuarioExibirView",
+                        USVM
+                    );
+                }
+                
+                Usuario Us = new Usuario();
+
+                //-----------------------------------
+                // PREENCHER
+                //-----------------------------------
+
+                
+
+                Us.nome = USVM.Nome;
+
+                Us.email = USVM.Email;
+
+                Us.senha = GerarHash("Senha123");
+
+                Us.nvAcesso = USVM.NvAcesso;
+
+                //-----------------------------------
+                // INSERIR
+                //-----------------------------------
+
+                Us.Inserir();
+
+                //-----------------------------------
+                // REDIRECIONAR
+                //-----------------------------------
+
+                return RedirectToAction(
+                    "ListaUsuariosExibir"
+                );
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(
+                    "",
+                    ex.Message
+                );
+
+                return View(
+                    "CriarUsuarioExibir",
+                    USVM
+                );
+            }
+        }
+        private string GerarHash(string senha)
+        {
+            var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(senha));
+            return Convert.ToHexString(bytes).ToLower();
+        }
+
     }
 }
