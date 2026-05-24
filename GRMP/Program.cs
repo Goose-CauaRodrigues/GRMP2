@@ -1,5 +1,11 @@
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddJsonFile(
+    "Configuration/GRMPBD.json",
+    optional: false,
+    reloadOnChange: true
+);
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

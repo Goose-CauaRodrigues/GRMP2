@@ -19,8 +19,14 @@
 
 //Cauã sala adriano
 
+//{
+//  "ConnectionStrings": {
+//    "StringConexaoSQLServer": "Data Source=DESKTOP-8A0M9R5\\SQLEXPRESS;Database=GRMPBancoDados;User ID=sa;Password=sa;TrustServerCertificate=True"
+//  }
+//} //Cauã em casa
+
 {
   "ConnectionStrings": {
-    "StringConexaoSQLServer": "Data Source=DESKTOP-8A0M9R5\\SQLEXPRESS;Database=GRMPBancoDados;User ID=sa;Password=sa;TrustServerCertificate=True"
+    "StringConexaoSQLServer": "Data Source=.;Initial Catalog=GRMPBancoDados;Integrated Security=True;TrustServerCertificate=True"
   }
-} //Cauã em casa
+}

@@ -1,0 +1,48 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "Bloco";
+}
+
+<style>
+    .grid-locais {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 16px;
+        padding: 20px;
+    }
+
+    .local-card {
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        padding: 20px;
+        transition: .2s;
+        text-decoration: none;
+        color: #111;
+    }
+
+        .local-card:hover {
+            transform: translateY(-4px);
+            border-color: #2563eb;
+        }
+</style>
+
+<h2 style="padding:20px;">
+    Bloco @ViewBag.Bloco
+</h2>
+
+<div class="grid-locais">
+
+    @foreach (var local in Model)
+    {
+        <a class="local-card"
+           asp-controller="OrdemServico"
+           asp-action="Index"
+           asp-route-local="@local.Id">
+
+            <strong>@local.Nome</strong>
+        </a>
+    }
+
+</div>

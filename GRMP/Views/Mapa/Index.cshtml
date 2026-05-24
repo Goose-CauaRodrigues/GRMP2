@@ -1,0 +1,155 @@
+﻿@model List<string>
+
+@{
+    ViewData["Title"] = "Mapa";
+}
+
+<style>
+    .map-wrapper {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .map-area {
+        position: relative;
+        width: 1000px;
+    }
+
+        .map-area img {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+        }
+
+    .bloco {
+        position: absolute;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: .2s;
+    }
+
+        .bloco:hover {
+            border: 2px solid #2563eb;
+            background: rgba(37,99,235,.15);
+        }
+
+    .pin {
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background: red;
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        animation: pulse 1.5s infinite;
+    }
+
+        .pin::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: white;
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            border-radius: 50%;
+        }
+
+    @@keyframes pulse {
+        0% {
+            transform: rotate(-45deg) scale(1);
+        }
+
+        50% {
+            transform: rotate(-45deg) scale(1.15);
+        }
+
+        100% {
+            transform: rotate(-45deg) scale(1);
+        }
+    }
+
+    .side-panel {
+        width: 280px;
+        background: white;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        padding: 20px;
+        height: fit-content;
+    }
+
+    .legend {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+        .legend .dot {
+            width: 16px;
+            height: 16px;
+            background: red;
+            border-radius: 50%;
+        }
+</style>
+
+<div class="map-wrapper">
+
+    <div class="map-area">
+
+        <!-- SUA IMAGEM -->
+        <img src="~/img/mapa.png" />
+
+        <!-- BLOCO A -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="1">
+            <div class="bloco"
+                 style="left:120px; top:120px; width:170px; height:360px;">
+
+                @if (Model.Contains("A"))
+                {
+                    <div class="pin" style="top:20px; left:70px;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- BLOCO D -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="4">
+            <div class="bloco"
+                 style="left:390px; top:80px; width:220px; height:240px;">
+
+                @if (Model.Contains("D"))
+                {
+                    <div class="pin" style="top:20px; left:90px;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- BLOCO E -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="5">
+            <div class="bloco"
+                 style="left:690px; top:180px; width:140px; height:220px;">
+
+                @if (Model.Contains("E"))
+                {
+                    <div class="pin" style="top:20px; left:60px;"></div>
+                }
+            </div>
+        </a>
+
+    </div>
+
+    <!-- Painel lateral -->
+    <div class="side-panel">
+        <h3>Mapa Interativo</h3>
+
+        <p>
+            Clique em um bloco para visualizar os locais e salas.
+        </p>
+
+        <div class="legend">
+            <div class="dot"></div>
+            <span>Bloco com OS aberta</span>
+        </div>
+    </div>
+
+</div>
