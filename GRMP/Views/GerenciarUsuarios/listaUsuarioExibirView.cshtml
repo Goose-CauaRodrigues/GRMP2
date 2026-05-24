@@ -1,4 +1,4 @@
-﻿@using System.Data;
+﻿@using System.Data
 @model DataTable
 
 @{
@@ -17,16 +17,18 @@
 <div class="container">
 
     <div class="page-header">
-        <h2>Usuários Registrados</h2>
-        <p>Visualização de usuários do sistema</p>
+        <div class="page-header-top">
+            <div>
+                <h2>Usuários Registrados</h2>
+                <p>Visualização de usuários do sistema</p>
+            </div>
+            <button type="button"
+                    class="botao-adicionar"
+                    onclick="window.location.href='@Url.Action("CriarUsuarioExibir", "GerenciarUsuarios")'">
+                Adicionar Usuário
+            </button>
+        </div>
     </div>
-    <button type="button"
-            class="botao-adicionar"
-            onclick="window.location.href='@Url.Action("CriarUsuarioExibir", "GerenciarUsuarios")'">
-
-        Adicionar Usuário
-
-    </button>
 
     <div class="historico">
 
@@ -55,35 +57,41 @@
                     2 => "Funcionario"
                 };
 
+                string statusClass = acessoValor switch
+                {
+                    3 => "admin",
+                    1 => "usuario",
+                    _ => ""
+                };
+
                 <div class="card-chamado">
 
                     <div class="card-top">
-                        <strong>
-                            @c["nome"]
-                        </strong>
-
-                        <span class="status">
-                            @nivelAcesso
-                        </span>
+                        <strong>@c["nome"]</strong>
+                        <span class="status @statusClass">@nivelAcesso</span>
                     </div>
 
                     <div class="detalhes">
-
                         <p>
                             <strong>Nome:</strong><br>
                             @c["nome"]
                         </p>
-
                         <p>
                             <strong>Email:</strong><br>
                             @c["Email"]
                         </p>
-
                         <p>
                             <strong>Nível de Acesso:</strong><br>
                             @nivelAcesso
                         </p>
+                    </div>
 
+                    <div class="card-actions">
+                        <button type="button"
+                                class="botao-gerenciar"
+                                onclick="window.location.href='@Url.Action("GerenciarUsuario", "GerenciarUsuarios", new { id = c["idUsuario"] })'">
+                            Gerenciar
+                        </button>
                     </div>
 
                 </div>
