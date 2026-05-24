@@ -36,8 +36,14 @@ app.UseSession();
 
 app.UseAuthorization();
 
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Login}/{action=Login}/{id?}");
+
+// Indo direto pro mapa para facilitar o desenvolvimento
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Login}/{id?}");
+    pattern: "{controller=Mapa}/{action=Index}");
 
 app.Run();

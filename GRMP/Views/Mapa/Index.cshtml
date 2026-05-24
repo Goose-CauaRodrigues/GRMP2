@@ -1,5 +1,4 @@
 ﻿@model List<string>
-
 @{
     ViewData["Title"] = "Mapa";
 }
@@ -14,24 +13,29 @@
     .map-area {
         position: relative;
         width: 1000px;
+        flex-shrink: 0;
     }
 
         .map-area img {
             width: 100%;
             border-radius: 12px;
             border: 1px solid #ccc;
+            display: block;
         }
 
     .bloco {
         position: absolute;
         cursor: pointer;
-        border: 2px solid transparent;
+        /* cobre toda a área — o clip-path define a forma real */
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         transition: .2s;
     }
 
         .bloco:hover {
-            border: 2px solid #2563eb;
-            background: rgba(37,99,235,.15);
+            background: rgba(37,99,235,.18);
         }
 
     .pin {
@@ -94,62 +98,136 @@
 </style>
 
 <div class="map-wrapper">
-
-    <div class="map-area">
-
-        <!-- SUA IMAGEM -->
-        <img src="~/img/mapa.png" />
+    <div class="map-area" id="mapaContainer">
+        <img src="~/img/mapa.png" alt="Mapa SENAI" />
 
         <!-- BLOCO A -->
         <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="1">
-            <div class="bloco"
-                 style="left:120px; top:120px; width:170px; height:360px;">
-
+            <div class="bloco" style="clip-path: polygon(41.0% 14.3%, 20.5% 87.9%, 12.7% 80.7%, 32.3% 7.4%);">
                 @if (Model.Contains("A"))
                 {
-                    <div class="pin" style="top:20px; left:70px;"></div>
+                    <div class="pin" style="top:45%; left:14%;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- BLOCO B -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="2">
+            <div class="bloco" style="clip-path: polygon(52.1% 67.2%, 44.0% 93.4%, 34.7% 85.7%, 42.8% 58.8%);">
+                @if (Model.Contains("B"))
+                {
+                    <div class="pin" style="top:68%; left:32%;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- BLOCO C -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="3">
+            <div class="bloco" style="clip-path: polygon(37.1% 43.2%, 54.6% 58.6%, 52.2% 67.2%, 34.4% 51.1%);">
+                @if (Model.Contains("C"))
+                {
+                    <div class="pin" style="top:36%; left:27%;"></div>
                 }
             </div>
         </a>
 
         <!-- BLOCO D -->
         <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="4">
-            <div class="bloco"
-                 style="left:390px; top:80px; width:220px; height:240px;">
-
+            <div class="bloco" style="clip-path: polygon(66.3% 17.0%, 55.7% 51.3%, 42.8% 40.3%, 53.2% 5.9%);">
                 @if (Model.Contains("D"))
                 {
-                    <div class="pin" style="top:20px; left:90px;"></div>
+                    <div class="pin" style="top:27%; left:41%;"></div>
                 }
             </div>
         </a>
 
         <!-- BLOCO E -->
         <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="5">
-            <div class="bloco"
-                 style="left:690px; top:180px; width:140px; height:220px;">
-
+            <div class="bloco" style="clip-path: polygon(66.8% 60.7%, 74.9% 33.1%, 68.5% 27.3%, 60.2% 55.0%);">
                 @if (Model.Contains("E"))
                 {
-                    <div class="pin" style="top:20px; left:60px;"></div>
+                    <div class="pin" style="top:40%; left:59%;"></div>
                 }
             </div>
         </a>
 
+        <!-- BLOCO F -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="6">
+            <div class="bloco" style="clip-path: polygon(58.5% 62.4%, 76.9% 78.0%, 73.4% 89.3%, 55.2% 72.7%);">
+                @if (Model.Contains("F"))
+                {
+                    <div class="pin" style="top:73%; left:61%;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- BLOCO G -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="7">
+            <div class="bloco" style="clip-path: polygon(73.0% 56.4%, 70.5% 63.8%, 81.3% 73.9%, 83.5% 65.8%);">
+                @if (Model.Contains("G"))
+                {
+                    <div class="pin" style="top:53%; left:57%;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- BLOCO H -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="8">
+            <div class="bloco" style="clip-path: polygon(79.1% 55.7%, 82.4% 43.4%, 91.6% 51.1%, 87.9% 63.8%);">
+                @if (Model.Contains("H"))
+                {
+                    <div class="pin" style="top:56%; left:75%;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- DEPÓSITO ALMOÇARIFADO -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="9">
+            <div class="bloco" style="clip-path: polygon(14.5% 11.2%, 14.5% 7.4%, 16.7% 7.1%, 17.0% 11.4%);">
+                @if (Model.Contains("DEP_ALMO"))
+                {
+                    <div class="pin" style="top:10%; left:7%;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- DEPÓSITO QUÍMICO -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="10">
+            <div class="bloco" style="clip-path: polygon(23.6% 6.4%, 26.2% 9.0%, 25.4% 12.6%, 22.3% 11.0%);">
+                @if (Model.Contains("DEP_QUIM"))
+                {
+                    <div class="pin" style="top:8%; left:25%;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- RESTAURANTE (nao entendi da onde ele puxou isso mas coloquei no mapa no local do vestiario) -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="11">
+            <div class="bloco" style="clip-path: polygon(93.6% 25.9%, 96.8% 14.6%, 99.3% 17.2%, 95.8% 28.0%);">
+                @if (Model.Contains("REST"))
+                {
+                    <div class="pin" style="top:24%; left:88%;"></div>
+                }
+            </div>
+        </a>
+
+        <!-- SERVIÇOS -->
+        <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="12">
+            <div class="bloco" style="clip-path: polygon(60.0% 87.2%, 57.7% 85.7%, 54.6% 96.5%, 56.4% 98.5%);">
+                @if (Model.Contains("SERV"))
+                {
+                    <div class="pin" style="top:83%; left:49%;"></div>
+                }
+            </div>
+        </a>
     </div>
 
-    <!-- Painel lateral -->
     <div class="side-panel">
         <h3>Mapa Interativo</h3>
-
-        <p>
-            Clique em um bloco para visualizar os locais e salas.
-        </p>
-
+        <p>Clique em um bloco para visualizar os locais e salas.</p>
         <div class="legend">
             <div class="dot"></div>
             <span>Bloco com OS aberta</span>
         </div>
     </div>
-
 </div>
