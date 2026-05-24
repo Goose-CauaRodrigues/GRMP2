@@ -305,6 +305,79 @@ namespace GRMP.Classes
                 throw new Exception(ex.Message);
             }
         }
+
+        public DataTable SelecionarOSPorBloco(int idBloco)
+        {
+            try
+            {
+                string sql = @"
+        SELECT
+            os.idOrdemServico,
+            os.descricaoServico,
+            os.categoria,
+            os.numeroPatrimonio,
+
+            os.bloco,
+            b.nome AS nomeBloco,
+
+            os.local,
+            l.nome AS nomeLocal,
+
+            os.prioridade,
+            os.status,
+            os.dataSolicitacao,
+            os.dataInicio,
+            os.dataFinalizacao,
+            os.observacoes,
+            os.ativo,
+
+            criador.nome AS nomeCriador,
+            criador.email AS emailCriador,
+
+            executor.nome AS nomeExecutor,
+            executor.email AS emailExecutor
+
+        FROM OrdemServico os
+
+        INNER JOIN Usuario criador
+            ON os.fk_idUsuario = criador.idUsuario
+
+        LEFT JOIN Usuario executor
+            ON os.fk_executor = executor.idUsuario
+
+        LEFT JOIN Bloco b
+            ON os.bloco = b.idBloco
+
+        LEFT JOIN Local l
+            ON os.local = l.idLocal
+
+        WHERE os.bloco = @idBloco
+
+        ORDER BY os.idOrdemServico
+        ";
+
+                SqlCommand cmd = new SqlCommand(sql, con);
+
+                cmd.Parameters.AddWithValue(
+                    "@idBloco",
+                    idBloco
+                );
+
+                SqlDataAdapter da =
+                    new SqlDataAdapter(cmd);
+
+                DataTable dt =
+                    new DataTable();
+
+                da.Fill(dt);
+
+                return dt;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
 
