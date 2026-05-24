@@ -85,7 +85,7 @@ namespace GRMP.Controllers
 
                 os.dataSolicitacao = DateTime.Now;
 
-                os.status = 1;
+                os.status = 0;
 
                 os.ativo = true;
 
