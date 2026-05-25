@@ -2,8 +2,12 @@
 using GRMP.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+
+using ProjBancoDados.BancoDados;
+
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+
 using System.Data;
 using System.Text;
 using Xceed.Document.NET;
@@ -124,6 +128,362 @@ namespace GRMP.Controllers
             }
         }
 
+        public IActionResult AlterarOSExibir(int id)
+        {
+            string idUsuario =
+                HttpContext.Session.GetString("idUsuario");
+
+            //-----------------------------------
+            // VALIDAR LOGIN
+            //-----------------------------------
+
+            if (string.IsNullOrEmpty(idUsuario))
+            {
+                return RedirectToAction(
+                    "Login",
+                    "Login"
+                );
+            }
+
+            //-----------------------------------
+            // VALIDAR NÍVEL
+            //-----------------------------------
+
+            Usuario us =
+                new Usuario();
+
+            DataTable dtUsuario =
+                us.BuscarPorID(
+                    int.Parse(idUsuario)
+                );
+
+            foreach (DataRow dr in dtUsuario.Rows)
+            {
+                int nvAcesso =
+                    Convert.ToInt32(
+                        dr["nvAcesso"]
+                    );
+
+                if (nvAcesso == 1)
+                {
+                    return RedirectToAction(
+                        "InicioExibir",
+                        "Usuario"
+                    );
+                }
+
+                else if (nvAcesso == 2)
+                {
+                    return RedirectToAction(
+                        "InicioNivelDoisMapa",
+                        "Usuario"
+                    );
+                }
+            }
+
+            //-----------------------------------
+            // BUSCAR OS
+            //-----------------------------------
+
+            Os os =
+                new Os();
+
+            DataTable dtOS =
+                os.BuscarPorId(id);
+
+            //-----------------------------------
+            // VALIDAR EXISTÊNCIA
+            //-----------------------------------
+
+            if (dtOS == null ||
+                dtOS.Rows.Count == 0)
+            {
+                return RedirectToAction(
+                    "InicioExibir",
+                    "Usuario"
+                );
+            }
+
+            //-----------------------------------
+            // MODEL
+            //-----------------------------------
+
+            OrdemServicoViewModel osVm =
+                new OrdemServicoViewModel();
+
+            DataRow linha =
+                dtOS.Rows[0];
+
+            //-----------------------------------
+            // PREENCHER MODEL
+            //-----------------------------------
+
+            osVm.IdOrdemServico =
+                Convert.ToInt32(
+                    linha["idOrdemServico"]
+                );
+
+            osVm.FkIdUsuario =
+                Convert.ToInt32(
+                    linha["fk_idUsuario"]
+                );
+
+            if (linha["fk_executor"] != DBNull.Value)
+            {
+                osVm.FkExecutor =
+                    Convert.ToInt32(
+                        linha["fk_executor"]
+                    );
+            }
+
+            osVm.DescricaoServico =
+                linha["descricaoServico"]
+                .ToString();
+
+            osVm.Categoria =
+                Convert.ToInt32(
+                    linha["categoria"]
+                );
+
+            osVm.NumeroPatrimonio =
+                linha["numeroPatrimonio"]
+                .ToString();
+
+            osVm.Bloco =
+                Convert.ToInt32(
+                    linha["bloco"]
+                );
+
+            osVm.Local =
+                Convert.ToInt32(
+                    linha["local"]
+                );
+
+            if (linha["prioridade"] != DBNull.Value)
+            {
+                osVm.Prioridade =
+                    Convert.ToInt32(
+                        linha["prioridade"]
+                    );
+            }
+
+            osVm.Observacoes =
+                linha["observacoes"]
+                .ToString();
+
+            osVm.DataSolicitacao =
+                Convert.ToDateTime(
+                    linha["dataSolicitacao"]
+                );
+
+            if (linha["dataInicio"] != DBNull.Value)
+            {
+                osVm.DataInicio =
+                    Convert.ToDateTime(
+                        linha["dataInicio"]
+                    );
+            }
+
+            if (linha["dataFinalizacao"] != DBNull.Value)
+            {
+                osVm.DataFinalizacao =
+                    Convert.ToDateTime(
+                        linha["dataFinalizacao"]
+                    );
+            }
+
+            if (linha["status"] != DBNull.Value)
+            {
+                osVm.Status =
+                    Convert.ToInt32(
+                        linha["status"]
+                    );
+            }
+
+            osVm.Ativo =
+                Convert.ToBoolean(
+                    linha["ativo"]
+                );
+
+            //-----------------------------------
+            // DROPDOWN BLOCO
+            //-----------------------------------
+
+            osVm.DtBlocos =
+                BuscarBlocos();
+            osVm.DtLocais =
+                BuscarLocaisPorBlocoAlterado(osVm.Bloco);
+
+
+            //-----------------------------------
+            // VIEW
+            //-----------------------------------
+
+            return View(
+                "AlterarOSExibirView",
+                osVm
+            );
+        }
+
+      
+        [HttpPost]
+        public IActionResult AlterarOSProcessar(OrdemServicoViewModel OsVM)
+        {
+            try
+            {
+                //---------------------------------
+                // Verifica sessão
+                //---------------------------------
+
+                string idUsuario =
+                    HttpContext.Session.GetString(
+                        "idUsuario"
+                    );
+
+                if (string.IsNullOrEmpty(idUsuario))
+                {
+                    return RedirectToAction(
+                        "Login",
+                        "Login"
+                    );
+                }
+
+                //---------------------------------
+                // Cria objeto OS
+                //---------------------------------
+
+                Os os =
+                    new Os();
+
+                //---------------------------------
+                // ID DA OS
+                //---------------------------------
+
+                os.idOrdemServico =
+                    OsVM.IdOrdemServico;
+
+                //---------------------------------
+                // Usuário criador
+                //---------------------------------
+
+                os.fk_idUsuario =
+                    OsVM.FkIdUsuario;
+
+                //---------------------------------
+                // Executor
+                //---------------------------------
+
+                os.fk_executor =
+                    OsVM.FkExecutor;
+
+                //---------------------------------
+                // Descrição
+                //---------------------------------
+
+                os.descricaoServico =
+                    OsVM.DescricaoServico;
+
+                //---------------------------------
+                // Categoria
+                //---------------------------------
+
+                os.categoria =
+                    OsVM.Categoria;
+
+                //---------------------------------
+                // Patrimônio
+                //---------------------------------
+
+                os.numeroPatrimonio =
+                    string.IsNullOrEmpty(
+                        OsVM.NumeroPatrimonio
+                    )
+                    ? null
+                    : OsVM.NumeroPatrimonio;
+
+                //---------------------------------
+                // Localização
+                //---------------------------------
+
+                os.bloco =
+                    OsVM.Bloco;
+
+                os.local =
+                    OsVM.Local;
+
+                //---------------------------------
+                // Prioridade
+                //---------------------------------
+
+                os.prioridade =
+                    OsVM.Prioridade;
+
+                //---------------------------------
+                // Observações
+                //---------------------------------
+
+                os.observacoes =
+                    OsVM.Observacoes;
+
+                //---------------------------------
+                // Datas
+                //---------------------------------
+
+                os.dataSolicitacao =
+                    OsVM.DataSolicitacao;
+
+                os.dataInicio =
+                    OsVM.DataInicio;
+
+                os.dataFinalizacao =
+                    OsVM.DataFinalizacao;
+
+                //---------------------------------
+                // Status
+                //---------------------------------
+
+                os.status =
+                    OsVM.Status;
+
+                //---------------------------------
+                // Ativo
+                //---------------------------------
+
+                os.ativo =
+                    OsVM.Ativo;
+
+                //---------------------------------
+                // ALTERAR
+                //---------------------------------
+
+                os.Alterar();
+
+                //---------------------------------
+                // REDIRECIONA
+                //---------------------------------
+
+                return RedirectToAction(
+                    "InicioExibir"
+                );
+            }
+            catch (Exception ex)
+            {
+                OrdemServicoViewModel model =
+                    new OrdemServicoViewModel();
+
+                model.DtBlocos =
+                    BuscarBlocos();
+
+                ViewBag.Erro =
+                    ex.Message;
+
+                return View(
+                    "AlterarOSExibirView",
+                    model
+                );
+            }
+        }
+
         public DataTable BuscarBlocos()
         {
             try
@@ -174,6 +534,28 @@ namespace GRMP.Controllers
             }
         }
 
+        //<<<<<<< HEAD
+        //---------------------------------
+        // Buscar locais por bloco
+        //---------------------------------
+        [HttpGet]
+        public DataTable BuscarLocaisPorBlocoAlterado(int idBloco)
+        {
+            try
+            {
+                Local Local = new Local();
+
+
+                Local.fk_idBloco = idBloco;
+
+                return Local.BuscarLocaisPorBloco();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+            //=======
         public IActionResult BaixarOSWord(int id)
         {
             string connStr = _configuration.GetConnectionString("StringConexaoSQLServer");
@@ -185,34 +567,34 @@ namespace GRMP.Controllers
                 conn.Open();
 
                 string sql = @"
-SELECT
-    os.*,
+                SELECT
+                    os.*,
 
-    b.nome AS nomeBloco,
-    l.nome AS nomeLocal,
+                    b.nome AS nomeBloco,
+                    l.nome AS nomeLocal,
 
-    uc.nome AS nomeCriador,
-    uc.email AS emailCriador,
+                    uc.nome AS nomeCriador,
+                    uc.email AS emailCriador,
 
-    ue.nome AS nomeExecutor,
-    ue.email AS emailExecutor
+                    ue.nome AS nomeExecutor,
+                    ue.email AS emailExecutor
 
-FROM OrdemServico os
+                FROM OrdemServico os
 
-LEFT JOIN Bloco b
-    ON b.idBloco = os.Bloco
+                LEFT JOIN Bloco b
+                    ON b.idBloco = os.Bloco
 
-LEFT JOIN Local l
-    ON l.idLocal = os.Local
+                LEFT JOIN Local l
+                    ON l.idLocal = os.Local
 
-LEFT JOIN Usuario uc
-    ON uc.idUsuario = os.fk_idUsuario
+                LEFT JOIN Usuario uc
+                    ON uc.idUsuario = os.fk_idUsuario
 
-LEFT JOIN Usuario ue
-    ON ue.idUsuario = os.fk_executor
+                LEFT JOIN Usuario ue
+                    ON ue.idUsuario = os.fk_executor
 
-WHERE os.idOrdemServico = @id
-";
+                WHERE os.idOrdemServico = @id
+                ";
 
                 using SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -235,11 +617,11 @@ WHERE os.idOrdemServico = @id
             using (var document = DocX.Create(caminho))
             {
                 string logoPath = Path.Combine(
-    Directory.GetCurrentDirectory(),
-    "wwwroot",
-    "img",
-    "senai-logo.png"
-);
+                    Directory.GetCurrentDirectory(),
+                    "wwwroot",
+                    "img",
+                    "senai-logo.png"
+                );
 
                 var imagem = document.AddImage(logoPath);
 
@@ -340,6 +722,7 @@ WHERE os.idOrdemServico = @id
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 $"OS_{id}.docx"
             );
+//>>>>>>> 65efe0ec33b53afecc82489989377b6c3b08f5b7
         }
 
     }

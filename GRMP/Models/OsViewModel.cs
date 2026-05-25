@@ -43,5 +43,6 @@ namespace GRMP.Models
         public bool Ativo { get; set; }
 
         public DataTable DtBlocos { get; set; }
+        public DataTable DtLocais { get; set; }
     }
 }
