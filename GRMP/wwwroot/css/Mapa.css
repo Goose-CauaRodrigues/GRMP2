@@ -361,3 +361,7 @@ body {
     background: var(--border);
     border-radius: 3px;
 }
+
+.status-badge.cancelado {
+    background: #555;
+}

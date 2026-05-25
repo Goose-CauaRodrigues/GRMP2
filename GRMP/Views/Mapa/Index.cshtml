@@ -231,21 +231,15 @@
                 </a>
 
                 <a asp-action="Index"
-                   asp-route-status="1"
-                   class="@(Model.StatusSelecionado == 1 ? "active" : "")">
+                   asp-route-status="0"
+                   class="@(Model.StatusSelecionado == 0 ? "active" : "")">
                     Abertos
                 </a>
 
                 <a asp-action="Index"
-                   asp-route-status="2"
-                   class="@(Model.StatusSelecionado == 2 ? "active" : "")">
+                   asp-route-status="1"
+                   class="@(Model.StatusSelecionado == 1 ? "active" : "")">
                     Em andamento
-                </a>
-
-                <a asp-action="Index"
-                   asp-route-status="3"
-                   class="@(Model.StatusSelecionado == 3 ? "active" : "")">
-                    Resolvidos
                 </a>
 
             </div>
@@ -258,8 +252,10 @@
                         <span class="id">#@chamado.Id</span>
 
                         <span class="status-badge
-                            @(chamado.Status == 1 || chamado.Status == 0 ? "aberto" :
-                                chamado.Status == 2 ? "andamento" : "resolvido")">
+                            @(chamado.Status == 0 ? "aberto" :
+                                chamado.Status == 1 ? "andamento" :
+                                chamado.Status == 2 ? "resolvido" :
+                                "cancelado")">
 
                             @chamado.StatusTexto
                         </span>
