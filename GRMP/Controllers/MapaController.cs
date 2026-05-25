@@ -13,6 +13,57 @@ namespace GRMP.Controllers
             _configuration = configuration;
         }
 
+        [HttpGet]
+        [HttpGet]
+        public IActionResult OsPorLocal(int localId)
+        {
+            var lista = new List<object>();
+
+            string connStr =
+                _configuration.GetConnectionString("StringConexaoSQLServer");
+
+            using (SqlConnection conn = new SqlConnection(connStr))
+            {
+                conn.Open();
+
+                string sql = @"
+            SELECT 
+                os.idOrdemServico,
+                os.descricaoServico,
+                os.status
+            FROM OrdemServico os
+            WHERE os.local = @localId
+              AND os.ativo = 1
+        ";
+
+                using (SqlCommand cmd = new SqlCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@localId", localId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            int status = Convert.ToInt32(reader["status"]);
+
+                            lista.Add(new
+                            {
+                                id = Convert.ToInt32(reader["idOrdemServico"]),
+                                titulo = reader["descricaoServico"].ToString(),
+                                statusTexto =
+                                    status == 1 ? "Aberto" :
+                                    status == 2 ? "Em andamento" :
+                                    status == 3 ? "Finalizado" :
+                                    "Não iniciado"
+                            });
+                        }
+                    }
+                }
+            }
+
+            return Json(lista);
+        }
+
         // =========================
         // MAPA GERAL
         // =========================
@@ -21,13 +72,12 @@ namespace GRMP.Controllers
             string idUsuario = HttpContext.Session.GetString("idUsuario");
 
             if (string.IsNullOrEmpty(idUsuario))
-            {
                 return RedirectToAction("Login", "Login");
-            }
 
             var viewModel = new MapaViewModel();
 
-            string connStr = _configuration.GetConnectionString("StringConexaoSQLServer");
+            string connStr =
+                _configuration.GetConnectionString("StringConexaoSQLServer");
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
@@ -36,60 +86,46 @@ namespace GRMP.Controllers
                 string filtroStatus = "";
 
                 if (status.HasValue)
-                {
                     filtroStatus = " AND os.status = @status ";
-                }
 
-                // =========================
-                // BLOCOS COM OS
-                // =========================
-
+                // BLOCO
                 string sqlBlocos = $@"
-            SELECT DISTINCT b.nome
-            FROM OrdemServico os
-            INNER JOIN Bloco b ON b.idBloco = os.Bloco
-            WHERE os.ativo = 1
-            {filtroStatus}
-        ";
+                    SELECT DISTINCT b.nome
+                    FROM OrdemServico os
+                    INNER JOIN Bloco b ON b.idBloco = os.Bloco
+                    WHERE os.ativo = 1
+                    {filtroStatus}
+                ";
 
                 using (SqlCommand cmd = new SqlCommand(sqlBlocos, conn))
                 {
                     if (status.HasValue)
-                    {
                         cmd.Parameters.AddWithValue("@status", status.Value);
-                    }
 
                     using SqlDataReader dr = cmd.ExecuteReader();
 
                     while (dr.Read())
-                    {
                         viewModel.BlocosComOs.Add(dr["nome"].ToString());
-                    }
                 }
 
-                // =========================
-                // CHAMADOS LATERAIS
-                // =========================
-
+                // CHAMADOS
                 string sqlChamados = $@"
-            SELECT TOP 10
-                os.idOrdemServico,
-                os.descricaoServico,
-                b.nome AS bloco,
-                os.status
-            FROM OrdemServico os
-            INNER JOIN Bloco b ON b.idBloco = os.Bloco
-            WHERE os.ativo = 1
-            {filtroStatus}
-            ORDER BY os.idOrdemServico DESC
-        ";
+                    SELECT TOP 10
+                        os.idOrdemServico,
+                        os.descricaoServico,
+                        b.nome AS bloco,
+                        os.status
+                    FROM OrdemServico os
+                    INNER JOIN Bloco b ON b.idBloco = os.Bloco
+                    WHERE os.ativo = 1
+                    {filtroStatus}
+                    ORDER BY os.idOrdemServico DESC
+                ";
 
                 using (SqlCommand cmd = new SqlCommand(sqlChamados, conn))
                 {
                     if (status.HasValue)
-                    {
                         cmd.Parameters.AddWithValue("@status", status.Value);
-                    }
 
                     using SqlDataReader dr = cmd.ExecuteReader();
 
@@ -97,21 +133,19 @@ namespace GRMP.Controllers
                     {
                         int st = Convert.ToInt32(dr["status"]);
 
-                        string statusTexto = st switch
-                        {
-                            1 => "Aberto",
-                            2 => "Em andamento",
-                            3 => "Resolvido",
-                            _ => "Desconhecido"
-                        };
-
                         viewModel.Chamados.Add(new ChamadoMapa
                         {
                             Id = Convert.ToInt32(dr["idOrdemServico"]),
                             Titulo = dr["descricaoServico"].ToString(),
                             Bloco = dr["bloco"].ToString(),
                             Status = st,
-                            StatusTexto = statusTexto
+                            StatusTexto = st switch
+                            {
+                                1 => "Aberto",
+                                2 => "Em andamento",
+                                3 => "Resolvido",
+                                _ => "Desconhecido"
+                            }
                         });
                     }
                 }
@@ -123,46 +157,96 @@ namespace GRMP.Controllers
         }
 
         // =========================
-        // TELA DO BLOCO
+        // BLOCO
         // =========================
-        public IActionResult Bloco(string id)
+        public IActionResult Bloco(string id, int? localId)
         {
             ViewBag.Bloco = id;
 
-            var locais = new List<dynamic>();
+            var vm = new BlocoViewModel
+            {
+                NomeBloco = id,
+                LocalSelecionado = localId
+            };
 
-            string connStr = _configuration.GetConnectionString("StringConexaoSQLServer");
+            string connStr =
+                _configuration.GetConnectionString("StringConexaoSQLServer");
 
             using (SqlConnection conn = new SqlConnection(connStr))
             {
                 conn.Open();
 
-                string sql = @"
-                    SELECT
-                        l.idLocal,
-                        l.nome
-                    FROM Local l
+                // LOCAIS
+                string sqlLocais = @"
+                    SELECT DISTINCT l.idLocal, l.nome
+                    FROM OrdemServico os
+                    INNER JOIN Local l ON l.idLocal = os.Local
                     INNER JOIN Bloco b ON b.idBloco = l.fk_idBloco
                     WHERE b.nome = @bloco
+                    AND os.status != 3
+                    AND os.ativo = 1
                     ORDER BY l.nome
                 ";
 
-                using SqlCommand cmd = new SqlCommand(sql, conn);
-                cmd.Parameters.AddWithValue("@bloco", id);
-
-                using SqlDataReader dr = cmd.ExecuteReader();
-
-                while (dr.Read())
+                using (SqlCommand cmd = new SqlCommand(sqlLocais, conn))
                 {
-                    locais.Add(new
+                    cmd.Parameters.AddWithValue("@bloco", id);
+
+                    using SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
                     {
-                        Id = Convert.ToInt32(dr["idLocal"]),
-                        Nome = dr["nome"].ToString()
-                    });
+                        vm.Locais.Add(new LocalBlocoViewModel
+                        {
+                            Id = Convert.ToInt32(dr["idLocal"]),
+                            Nome = dr["nome"].ToString()
+                        });
+                    }
+                }
+
+                // CHAMADOS
+                string sqlChamados = @"
+                    SELECT
+                        os.idOrdemServico,
+                        os.descricaoServico,
+                        os.status,
+                        l.nome AS localNome
+                    FROM OrdemServico os
+                    INNER JOIN Local l ON l.idLocal = os.Local
+                    INNER JOIN Bloco b ON b.idBloco = l.fk_idBloco
+                    WHERE b.nome = @bloco
+                    AND os.status != 3
+                    AND os.ativo = 1
+                ";
+
+                if (localId.HasValue)
+                    sqlChamados += " AND l.idLocal = @localId";
+
+                sqlChamados += " ORDER BY os.idOrdemServico DESC";
+
+                using (SqlCommand cmd = new SqlCommand(sqlChamados, conn))
+                {
+                    cmd.Parameters.AddWithValue("@bloco", id);
+
+                    if (localId.HasValue)
+                        cmd.Parameters.AddWithValue("@localId", localId.Value);
+
+                    using SqlDataReader dr = cmd.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        vm.Chamados.Add(new ChamadoBlocoViewModel
+                        {
+                            Id = Convert.ToInt32(dr["idOrdemServico"]),
+                            Titulo = dr["descricaoServico"].ToString(),
+                            Status = Convert.ToInt32(dr["status"]),
+                            Local = dr["localNome"].ToString()
+                        });
+                    }
                 }
             }
 
-            return View(locais);
+            return View(vm);
         }
     }
 }
