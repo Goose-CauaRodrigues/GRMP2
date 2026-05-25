@@ -1,0 +1,310 @@
+﻿@model OrdemServicoViewModel
+@using System.Data;
+
+@{
+    ViewData["Title"] = "Alterar Ordem de Serviço";
+}
+
+<link rel="stylesheet" href="~/css/OsCriar.css" />
+
+<div class="container-os">
+
+    <div class="header-pagina">
+
+        <div>
+            <h1>Alterar Ordem de Serviço</h1>
+            <p>Atualize as informações da solicitação</p>
+        </div>
+
+        <a href="@Url.Action("InicioExibir", "Usuario")"
+           class="btn-voltar">
+
+            Voltar
+
+        </a>
+
+    </div>
+
+    <form asp-action="AlterarOSProcessar"
+          asp-controller="Usuario"
+          method="post"
+          class="card-formulario">
+
+        <!-- ID -->
+        <input type="hidden"
+               asp-for="IdOrdemServico" />
+
+        <!-- FK USUÁRIO -->
+        <input type="hidden"
+               asp-for="FkIdUsuario" />
+
+        <!-- DATA SOLICITAÇÃO -->
+        <input type="hidden"
+               asp-for="DataSolicitacao" />
+
+        <!-- BLOCO -->
+        <div class="grupo-form">
+
+            <label asp-for="Bloco">
+                Bloco
+            </label>
+
+            <select asp-for="Bloco"
+                    id="bloco">
+
+                <option value="">
+                    Selecione um bloco
+                </option>
+
+                @foreach (DataRow bloco in Model.DtBlocos.Rows)
+                {
+                    if (Convert.ToInt32(bloco["idBloco"]) == Model.Bloco)
+                    {
+                        <option value="@bloco["idBloco"]" selected>
+                            @bloco["nome"]
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@bloco["idBloco"]">
+                            @bloco["nome"]
+                        </option>
+                    }
+                }
+
+            </select>
+
+        </div>
+
+        <!-- LOCAL -->
+        <div class="grupo-form">
+
+            <label asp-for="Local">
+                Local
+            </label>
+
+            <select asp-for="Local"
+                    id="local">
+
+                @foreach (DataRow local in Model.DtLocais.Rows)
+                {
+                    if (Convert.ToInt32(local["idLocal"]) == Model.Local)
+                    {
+                        <option value="@local["idLocal"]" selected>
+                            @local["nome"]
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@local["idLocal"]">
+                            @local["nome"]
+                        </option>
+                    }
+                }
+
+            </select>
+
+        </div>
+
+        <!-- CATEGORIA -->
+        <div class="grupo-form">
+
+            <label asp-for="Categoria">
+                Categoria
+            </label>
+
+            <select asp-for="Categoria"
+                    id="categoria">
+
+                @if (Model.Categoria == 1)
+                {
+                    <option value="1" selected>
+                        Infraestrutura
+                    </option>
+
+                    <option value="2">
+                        Manutenção
+                    </option>
+                }
+                else
+                {
+                    <option value="2" selected>
+                        Manutenção
+                    </option>
+
+                    <option value="1">
+                        Infraestrutura
+                    </option>
+                }
+
+            </select>
+
+        </div>
+
+        <!-- PATRIMÔNIO -->
+        <div class="grupo-form"
+             id="grupoPatrimonio">
+
+            <label asp-for="NumeroPatrimonio">
+                Código do Ativo
+            </label>
+
+            <input type="text"
+                   asp-for="NumeroPatrimonio"
+                   placeholder="Digite o código do ativo" />
+
+        </div>
+
+        <!-- PRIORIDADE -->
+        <div class="grupo-form">
+
+            <label asp-for="Prioridade">
+                Prioridade
+            </label>
+
+            <select asp-for="Prioridade">
+
+                @if (Model.Prioridade == 1)
+                {
+                    <option value="1" selected>
+                        Baixa
+                    </option>
+
+                    <option value="2">
+                        Média
+                    </option>
+
+                    <option value="3">
+                        Alta
+                    </option>
+                }
+                else if (Model.Prioridade == 2)
+                {
+                    <option value="2" selected>
+                        Média
+                    </option>
+
+                    <option value="1">
+                        Baixa
+                    </option>
+
+                    <option value="3">
+                        Alta
+                    </option>
+                }
+                else
+                {
+                    <option value="3" selected>
+                        Alta
+                    </option>
+
+                    <option value="1">
+                        Baixa
+                    </option>
+
+                    <option value="2">
+                        Média
+                    </option>
+                }
+
+            </select>
+
+        </div>
+
+        <!-- STATUS -->
+        <div class="grupo-form">
+
+            <label asp-for="Status">
+                Status
+            </label>
+
+            <select asp-for="Status">
+
+                @if (Model.Status == 0)
+                {
+                    <option value="0" selected>
+                        Aberta
+                    </option>
+
+                    <option value="1">
+                        Em andamento
+                    </option>
+
+                    <option value="2">
+                        Finalizada
+                    </option>
+                }
+                else if (Model.Status == 1)
+                {
+                    <option value="1" selected>
+                        Em andamento
+                    </option>
+
+                    <option value="0">
+                        Aberta
+                    </option>
+
+                    <option value="2">
+                        Finalizada
+                    </option>
+                }
+                else
+                {
+                    <option value="2" selected>
+                        Finalizada
+                    </option>
+
+                    <option value="0">
+                        Aberta
+                    </option>
+
+                    <option value="1">
+                        Em andamento
+                    </option>
+                }
+
+            </select>
+
+        </div>
+
+        <!-- DESCRIÇÃO -->
+        <div class="grupo-form grupo-full">
+
+            <label asp-for="DescricaoServico">
+                Descrição do Problema
+            </label>
+
+            <textarea asp-for="DescricaoServico"
+                      rows="5"
+                      placeholder="Descreva o problema encontrado..."></textarea>
+
+        </div>
+
+        <!-- OBSERVAÇÕES -->
+        <div class="grupo-form grupo-full">
+
+            <label asp-for="Observacoes">
+                Observações
+            </label>
+
+            <textarea asp-for="Observacoes"
+                      rows="4"
+                      placeholder="Digite observações adicionais..."></textarea>
+
+        </div>
+
+        <!-- BOTÃO -->
+        <div class="acoes-form">
+
+            <button type="submit"
+                    class="btn-salvar">
+
+                Salvar Alterações
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>

@@ -45,7 +45,7 @@ namespace GRMP.Controllers
                         {
                             //return RedirectToAction("Index", "Mapa");
 
-                            return RedirectToAction("ListaUsuariosExibir", "GerenciarUsuarios");
+                            return RedirectToAction("Index", "Mapa");
                         }
                         else if (nvAcesso == "2")
                         {
