@@ -140,8 +140,24 @@ namespace GRMP.Controllers
             {
                 return RedirectToAction("Login", "Login");
             }
+
             UsuarioViewModel USVM = new UsuarioViewModel();
-            USVM.IdUsuario = id;
+
+            Usuario Us = new Usuario();
+
+            DataTable dt = Us.BuscarPorID(id);
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.Rows[0];
+
+                USVM.IdUsuario = Convert.ToInt32(dr["IdUsuario"]);
+                USVM.Nome = Convert.ToString(dr["Nome"]);
+                USVM.Email = Convert.ToString(dr["Email"]);
+                USVM.Senha = Convert.ToString(dr["Senha"]);
+                USVM.NvAcesso = Convert.ToInt32(dr["NvAcesso"]);
+            }
+
             return View("AlterarUsuarioExibirView", USVM);
         }
 

@@ -182,7 +182,7 @@ namespace ProjBancoDados.BancoDados
         {
             try
             {
-                string cmdSQL = "SELECT NvAcesso FROM Usuario WHERE IdUsuario = @id";
+                string cmdSQL = "SELECT * FROM Usuario WHERE IdUsuario = @id";
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
                 cmd.Parameters.AddWithValue("@id", id);
