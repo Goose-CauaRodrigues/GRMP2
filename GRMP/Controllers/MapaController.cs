@@ -14,7 +14,6 @@ namespace GRMP.Controllers
         }
 
         [HttpGet]
-        [HttpGet]
         public IActionResult OsPorLocal(int localId)
         {
             var lista = new List<object>();
@@ -33,8 +32,10 @@ namespace GRMP.Controllers
                 os.status
             FROM OrdemServico os
             WHERE os.local = @localId
-              AND os.ativo = 1
-        ";
+            AND os.ativo = 1
+            AND os.status != 2
+            AND os.status != 3
+            ";
 
                 using (SqlCommand cmd = new SqlCommand(sql, conn))
                 {
@@ -51,10 +52,11 @@ namespace GRMP.Controllers
                                 id = Convert.ToInt32(reader["idOrdemServico"]),
                                 titulo = reader["descricaoServico"].ToString(),
                                 statusTexto =
-                                    status == 1 || status == 0 ? "Aberto" :
-                                    status == 2 ? "Em andamento" :
-                                    status == 3 ? "Finalizado" :
-                                    "Não iniciado"
+                                    status == 0 ? "Aberto" :
+                                    status == 1 ? "Em andamento" :
+                                    status == 2 ? "Concluída" :
+                                    status == 3 ? "Cancelada" :
+                                    "Pausado"
                             });
                         }
                     }
@@ -94,6 +96,8 @@ namespace GRMP.Controllers
                     FROM OrdemServico os
                     INNER JOIN Bloco b ON b.idBloco = os.Bloco
                     WHERE os.ativo = 1
+                    AND os.status != 2
+                    AND os.status != 3
                     {filtroStatus}
                 ";
 
@@ -118,6 +122,8 @@ namespace GRMP.Controllers
                     FROM OrdemServico os
                     INNER JOIN Bloco b ON b.idBloco = os.Bloco
                     WHERE os.ativo = 1
+                    AND os.status != 2
+                    AND os.status != 3
                     {filtroStatus}
                     ORDER BY os.idOrdemServico DESC
                 ";
@@ -142,9 +148,9 @@ namespace GRMP.Controllers
                             StatusTexto = st switch
                             {
                                 0 => "Aberto",
-                                1 => "Aberto",
-                                2 => "Em andamento",
-                                3 => "Resolvido",
+                                1 => "Em andamento",
+                                2 => "Concluída",
+                                3 => "Cancelada",
                                 _ => "Desconhecido"
                             }
                         });
@@ -184,6 +190,7 @@ namespace GRMP.Controllers
                     INNER JOIN Local l ON l.idLocal = os.Local
                     INNER JOIN Bloco b ON b.idBloco = l.fk_idBloco
                     WHERE b.nome = @bloco
+                    AND os.status != 2
                     AND os.status != 3
                     AND os.ativo = 1
                     ORDER BY l.nome
@@ -216,6 +223,7 @@ namespace GRMP.Controllers
                     INNER JOIN Local l ON l.idLocal = os.Local
                     INNER JOIN Bloco b ON b.idBloco = l.fk_idBloco
                     WHERE b.nome = @bloco
+                    AND os.status != 2
                     AND os.status != 3
                     AND os.ativo = 1
                 ";
