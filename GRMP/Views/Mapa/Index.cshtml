@@ -1,4 +1,4 @@
-﻿@model List<string>
+﻿@model GRMP.Models.MapaViewModel
 @{
     ViewData["Title"] = "Mapa";
 }
@@ -41,7 +41,7 @@
                      style="clip-path: polygon(42.1% 14.3%, 22.0% 88.6%, 12.6% 80.4%, 32.5% 7.1%);">
                 </div>
             </a>
-            @if (Model.Contains("Bloco A"))
+            @if (Model.BlocosComOs.Contains("Bloco A"))
             {
                 <div class="pin" style="top:44.3%; left:27%;"></div>
             }
@@ -52,7 +52,7 @@
                      style="clip-path: polygon(52.1% 67.9%, 44.3% 94.6%, 35.9% 87.2%, 44.2% 60.0%);">
                 </div>
             </a>
-            @if (Model.Contains("Bloco B"))
+            @if (Model.BlocosComOs.Contains("Bloco B"))
             {
                 <div class="pin" style="top:72.5%; left:44.3%;"></div>
             }
@@ -63,7 +63,7 @@
                      style="clip-path: polygon(54.9% 58.6%, 37.1% 42.7%, 34.3% 51.1%, 52.1% 67.7%);">
                 </div>
             </a>
-            @if (Model.Contains("Bloco C"))
+            @if (Model.BlocosComOs.Contains("Bloco C"))
             {
                 <div class="pin" style="top:53.5%; left:44.7%;"></div>
             }
@@ -74,7 +74,7 @@
                      style="clip-path: polygon(55.7% 51.3%, 66.0% 16.7%, 53.6% 6.2%, 42.9% 40.3%);">
                 </div>
             </a>
-            @if (Model.Contains("Bloco D"))
+            @if (Model.BlocosComOs.Contains("Bloco D"))
             {
                 <div class="pin" style="top:25.8%; left:54.9%;"></div>
             }
@@ -85,7 +85,7 @@
                      style="clip-path: polygon(68.7% 27.3%, 74.9% 33.1%, 66.6% 61.0%, 59.9% 55.4%);">
                 </div>
             </a>
-            @if (Model.Contains("Bloco E"))
+            @if (Model.BlocosComOs.Contains("Bloco E"))
             {
                 <div class="pin" style="top:41.7%; left:68%;"></div>
             }
@@ -96,7 +96,7 @@
                      style="clip-path: polygon(55.2% 73.0%, 58.2% 62.6%, 76.6% 78.3%, 73.5% 89.3%);">
                 </div>
             </a>
-            @if (Model.Contains("Bloco F"))
+            @if (Model.BlocosComOs.Contains("Bloco F"))
             {
                 <div class="pin" style="top:72.9%; left:65.7%;"></div>
             }
@@ -107,7 +107,7 @@
                      style="clip-path: polygon(72.7% 56.4%, 83.7% 65.8%, 81.2% 73.7%, 70.3% 64.6%);">
                 </div>
             </a>
-            @if (Model.Contains("Bloco G"))
+            @if (Model.BlocosComOs.Contains("Bloco G"))
             {
                 <div class="pin" style="top:63.1%; left:77.7%;"></div>
             }
@@ -118,7 +118,7 @@
                      style="clip-path: polygon(82.6% 43.9%, 92.9% 52.1%, 88.8% 67.0%, 78.1% 58.1%);">
                 </div>
             </a>
-            @if (Model.Contains("Bloco H"))
+            @if (Model.BlocosComOs.Contains("Bloco H"))
             {
                 <div class="pin" style="top:50.6%; left:85.4%;"></div>
             }
@@ -129,7 +129,7 @@
                      style="clip-path: polygon(14.6% 7.1%, 16.6% 7.1%, 16.7% 11.2%, 14.5% 11.0%);">
                 </div>
             </a>
-            @if (Model.Contains("DEP_ALMO"))
+            @if (Model.BlocosComOs.Contains("DEP_ALMO"))
             {
                 <div class="pin" style="top:6.3%; left:15.5%;"></div>
             }
@@ -140,7 +140,7 @@
                      style="clip-path: polygon(23.3% 7.1%, 25.9% 9.0%, 25.2% 12.4%, 22.4% 10.7%);">
                 </div>
             </a>
-            @if (Model.Contains("DEP_QUIM"))
+            @if (Model.BlocosComOs.Contains("DEP_QUIM"))
             {
                 <div class="pin" style="top:7.5%; left:24.5%;"></div>
             }
@@ -151,7 +151,7 @@
                      style="clip-path: polygon(96.8% 15.0%, 99.0% 17.0%, 95.8% 27.8%, 93.3% 26.6%);">
                 </div>
             </a>
-            @if (Model.Contains("REST"))
+            @if (Model.BlocosComOs.Contains("REST"))
             {
                 <div class="pin" style="top:18.8%; left:96.6%;"></div>
             }
@@ -162,7 +162,7 @@
                      style="clip-path: polygon(59.6% 87.4%, 57.7% 85.7%, 54.3% 97.3%, 56.3% 98.7%);">
                 </div>
             </a>
-            @if (Model.Contains("SERV"))
+            @if (Model.BlocosComOs.Contains("SERV"))
             {
                 <div class="pin" style="top:89.5%; left:57.1%;"></div>
             }
@@ -174,21 +174,55 @@
             <h3>Mapa Interativo</h3>
             <p>Clique em um bloco para visualizar os locais e salas.</p>
 
-            <div class="tabs" role="tablist" aria-label="Filtrar chamados">
-                <button role="tab" class="active" aria-selected="true">Todos</button>
-                <button role="tab" aria-selected="false">Abertos</button>
-                <button role="tab" aria-selected="false">Em andamento</button>
-                <button role="tab" aria-selected="false">Resolvidos</button>
+            <div class="tabs">
+
+                <a asp-action="Index"
+                   class="@(Model.StatusSelecionado == null ? "active" : "")">
+                    Todos
+                </a>
+
+                <a asp-action="Index"
+                   asp-route-status="1"
+                   class="@(Model.StatusSelecionado == 1 ? "active" : "")">
+                    Abertos
+                </a>
+
+                <a asp-action="Index"
+                   asp-route-status="2"
+                   class="@(Model.StatusSelecionado == 2 ? "active" : "")">
+                    Em andamento
+                </a>
+
+                <a asp-action="Index"
+                   asp-route-status="3"
+                   class="@(Model.StatusSelecionado == 3 ? "active" : "")">
+                    Resolvidos
+                </a>
+
             </div>
 
-            <div class="chamado-card">
-                <div class="top">
-                    <span class="id">#0001</span>
-                    <span class="status-badge aberto">Aberto</span>
+            @foreach (var chamado in Model.Chamados)
+            {
+                <div class="chamado-card">
+
+                    <div class="top">
+                        <span class="id">#@chamado.Id</span>
+
+                        <span class="status-badge
+                            @(chamado.Status == 1 ? "aberto" :
+                                chamado.Status == 2 ? "andamento" :
+                                "resolvido")">
+
+                            @chamado.StatusTexto
+                        </span>
+                    </div>
+
+                    <p class="titulo">@chamado.Titulo</p>
+
+                    <p class="meta">@chamado.Bloco</p>
+
                 </div>
-                <p class="titulo">Exemplo de chamado</p>
-                <p class="meta">Bloco A · há 2 dias</p>
-            </div>
+            }
 
         </aside>
         <!-- /side-panel -->
