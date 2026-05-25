@@ -51,7 +51,7 @@ namespace GRMP.Controllers
                                 id = Convert.ToInt32(reader["idOrdemServico"]),
                                 titulo = reader["descricaoServico"].ToString(),
                                 statusTexto =
-                                    status == 1 ? "Aberto" :
+                                    status == 1 || status == 0 ? "Aberto" :
                                     status == 2 ? "Em andamento" :
                                     status == 3 ? "Finalizado" :
                                     "Não iniciado"
@@ -141,6 +141,7 @@ namespace GRMP.Controllers
                             Status = st,
                             StatusTexto = st switch
                             {
+                                0 => "Aberto",
                                 1 => "Aberto",
                                 2 => "Em andamento",
                                 3 => "Resolvido",

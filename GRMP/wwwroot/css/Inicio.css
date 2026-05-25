@@ -219,3 +219,20 @@ main {
 
 .teste {
 }
+
+.btn-word {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #1f5eff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+    .btn-word:hover {
+        background: #1748c7;
+    }

@@ -232,6 +232,15 @@
                             @(c["emailExecutor"] != DBNull.Value ? c["emailExecutor"] : "-")
                         </p>
 
+                        <a asp-controller="Usuario"
+                           asp-action="BaixarOSWord"
+                           asp-route-id="@c["idOrdemServico"]"
+                           class="btn-word">
+
+                            Baixar Word
+
+                        </a>
+
                     </div>
 
                 </div>

@@ -258,9 +258,8 @@
                         <span class="id">#@chamado.Id</span>
 
                         <span class="status-badge
-                            @(chamado.Status == 1 ? "aberto" :
-                                chamado.Status == 2 ? "andamento" :
-                                "resolvido")">
+                            @(chamado.Status == 1 || chamado.Status == 0 ? "aberto" :
+                                chamado.Status == 2 ? "andamento" : "resolvido")">
 
                             @chamado.StatusTexto
                         </span>
