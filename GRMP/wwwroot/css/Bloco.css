@@ -6,11 +6,16 @@
     --senai-red: hsl(0, 75%, 35%);
     --senai-red-glow: hsl(0, 80%, 48%);
     --senai-red-deep: hsl(0, 70%, 22%);
+    --senai-red-soft: hsl(0, 75%, 96%);
     --bg: hsl(0, 0%, 98%);
     --surface: hsl(0, 0%, 100%);
     --border: hsl(0, 0%, 90%);
     --text: hsl(0, 0%, 10%);
     --text-muted: hsl(0, 0%, 42%);
+    --status-open: hsl(0, 75%, 45%);
+    --status-progress: hsl(38, 92%, 50%);
+    --status-done: hsl(150, 60%, 40%);
+    --status-pending: hsl(0, 0%, 46%);
     --radius: 14px;
     --radius-sm: 10px;
     --shadow-soft: 0 10px 30px -10px hsl(0 70% 15% / 0.14);
@@ -33,7 +38,7 @@ body {
     min-height: 100vh;
 }
 
-/* ---------- Header (igual ao Mapa.css) ---------- */
+/* ---------- Header ---------- */
 .senai-header {
     width: 100vw;
     margin-left: calc(50% - 50vw);
@@ -75,23 +80,29 @@ body {
     letter-spacing: .02em;
 }
 
-.senai-header .hint {
-    font-size: 13px;
-    opacity: .85;
-}
-
-/* ---------- Wrapper principal ---------- */
+/* ---------- Layout principal: 3 linhas ----------
+   Linha 1: bloco-header (full width)
+   Linha 2: grid-locais  |  painel lateral
+   ------------------------------------------------ */
 .bloco-wrapper {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 32px 28px 48px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 420px; /* Aumentado para 420px igual ao mapa */
+    gap: 24px;
+    padding: 32px 28px;
 }
 
-/* ---------- Cabeçalho da seção ---------- */
+/* Header ocupa as duas colunas */
 .bloco-header {
-    margin-bottom: 32px;
+    grid-column: 1 / -1;
+    margin-bottom: 28px;
 }
 
+/* Coluna do conteúdo (grid de locais) */
+.bloco-content {
+    min-width: 0;
+}
+
+/* ---------- Back link ---------- */
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -108,6 +119,7 @@ body {
         color: var(--senai-red);
     }
 
+/* ---------- Título ---------- */
 .bloco-titulo {
     display: flex;
     align-items: baseline;
@@ -115,32 +127,23 @@ body {
     margin-bottom: 6px;
 }
 
-.bloco-label {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: .06em;
-}
-
-.bloco-titulo h2 {
-    margin: 0;
-    font-size: 28px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -.01em;
-}
-
-    /* Linha vermelha decorativa abaixo do título */
-    .bloco-titulo h2::after {
-        content: '';
-        display: block;
-        width: 40px;
-        height: 3px;
-        background: var(--senai-red);
-        border-radius: 2px;
-        margin-top: 6px;
+    .bloco-titulo h2 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -.01em;
     }
+
+        .bloco-titulo h2::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 3px;
+            background: var(--senai-red);
+            border-radius: 2px;
+            margin-top: 6px;
+        }
 
 .bloco-sub {
     margin: 0;
@@ -152,8 +155,8 @@ body {
 /* ---------- Grade de locais ---------- */
 .grid-locais {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
 }
 
 /* ---------- Card de local ---------- */
@@ -162,15 +165,14 @@ body {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     border-left: 4px solid var(--senai-red);
-    padding: 22px 20px 18px;
-    text-decoration: none;
-    color: var(--text);
+    padding: 20px 18px 16px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     box-shadow: var(--shadow-soft);
-    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
     cursor: pointer;
+    user-select: none;
 }
 
     .local-card:hover {
@@ -179,7 +181,13 @@ body {
         border-left-color: var(--senai-red-glow);
     }
 
-/* Ícone do card */
+    /* Estado ativo (clicado) */
+    .local-card.ativo {
+        background: var(--senai-red-soft);
+        border-left-color: var(--senai-red-glow);
+        box-shadow: var(--shadow-hover);
+    }
+
 .local-card-icon {
     width: 40px;
     height: 40px;
@@ -193,11 +201,11 @@ body {
     transition: background var(--transition);
 }
 
-.local-card:hover .local-card-icon {
-    background: hsl(0 75% 35% / .15);
+.local-card:hover .local-card-icon,
+.local-card.ativo .local-card-icon {
+    background: hsl(0 75% 35% / .16);
 }
 
-/* Nome do local */
 .local-nome {
     font-size: 15px;
     font-weight: 700;
@@ -206,7 +214,6 @@ body {
     flex: 1;
 }
 
-/* Link "Ver OS" no rodapé do card */
 .local-action {
     display: inline-flex;
     align-items: center;
@@ -221,7 +228,8 @@ body {
     transition: opacity var(--transition), transform var(--transition);
 }
 
-.local-card:hover .local-action {
+.local-card:hover .local-action,
+.local-card.ativo .local-action {
     opacity: 1;
     transform: translateX(0);
 }
@@ -247,10 +255,273 @@ body {
     margin: 0;
 }
 
+/* ---------- Painel lateral ---------- */
+.side-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-soft);
+    position: sticky;
+    top: 24px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    transition: var(--transition);
+}
+
+
+    .side-panel::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .side-panel::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+    }
+
+    .side-panel.is-open {
+        box-shadow: var(--shadow-hover);
+        border-color: hsl(0 75% 35% / .25);
+    }
+
+/* Estado vazio do painel */
+.panel-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 48px 24px;
+    text-align: center;
+    color: var(--text-muted);
+    min-height: 200px;
+}
+
+.panel-empty-icon {
+    width: 60px;
+    height: 60px;
+    background: hsl(0 75% 35% / .06);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--senai-red);
+    opacity: .6;
+}
+
+.panel-empty p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 200px;
+}
+
+/* Cabeçalho do painel (quando aberto) */
+.panel-content {
+    padding: 20px;
+    animation: fadeSlideIn .22s ease;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.panel-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.panel-label {
+    margin: 0 0 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .07em;
+    color: var(--text-muted);
+}
+
+.panel-header h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1.2;
+}
+
+.panel-close {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    background: hsl(0 0% 95%);
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+    margin-top: 2px;
+}
+
+    .panel-close:hover {
+        background: hsl(0 75% 35% / .1);
+        color: var(--senai-red);
+    }
+
+/* Loading spinner */
+.panel-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 24px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--senai-red);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Vazio (nenhuma OS) */
+.panel-vazio {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 32px 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    text-align: center;
+}
+
+    .panel-vazio span {
+        font-size: 28px;
+    }
+
+    .panel-vazio p {
+        margin: 0;
+    }
+
+/* ---------- Cards de OS ---------- */
+#listaOs {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.chamado-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    background: var(--surface);
+    transition: var(--transition);
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+    .chamado-card:hover {
+        border-color: var(--senai-red);
+        box-shadow: var(--shadow-soft);
+        transform: translateY(-2px);
+    }
+
+    .chamado-card .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
+
+    .chamado-card .id {
+        font-size: 12px;
+        color: var(--text-muted);
+        font-weight: 600;
+    }
+
+    .chamado-card .titulo {
+        font-weight: 600;
+        font-size: 14px;
+        margin: 4px 0;
+        color: var(--text);
+        line-height: 1.4;
+    }
+
+    .chamado-card .meta {
+        font-size: 12px;
+        color: var(--text-muted);
+        margin-top: 4px;
+    }
+/* Badges de Status */
+.status-badge {
+    padding: 3px 10px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-radius: 6px;
+    color: #fff;
+}
+
+    .status-badge.aberto {
+        background: var(--status-open);
+    }
+
+    .status-badge.andamento {
+        background: var(--status-progress);
+        color: #000;
+    }
+
+    .status-badge.finalizado {
+        background: var(--status-done);
+    }
+
+    .status-badge.nao-iniciado {
+        background: var(--status-pending);
+    }
+
 /* ---------- Responsivo ---------- */
+@media (max-width: 1100px) {
+    .bloco-wrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .side-panel {
+        position: static;
+        max-height: none;
+    }
+}
+
 @media (max-width: 768px) {
     .bloco-wrapper {
-        padding: 24px 16px 40px;
+        padding: 20px 16px 40px;
     }
 
     .senai-header {
@@ -260,16 +531,12 @@ body {
         gap: 6px;
     }
 
-        .senai-header .hint {
-            display: none;
-        }
-
     .bloco-titulo h2 {
         font-size: 22px;
     }
 
     .grid-locais {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 12px;
+        gap: 10px;
     }
 }

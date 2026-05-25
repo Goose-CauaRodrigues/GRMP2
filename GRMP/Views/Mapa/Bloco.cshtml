@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model GRMP.Models.BlocoViewModel
 
 @{
     ViewData["Title"] = "Bloco";
@@ -10,28 +10,600 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Bloco · SENAI</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
-    <link href="~/css/Bloco.css" rel="stylesheet" />
+
+    <!-- Remova a linha abaixo se ela existir, pois o CSS será embutido -->
+    <!-- <link href="~/css/Bloco.css" rel="stylesheet" /> -->
+
+    <style>
+            /* =========================================================
+                       SENAI · Bloco Individual - Estilos do Painel Lateral
+                       ========================================================= */
+            :root {
+                --senai-red: hsl(0, 75%, 35% );
+                --senai-red-glow: hsl(0, 80%, 48%);
+                --senai-red-deep: hsl(0, 70%, 22%);
+                --senai-red-soft: hsl(0, 75%, 96%);
+                --bg: hsl(0, 0%, 98%);
+                --surface: hsl(0, 0%, 100%);
+                --border: hsl(0, 0%, 90%);
+                --text: hsl(0, 0%, 10%);
+                --text-muted: hsl(0, 0%, 42%);
+                --status-open: hsl(0, 75%, 45%);
+                --status-progress: hsl(38, 92%, 50%);
+                --status-done: hsl(150, 60%, 40%);
+                --status-pending: hsl(0, 0%, 46%);
+                --radius: 14px;
+                --radius-sm: 10px;
+                --shadow-soft: 0 10px 30px -10px hsl(0 70% 15% / 0.14);
+                --shadow-hover: 0 20px 40px -12px hsl(0 70% 15% / 0.22);
+                --transition: .25s cubic-bezier(.4, 0, .2, 1);
+                --gradient-hero: linear-gradient(135deg, hsl(0 70% 22%) 0%, hsl(0 75% 35%) 50%, hsl(0 80% 28%) 100%);
+            }
+
+            /* Reset base */
+            *, *::before, *::after {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+                background: var(--bg);
+                color: var(--text);
+                -webkit-font-smoothing: antialiased;
+                min-height: 100vh;
+            }
+
+            /* Header */
+            .senai-header {
+                width: 100vw;
+                margin-left: calc(50% - 50vw);
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 24px;
+                padding: 14px 28px;
+                background: var(--gradient-hero);
+                color: #fff;
+                box-shadow: var(--shadow-soft);
+            }
+
+                .senai-header .brand {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                }
+
+            .senai-badge {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 6px 14px;
+                background: #fff;
+                color: var(--senai-red);
+                font-weight: 900;
+                font-style: italic;
+                letter-spacing: .08em;
+                font-size: 18px;
+                transform: skewX(-8deg);
+                box-shadow: 0 4px 12px hsl(0 70% 10% / .35);
+            }
+
+            .senai-header h1 {
+                font-size: 16px;
+                font-weight: 600;
+                margin: 0;
+                letter-spacing: .02em;
+            }
+
+            /* Layout principal */
+            .bloco-wrapper {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) 420px; /* Ajustado para 420px */
+                grid-template-rows: auto 1fr;
+                gap: 0 24px;
+                max-width: 1280px;
+                margin: 0 auto;
+                padding: 32px 28px 48px;
+                align-items: start;
+            }
+
+            /* Header ocupa as duas colunas */
+            .bloco-header {
+                grid-column: 1 / -1;
+                margin-bottom: 28px;
+            }
+
+            /* Coluna do conteúdo (grid de locais) */
+            .bloco-content {
+                min-width: 0;
+            }
+
+            /* Back link */
+            .back-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                color: var(--text-muted);
+                font-size: 13px;
+                font-weight: 500;
+                text-decoration: none;
+                margin-bottom: 20px;
+                transition: color var(--transition);
+            }
+
+                .back-link:hover {
+                    color: var(--senai-red);
+                }
+
+            /* Título */
+            .bloco-titulo {
+                display: flex;
+                align-items: baseline;
+                gap: 12px;
+                margin-bottom: 6px;
+            }
+
+                .bloco-titulo h2 {
+                    margin: 0;
+                    font-size: 28px;
+                    font-weight: 800;
+                    color: var(--text);
+                    letter-spacing: -.01em;
+                }
+
+                    .bloco-titulo h2::after {
+                        content: '';
+                        display: block;
+                        width: 40px;
+                        height: 3px;
+                        background: var(--senai-red);
+                        border-radius: 2px;
+                        margin-top: 6px;
+                    }
+
+            .bloco-sub {
+                margin: 0;
+                font-size: 14px;
+                color: var(--text-muted);
+                line-height: 1.5;
+            }
+
+            /* Grade de locais */
+            .grid-locais {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 14px;
+            }
+
+            /* Card de local */
+            .local-card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                border-left: 4px solid var(--senai-red);
+                padding: 20px 18px 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                box-shadow: var(--shadow-soft);
+                transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition), background var(--transition);
+                cursor: pointer;
+                user-select: none;
+            }
+
+                .local-card:hover {
+                    transform: translateY(-4px);
+                    box-shadow: var(--shadow-hover);
+                    border-left-color: var(--senai-red-glow);
+                }
+
+                /* Estado ativo (clicado) */
+                .local-card.ativo {
+                    background: var(--senai-red-soft);
+                    border-left-color: var(--senai-red-glow);
+                    box-shadow: var(--shadow-hover);
+                }
+
+            .local-card-icon {
+                width: 40px;
+                height: 40px;
+                background: hsl(0 75% 35% / .08);
+                border-radius: var(--radius-sm);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--senai-red);
+                flex-shrink: 0;
+                transition: background var(--transition);
+            }
+
+            .local-card:hover .local-card-icon,
+            .local-card.ativo .local-card-icon {
+                background: hsl(0 75% 35% / .16);
+            }
+
+            .local-nome {
+                font-size: 15px;
+                font-weight: 700;
+                color: var(--text);
+                line-height: 1.3;
+                flex: 1;
+            }
+
+            .local-action {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--senai-red);
+                text-transform: uppercase;
+                letter-spacing: .05em;
+                opacity: 0;
+                transform: translateX(-4px);
+                transition: opacity var(--transition), transform var(--transition);
+            }
+
+            .local-card:hover .local-action,
+            .local-card.ativo .local-action {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            /* Empty state */
+            .empty-state {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                padding: 60px 40px;
+                text-align: center;
+                box-shadow: var(--shadow-soft);
+            }
+
+            .empty-icon {
+                font-size: 44px;
+                margin-bottom: 14px;
+            }
+
+            .empty-state p {
+                color: var(--text-muted);
+                font-size: 15px;
+                margin: 0;
+            }
+
+            /* Painel lateral */
+            .side-panel {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow-soft);
+                overflow: hidden;
+                position: sticky;
+                top: 24px;
+                max-height: calc(100vh - 100px); /* Ajuste para caber na tela */
+                overflow-y: auto;
+                transition: box-shadow var(--transition);
+                scrollbar-width: thin;
+                scrollbar-color: var(--border) transparent;
+            }
+
+                .side-panel::-webkit-scrollbar {
+                    width: 5px;
+                }
+
+                .side-panel::-webkit-scrollbar-thumb {
+                    background: var(--border);
+                    border-radius: 3px;
+                }
+
+                .side-panel.is-open {
+                    box-shadow: var(--shadow-hover);
+                    border-color: hsl(0 75% 35% / .25);
+                }
+
+            /* Estado vazio do painel */
+            .panel-empty {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 14px;
+                padding: 48px 24px;
+                text-align: center;
+                color: var(--text-muted);
+                min-height: 200px;
+            }
+
+            .panel-empty-icon {
+                width: 60px;
+                height: 60px;
+                background: hsl(0 75% 35% / .06);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--senai-red);
+                opacity: .6;
+            }
+
+            .panel-empty p {
+                margin: 0;
+                font-size: 13px;
+                line-height: 1.5;
+                max-width: 200px;
+            }
+
+            /* Cabeçalho do painel (quando aberto) */
+            .panel-content {
+                /* Removido padding aqui, será adicionado em #listaOs */
+                animation: fadeSlideIn .22s ease;
+            }
+
+            /* arroba keyframes fadeSlideIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(8px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            } */
+
+            .panel-header {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                gap: 12px;
+                margin-bottom: 0; /* Removido margin-bottom */
+                padding: 20px; /* Adicionado padding aqui */
+                padding-bottom: 14px;
+                border-bottom: 1px solid var(--border);
+                background: var(--surface);
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+
+            .panel-label {
+                margin: 0 0 4px;
+                font-size: 11px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: .07em;
+                color: var(--text-muted);
+            }
+
+            .panel-header h3 {
+                margin: 0;
+                font-size: 17px;
+                font-weight: 800;
+                color: var(--text);
+                line-height: 1.2;
+            }
+
+            .panel-close {
+                flex-shrink: 0;
+                width: 30px;
+                height: 30px;
+                background: hsl(0 0% 95%);
+                border: none;
+                border-radius: 8px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--text-muted);
+                cursor: pointer;
+                transition: background var(--transition), color var(--transition);
+                margin-top: 2px;
+            }
+
+                .panel-close:hover {
+                    background: hsl(0 75% 35% / .1);
+                    color: var(--senai-red);
+                }
+
+            /* Loading spinner */
+            .panel-loading {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 24px 20px; /* Adicionado padding lateral */
+                color: var(--text-muted);
+                font-size: 13px;
+            }
+
+            .spinner {
+                width: 18px;
+                height: 18px;
+                border: 2px solid var(--border);
+                border-top-color: var(--senai-red);
+                border-radius: 50%;
+                animation: spin .7s linear infinite;
+                flex-shrink: 0;
+            }
+
+            /* arroba keyframes spin {
+                to {
+                    transform: rotate(360deg);
+                }
+            } */
+
+            /* Vazio (nenhuma OS) */
+            .panel-vazio {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                padding: 32px 20px; /* Adicionado padding lateral */
+                color: var(--text-muted);
+                font-size: 13px;
+                text-align: center;
+            }
+
+                .panel-vazio span {
+                    font-size: 28px;
+                }
+
+                .panel-vazio p {
+                    margin: 0;
+                }
+
+            /* Cards de OS */
+            #listaOs {
+                display: flex;
+                flex-direction: column;
+                gap: 12px; /* Ajustado para 12px */
+                padding: 16px 20px; /* Adicionado padding para os cards */
+            }
+
+            .chamado-card {
+                background: var(--surface);
+                border: 1px solid var(--border);
+                border-left: 4px solid var(--senai-red);
+                border-radius: var(--radius-sm);
+                padding: 13px 14px;
+                box-shadow: var(--shadow-soft);
+                transition: transform var(--transition), box-shadow var(--transition), border-left-color var(--transition);
+                text-decoration: none; /* Garante que o link não tenha sublinhado */
+                color: inherit; /* Garante que a cor do texto seja herdada */
+                display: block; /* Garante que o card ocupe a largura total */
+            }
+
+                .chamado-card:hover {
+                    transform: translateY(-2px);
+                    box-shadow: var(--shadow-hover);
+                    border-left-color: var(--senai-red-glow);
+                }
+
+                .chamado-card .top {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 8px;
+                }
+
+                .chamado-card .id {
+                    font-size: 12px;
+                    font-weight: 700;
+                    color: var(--text-muted);
+                    font-variant-numeric: tabular-nums;
+                }
+
+                .chamado-card .titulo {
+                    margin: 0;
+                    font-size: 14px;
+                    font-weight: 600;
+                    color: var(--text);
+                    line-height: 1.4;
+                }
+
+                .chamado-card .meta {
+                    font-size: 12px;
+                    color: var(--text-muted);
+                    margin-top: 4px;
+                }
+
+            /* Badges de status */
+            .status-badge {
+                display: inline-block;
+                padding: 3px 10px;
+                font-size: 10px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: .05em;
+                border-radius: 999px;
+                color: #fff;
+                white-space: nowrap;
+            }
+
+                .status-badge.aberto {
+                    background: var(--status-open);
+                }
+
+                .status-badge.andamento {
+                    background: var(--status-progress);
+                    color: #1a1a1a;
+                }
+
+                .status-badge.finalizado {
+                    background: var(--status-done);
+                }
+
+                .status-badge.nao-iniciado {
+                    background: var(--status-pending);
+                }
+
+            /* Responsivo 
+            arroba media (max-width: 1100px) {
+                .bloco-wrapper {
+                    grid-template-columns: 1fr;
+                }
+
+                .side-panel {
+                    position: static;
+                    max-height: none;
+                }
+            }
+
+            arroba media (max-width: 768px) {
+                .bloco-wrapper {
+                    padding: 20px 16px 40px;
+                }
+
+                .senai-header {
+                    padding: 12px 16px;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 6px;
+                }
+
+                .bloco-titulo h2 {
+                    font-size: 22px;
+                }
+
+                .grid-locais {
+                    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                    gap: 10px;
+                }
+            } */
+    </style>
 </head>
+
 <body>
 
-    <!-- ===== Header SENAI (idêntico ao do mapa) ===== -->
+    <!-- ===== Header ===== -->
     <header class="senai-header">
         <div class="brand">
             <span class="senai-badge">SENAI</span>
             <h1>Mapa de Manutenção Predial</h1>
         </div>
-        <span class="hint">Selecione um local para ver as ordens de serviço</span>
+
+        <nav style="display:flex; align-items:center; gap:10px;">
+            <a asp-controller="Mapa" asp-action="Index"
+               style="text-decoration:none;color:white;font-size:14px;font-weight:600;padding:10px 16px;border-radius:8px;">
+                Mapa
+            </a>
+
+            <a asp-controller="Usuario" asp-action="InicioExibir"
+               style="text-decoration:none;color:white;font-size:14px;font-weight:600;padding:10px 16px;border-radius:8px;">
+                Início
+            </a>
+        </nav>
     </header>
 
-    <!-- ===== Conteúdo principal ===== -->
+    <!-- ===== Conteúdo ===== -->
     <main class="bloco-wrapper">
 
-        <!-- Breadcrumb / título da seção -->
+        <!-- Header (ocupa as duas colunas) -->
         <div class="bloco-header">
-            <a class="back-link" href="javascript:history.back()">
+            <a asp-controller="Mapa" asp-action="Index" class="back-link">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                     <path d="M10 12L6 8l4-4" stroke="currentColor" stroke-width="2"
                           stroke-linecap="round" stroke-linejoin="round" />
@@ -40,57 +612,187 @@
             </a>
 
             <div class="bloco-titulo">
-                <span class="bloco-label">Navegando em</span>
                 <h2>@ViewBag.Bloco</h2>
             </div>
 
-            <p class="bloco-sub">Selecione um local abaixo para visualizar as ordens de serviço.</p>
+            <p class="bloco-sub">
+                Selecione um local abaixo para visualizar as ordens de serviço.
+            </p>
         </div>
 
-        <!-- Grade de locais -->
-        @if (Model == null)
+        <!-- LOCAIS -->
+        @if (Model == null || Model.Locais == null || !Model.Locais.Any())
         {
-            <div class="empty-state">
+            <div class="empty-state" style="grid-column: 1 / -1;">
                 <div class="empty-icon">📭</div>
                 <p>Nenhum local encontrado para este bloco.</p>
             </div>
         }
         else
         {
-            <div class="grid-locais">
-                @foreach (var local in Model)
-                {
-                    <a class="local-card"
-                       asp-controller="OrdemServico"
-                       asp-action="Index"
-                       asp-route-local="@local.Id"
-                       title="Ver OS de @local.Nome">
+            <!-- Coluna esquerda: grid de locais -->
+            <div class="bloco-content">
+                <div class="grid-locais">
 
-                        <div class="local-card-icon">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"
-                                      stroke="currentColor" stroke-width="1.8"
-                                      stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M9 22V12h6v10" stroke="currentColor" stroke-width="1.8"
-                                      stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
+                    @foreach (var local in Model.Locais)
+                    {
+                        <div class="local-card"
+                             data-id="@local.Id"
+                             data-nome="@local.Nome"
+                             onclick="selecionarLocal(@local.Id, '@local.Nome', this)">
+
+                            <div class="local-card-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"
+                                          stroke="currentColor" stroke-width="1.8" />
+                                    <path d="M9 22V12h6v10"
+                                          stroke="currentColor" stroke-width="1.8" />
+                                </svg>
+                            </div>
+
+                            <strong class="local-nome">@local.Nome</strong>
+
+                            <span class="local-action">
+                                Ver OS
+                                <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
+                                    <path d="M6 4l4 4-4 4"
+                                          stroke="currentColor" stroke-width="2" />
+                                </svg>
+                            </span>
+
                         </div>
+                    }
 
-                        <strong class="local-nome">@local.Nome</strong>
-
-                        <span class="local-action">
-                            Ver OS
-                            <svg width="12" height="12" viewBox="0 0 16 16" fill="none">
-                                <path d="M6 4l4 4-4 4" stroke="currentColor" stroke-width="2"
-                                      stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
-                }
+                </div>
             </div>
+
+            <!-- ===== PAINEL LATERAL ===== -->
+            <aside class="side-panel" id="sidePanel">
+
+                <!-- Estado inicial (vazio) -->
+                <div class="panel-empty" id="panelEmpty">
+                    <div class="panel-empty-icon">
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none">
+                            <path d="M9 11l3 3L22 4" stroke="currentColor" stroke-width="1.8"
+                                  stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"
+                                  stroke="currentColor" stroke-width="1.8"
+                                  stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </div>
+                    <p>Selecione um local para ver as ordens de serviço.</p>
+                </div>
+
+                <!-- Conteúdo carregado -->
+                <div class="panel-content" id="panelContent" style="display:none;">
+
+                    <div class="panel-header">
+                        <div>
+                            <p class="panel-label">Local selecionado</p>
+                            <h3 id="panelTitulo">—</h3>
+                        </div>
+                        <button class="panel-close" onclick="fecharPanel()" title="Fechar painel">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" stroke-width="2"
+                                      stroke-linecap="round" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div id="listaOs"></div>
+
+                </div>
+
+            </aside>
         }
 
     </main>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+            let cardAtivo = null;
+
+            async function selecionarLocal(localId, localNome, cardEl) {
+
+                // Destaque no card selecionado
+                if (cardAtivo) cardAtivo.classList.remove("ativo");
+                cardAtivo = cardEl;
+                cardEl.classList.add("ativo");
+
+                // Mostra o conteúdo do painel
+                document.getElementById("panelEmpty").style.display = "none";
+                const content = document.getElementById("panelContent");
+                content.style.display = "block";
+
+                // Ativa animação de entrada no painel
+                const panel = document.getElementById("sidePanel");
+                panel.classList.add("is-open");
+
+                // Título do local
+                document.getElementById("panelTitulo").textContent = localNome;
+
+                // Loading
+                const lista = document.getElementById("listaOs");
+                lista.innerHTML = `
+                    <div class="panel-loading">
+                        <div class="spinner"></div>
+                        <span>Carregando OS…</span>
+                    </div>`;
+
+                try {
+                    const response = await fetch(`/Mapa/OsPorLocal?localId=${localId}`);
+                    const data = await response.json();
+
+                    lista.innerHTML = "";
+
+                    if (!data || data.length === 0) {
+                        lista.innerHTML = `
+                            <div class="panel-vazio">
+                                <span>✅</span>
+                                <p>Nenhuma OS aberta neste local.</p>
+                            </div>`;
+                        return;
+                    }
+
+                    data.forEach(os => {
+                        let statusClass = "";
+                        if (os.statusTexto === "Aberto") statusClass = "aberto";
+                        else if (os.statusTexto === "Em andamento") statusClass = "andamento";
+                        else if (os.statusTexto === "Finalizado") statusClass = "finalizado";
+                        else statusClass = "nao-iniciado";
+
+                        lista.innerHTML += `
+                            <a href="#" class="chamado-card"> <!-- Adicionado <a> para o card ser clicável -->
+                                <div class="top">
+                                    <span class="id">#${os.id}</span>
+                                    <span class="status-badge ${statusClass}">
+                                        ${os.statusTexto}
+                                    </span>
+                                </div>
+                                <p class="titulo">${os.titulo}</p>
+                                <p class="meta">${localNome}</p> <!-- Adicionado meta para o nome do local -->
+                            </a>`;
+                    });
+
+                } catch (err) {
+                    lista.innerHTML = `<p style="color:var(--senai-red);font-size:13px;padding: 20px;">Erro ao carregar OS.</p>`;
+                    console.error(err);
+                }
+            }
+
+            function fecharPanel() {
+                const panel = document.getElementById("sidePanel");
+                panel.classList.remove("is-open");
+
+                document.getElementById("panelEmpty").style.display = "";
+                document.getElementById("panelContent").style.display = "none";
+
+                if (cardAtivo) {
+                    cardAtivo.classList.remove("ativo");
+                    cardAtivo = null;
+                }
+            }
+    </script>
 
 </body>
 </html>

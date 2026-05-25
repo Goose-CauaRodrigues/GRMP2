@@ -7,11 +7,50 @@
 
 <link href="~/css/Inicio.css" rel="stylesheet" />
 
-<header class="topbar">
-    <div class="topbar-left">
-        <div class="logo-badge"><span>GRMP</span></div>
-        <h3>Histórico de Ordens de Serviço</h3>
+<!-- ===== Header SENAI ===== -->
+<header class="senai-header">
+    <div class="brand">
+        <span class="senai-badge">SENAI</span>
+        <h1>Histórico de Ordens de Serviço</h1>
     </div>
+    <nav style="display:flex; align-items:center; gap:10px;">
+
+        <a asp-controller="Mapa"
+           asp-action="Index"
+           style="
+            text-decoration:none;
+            color:white;
+            font-size:14px;
+            font-weight:600;
+            padding:10px 16px;
+            border-radius:8px;
+            transition:0.2s;
+            display:inline-block;
+            ">
+            Mapa
+        </a>
+
+        <a asp-controller="Usuario"
+           asp-action="InicioExibir"
+           style="
+            text-decoration:none;
+            color:white;
+            font-size:14px;
+            font-weight:600;
+            padding:10px 16px;
+            border-radius:8px;
+            transition:0.2s;
+            display:inline-block;
+            ">
+            Início
+        </a>
+
+        <a asp-controller="Dashboard" asp-action="Index"
+           style="text-decoration:none; color:white; font-size:14px; font-weight:600; padding:10px 16px; border-radius:8px; transition:0.2s; display:inline-block;">
+            Relatório
+        </a>
+
+    </nav>
 </header>
 
 <div class="container">
@@ -192,6 +231,15 @@
                             <strong>Email Executor:</strong><br>
                             @(c["emailExecutor"] != DBNull.Value ? c["emailExecutor"] : "-")
                         </p>
+
+                        <a asp-controller="Usuario"
+                           asp-action="BaixarOSWord"
+                           asp-route-id="@c["idOrdemServico"]"
+                           class="btn-word">
+
+                            Baixar Word
+
+                        </a>
 
                     </div>
 

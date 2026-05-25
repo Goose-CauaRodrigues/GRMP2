@@ -1,16 +1,64 @@
-﻿/* ==========================================
-   HEADER / TOPBAR (Ajustado para Desktop)
-   ========================================== */
-.topbar {
-    background: #8b0000;
-    color: white;
-    height: 60px;
+﻿:root {
+    --senai-red: hsl(0, 75%, 35%);
+    --senai-red-glow: hsl(0, 80%, 48%);
+    --senai-red-deep: hsl(0, 70%, 22%);
+    --senai-red-soft: hsl(0, 75%, 96%);
+    --border: hsl(0, 0%, 90%);
+    --shadow-soft: 0 10px 30px -10px hsl(0 70% 15% / 0.18);
+    --gradient-hero: linear-gradient( 135deg, hsl(0 70% 22%) 0%, hsl(0 75% 35%) 50%, hsl(0 80% 28%) 100% );
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f7f7f7;
+}
+
+/* ---------- Header SENAI (opcional) ---------- */
+.senai-header {
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
     display: flex;
     align-items: center;
-    justify-content: center; /* Centraliza o bloco de conteúdo na tela */
-    padding: 0 20px;
-    flex-shrink: 0;
-    width: 100%;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px 28px;
+    background: var(--gradient-hero);
+    color: #fff;
+    box-shadow: var(--shadow-soft);
+}
+
+    .senai-header .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+
+.senai-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    background: #fff;
+    color: var(--senai-red);
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: .08em;
+    font-size: 18px;
+    transform: skewX(-8deg);
+    box-shadow: 0 4px 12px hsl(0 70% 10% / .35);
+}
+
+.senai-header h1 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: .02em;
+}
+
+.senai-header .hint {
+    font-size: 13px;
+    opacity: .85;
 }
 
 main {
@@ -171,3 +219,20 @@ main {
 
 .teste {
 }
+
+.btn-word {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #1f5eff;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: .2s;
+}
+
+    .btn-word:hover {
+        background: #1748c7;
+    }
