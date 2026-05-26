@@ -1,22 +1,77 @@
 ﻿/* ==========================================
+   RESET GERAL
+   ========================================== */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #f4f4f4;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* ==========================================
    HEADER / TOPBAR
+   ========================================== */
+.senai-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 14px 28px;
+    background: #8b0000;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-sizing: border-box;
+}
+
+.senai-header .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.senai-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 14px;
+    background: #fff;
+    color: #8b0000;
+    font-weight: 900;
+    font-style: italic;
+    letter-spacing: .08em;
+    font-size: 18px;
+    transform: skewX(-8deg);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.senai-header h1 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: .02em;
+}
+
+.senai-header .hint {
+    font-size: 13px;
+    opacity: .85;
+}
+
+/* ==========================================
+   TOPBAR
    ========================================== */
 .topbar {
     background: #8b0000;
     color: white;
-    height: 60px;
+    min-height: 60px;
     display: flex;
     align-items: center;
-    justify-content: center;
     padding: 0 20px;
     width: 100%;
-}
-
-
-
-main {
-    width: 100vw;
-    margin-top: -2.5em;
+    box-sizing: border-box;
 }
 
 .topbar-left {
@@ -27,12 +82,11 @@ main {
     max-width: 1200px;
 }
 
-    .topbar-left h3 {
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 600;
-        font-size: 18px;
-        margin: 0;
-    }
+.topbar-left h3 {
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0;
+}
 
 .logo-badge {
     background: white;
@@ -42,12 +96,20 @@ main {
     align-items: center;
 }
 
-    .logo-badge span {
-        color: #cc0000;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 800;
-        font-size: 14px;
-    }
+.logo-badge span {
+    color: #cc0000;
+    font-weight: 800;
+    font-size: 14px;
+}
+
+/* ==========================================
+   MAIN
+   ========================================== */
+main {
+    width: 100%;
+    margin-top: 0;
+    box-sizing: border-box;
+}
 
 /* ==========================================
    CONTAINER
@@ -59,8 +121,12 @@ main {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    box-sizing: border-box;
 }
 
+/* ==========================================
+   PAGE HEADER
+   ========================================== */
 .page-header {
     width: 100%;
     max-width: 1200px;
@@ -75,7 +141,6 @@ main {
 }
 
 .page-header h2 {
-    font-family: 'Montserrat', sans-serif;
     font-weight: 800;
     color: #1a1a1a;
     font-size: 26px;
@@ -89,7 +154,7 @@ main {
 }
 
 /* ==========================================
-   AÇÕES DO CARD
+   CARD ACTIONS
    ========================================== */
 .card-actions {
     display: flex;
@@ -99,27 +164,12 @@ main {
     border-top: 1px solid #eee;
 }
 
-.botao-gerenciar {
-    color: white;
-    background-color: #cc0000;
-    border: none;
-    border-radius: 10px;
-    padding: 8px 20px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-    .botao-gerenciar:hover {
-        background-color: #8b0000;
-    }
-
 /* ==========================================
-   BOTÃO
+   BOTÕES
    ========================================== */
 button,
-.botao-adicionar {
+.botao-adicionar,
+.botao-gerenciar {
     color: white;
     background-color: #cc0000;
     border: none;
@@ -131,10 +181,11 @@ button,
     transition: 0.3s;
 }
 
-    button:hover,
-    .botao-adicionar:hover {
-        background-color: #8b0000;
-    }
+button:hover,
+.botao-adicionar:hover,
+.botao-gerenciar:hover {
+    background-color: #8b0000;
+}
 
 /* ==========================================
    HISTÓRICO
@@ -145,7 +196,7 @@ button,
 }
 
 /* ==========================================
-   CARD USUÁRIO
+   CARD CHAMADO
    ========================================== */
 .card-chamado {
     background: white;
@@ -157,13 +208,13 @@ button,
     transition: 0.3s;
 }
 
-    .card-chamado:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-        transform: translateY(-2px);
-    }
+.card-chamado:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
 
 /* ==========================================
-   TOPO DO CARD
+   TOPO CARD
    ========================================== */
 .card-top {
     display: flex;
@@ -172,13 +223,13 @@ button,
     gap: 10px;
 }
 
-    .card-top strong {
-        font-size: 18px;
-        color: #222;
-    }
+.card-top strong {
+    font-size: 18px;
+    color: #222;
+}
 
 /* ==========================================
-   STATUS / NÍVEL ACESSO
+   STATUS
    ========================================== */
 .status {
     background: #cc0000;
@@ -191,15 +242,13 @@ button,
     text-transform: uppercase;
 }
 
-    /* Administrador */
-    .status.admin {
-        background: #2e7d32;
-    }
+.status.admin {
+    background: #2e7d32;
+}
 
-    /* Usuário comum */
-    .status.usuario {
-        background: #1565c0;
-    }
+.status.usuario {
+    background: #1565c0;
+}
 
 /* ==========================================
    INFORMAÇÕES
@@ -222,16 +271,16 @@ button,
     gap: 16px;
 }
 
-    .detalhes p {
-        margin: 0;
-        color: #444;
-        font-size: 14px;
-        line-height: 1.5;
-    }
+.detalhes p {
+    margin: 0;
+    color: #444;
+    font-size: 14px;
+    line-height: 1.5;
+}
 
-    .detalhes strong {
-        color: #111;
-    }
+.detalhes strong {
+    color: #111;
+}
 
 /* ==========================================
    EMPTY STATE
@@ -244,15 +293,15 @@ button,
     border: 1px solid #eee;
 }
 
-    .empty-state .icon {
-        font-size: 40px;
-        margin-bottom: 10px;
-    }
+.empty-state .icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
 
-    .empty-state p {
-        color: #777;
-        font-size: 15px;
-    }
+.empty-state p {
+    color: #777;
+    font-size: 15px;
+}
 
 /* ==========================================
    RESPONSIVO

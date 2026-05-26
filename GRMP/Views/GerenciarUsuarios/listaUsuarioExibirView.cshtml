@@ -3,20 +3,23 @@
 
 @{
     ViewData["Title"] = "Usuários";
+
+    Layout = null;
 }
 
 <link href="~/css/ListaUsuario.css" rel="stylesheet" />
 
-<header class="topbar">
-    <div class="topbar-left">
-        <div class="logo-badge"><span>GRMP</span></div>
-        <h3>Lista de Usuários</h3>
+<!-- ===== Header ===== -->
+<header class="senai-header">
+    <div class="brand">
+        <span class="senai-badge">SENAI</span>
+        <h1>Mapa de Manutenção Predial</h1>
     </div>
     <nav style="display:flex; align-items:center; gap:10px;">
 
         <a asp-controller="Mapa"
-               asp-action="Index"
-               style="
+           asp-action="Index"
+           style="
             text-decoration:none;
             color:white;
             font-size:14px;
@@ -30,8 +33,8 @@
         </a>
 
         <a asp-controller="Usuario"
-               asp-action="InicioExibir"
-               style="
+           asp-action="InicioExibir"
+           style="
             text-decoration:none;
             color:white;
             font-size:14px;
@@ -45,8 +48,8 @@
         </a>
 
         <a asp-controller="GerenciarUsuarios"
-               asp-action="ListaUsuariosExibir"
-               style="
+           asp-action="ListaUsuariosExibir"
+           style="
             text-decoration:none;
             color:white;
             font-size:14px;
@@ -60,8 +63,8 @@
         </a>
 
         <a asp-controller="Dashboard"
-               asp-action="Index"
-               style="
+           asp-action="Index"
+           style="
             text-decoration:none;
             color:white;
             font-size:14px;
