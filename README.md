@@ -100,7 +100,7 @@ git clone https://github.com/Goose-CauaRodrigues/GRMP2.git
 
 Abra o projeto no:
 
-* Visual Studio 2022
+* Visual Studio 2026
 
 ---
 
@@ -140,12 +140,10 @@ F5
 
 # 🧩 Funcionalidades Futuras
 
-* Dashboard com gráficos
 * Upload de imagens nas OS
 * Notificações automáticas
 * Responsividade mobile
 * Sistema de permissões mais avançado
-* Exportação em PDF
 
 ---
 
@@ -154,7 +152,9 @@ F5
 Projeto desenvolvido para fins acadêmicos no SENAI.
 
 * Nícolas Mendes
-* Equipe GRMP
+* Cauã Rodrigue
+* Enzo Tavares
+* Guilherme Bobato
 
 ---
 
