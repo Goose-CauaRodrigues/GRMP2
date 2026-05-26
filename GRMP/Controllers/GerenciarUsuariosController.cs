@@ -38,19 +38,17 @@ namespace GRMP.Controllers
                     break;
                 }
                 // Se for nível 1 -> redireciona
-                else if(nvAcesso == 1)
+                else if(nvAcesso == 2)
                 {
-                    return RedirectToAction("InicioNivelDoisMapa", "Usuario");
+                    return RedirectToAction("Index", "Mapa");
+
 
                 }
                 else
                 {
-                    return RedirectToAction("InicioNivelDoisMapa", "Usuario");
+                    return RedirectToAction("InicioExibir", "Usuario");
 
                 }
-
-                // Qualquer outro nível sem permissão
-                return RedirectToAction("Login", "Login");
             }
 
             // Carrega lista de usuários
