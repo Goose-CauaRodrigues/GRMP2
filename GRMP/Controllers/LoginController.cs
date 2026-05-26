@@ -41,13 +41,9 @@ namespace GRMP.Controllers
 
                         string nvAcesso = row["nvAcesso"].ToString();
 
-                        if (nvAcesso == "3")
+                        if (nvAcesso == "3" || nvAcesso == "2")
                         {
                             return RedirectToAction("Index", "Mapa");
-                        }
-                        else if (nvAcesso == "2")
-                        {
-
                         }
                         else
                         {
