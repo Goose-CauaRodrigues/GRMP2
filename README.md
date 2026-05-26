@@ -1,58 +1,74 @@
-GRMP — Gerenciador de Requisições de Manutenção Predial
+# GRMP — Gerenciador de Manutenção Predial
 
-Sistema web desenvolvido para gerenciamento de Ordens de Serviço (OS) de manutenção predial dentro de uma instituição, utilizando mapa interativo dos blocos para visualização dos chamados.
+## 📌 Sobre o Projeto
 
-📌 Sobre o Projeto
+O **GRMP (Gerenciador de Manutenção Predial)** é um sistema web desenvolvido para auxiliar no controle e gerenciamento de ordens de serviço de manutenção predial dentro do ambiente escolar do SENAI.
 
-O GRMP foi criado para facilitar o controle de solicitações de manutenção predial, permitindo:
+O sistema permite registrar solicitações, visualizar chamados em um mapa interativo da instituição, acompanhar status das ordens de serviço e gerenciar usuários.
 
-Cadastro de ordens de serviço
-Visualização de chamados em mapa interativo
-Controle de status das OS
-Gerenciamento de usuários
-Histórico completo das solicitações
-Exportação de OS em documento Word
-Dashboard e relatórios
+---
 
-O sistema foi desenvolvido utilizando ASP.NET Core MVC, com banco de dados em SQL Server.
+# 🛠️ Funcionalidades
 
-🖼️ Funcionalidades
-✅ Mapa Interativo
-Visualização dos blocos da instituição
-Destaque visual de blocos com OS abertas
-Clique nos blocos para visualizar locais afetados
-Painel lateral com OS abertas do local selecionado
-✅ Ordens de Serviço
-Cadastro de novas OS
-Controle de:
-Status
-Prioridade
-Categoria
-Executor
-Histórico completo de solicitações
-✅ Gerenciamento de Usuários
-Cadastro
-Alteração
-Controle de nível de acesso
-✅ Exportação de Documentos
-Download das informações da OS em .docx
-✅ Dashboard
-Relatórios visuais do sistema
-🛠️ Tecnologias Utilizadas
-Backend
-ASP.NET Core MVC
-C#
-ADO.NET
-SQL Server
-Frontend
-HTML5
-CSS3
-JavaScript
-Bibliotecas
-DocumentFormat.OpenXml
-Bootstrap (se estiver usando)
-Google Fonts
-🗂️ Estrutura do Projeto
+## 👤 Usuários
+
+* Login e autenticação
+* Controle de sessão
+* Cadastro de usuários
+* Alteração de usuários
+* Diferentes níveis de acesso
+
+## 📋 Ordens de Serviço
+
+* Cadastro de OS
+* Visualização de histórico
+* Controle de status
+* Prioridade da solicitação
+* Associação com bloco e local
+* Informações de solicitante e executor
+
+## 🗺️ Mapa Interativo
+
+* Visualização dos blocos da instituição
+* Destaque visual para blocos com OS abertas
+* Filtro por status
+* Painel lateral com chamados
+* Visualização de locais com ordens abertas
+
+## 📄 Exportação
+
+* Download das ordens de serviço em arquivo Word (.docx)
+
+---
+
+# 💻 Tecnologias Utilizadas
+
+## Backend
+
+* ASP.NET Core MVC
+* C#
+* SQL Server
+
+## Frontend
+
+* HTML5
+* CSS3
+* JavaScript
+* Razor Pages
+
+## Banco de Dados
+
+* SQL Server
+
+## Bibliotecas
+
+* DocumentFormat.OpenXml
+
+---
+
+# 📁 Estrutura do Projeto
+
+```bash
 GRMP/
 │
 ├── Controllers/
@@ -60,43 +76,88 @@ GRMP/
 ├── Views/
 ├── wwwroot/
 │   ├── css/
-│   ├── js/
-│   └── img/
-├── Banco/
-└── README.md
-⚙️ Configuração do Projeto
-1️⃣ Clone o repositório
+│   ├── img/
+│   └── js/
+│
+├── Classes/
+├── appsettings.json
+└── Program.cs
+```
+
+---
+
+# ⚙️ Como Executar o Projeto
+
+## 1️⃣ Clonar o repositório
+
+```bash
 git clone https://github.com/Goose-CauaRodrigues/GRMP2.git
-2️⃣ Configure a conexão com o banco
+```
 
-No arquivo:
+---
 
+## 2️⃣ Abrir o projeto
+
+Abra o projeto no:
+
+* Visual Studio 2022
+
+---
+
+## 3️⃣ Configurar o banco de dados
+
+Edite a string de conexão no arquivo:
+
+```json
 appsettings.json
+```
 
-Configure:
+Exemplo:
 
+```json
 "ConnectionStrings": {
-  "StringConexaoSQLServer": "Server=SEU_SERVIDOR;Database=GRMP;Trusted_Connection=True;TrustServerCertificate=True;"
+  "StringConexaoSQLServer": "Server=SEU_SERVIDOR;Database=GRMP;Trusted_Connection=True;TrustServerCertificate=True"
 }
-3️⃣ Execute o banco de dados
+```
 
-Execute os scripts SQL de criação das tabelas no SQL Server.
+---
 
-4️⃣ Execute o projeto
+## 4️⃣ Executar o projeto
 
 No Visual Studio:
 
+```bash
 Ctrl + F5
+```
 
-Ou pelo terminal:
+Ou:
 
-dotnet run
-👨‍💻 Desenvolvedores
+```bash
+F5
+```
 
-Projeto desenvolvido por:
+---
 
-Nícolas Mendes
-Cauã Rodrigues
-📄 Licença
+# 🧩 Funcionalidades Futuras
 
-Projeto acadêmico desenvolvido para fins educacionais.
+* Dashboard com gráficos
+* Upload de imagens nas OS
+* Notificações automáticas
+* Responsividade mobile
+* Sistema de permissões mais avançado
+* Exportação em PDF
+
+---
+
+# 👨‍💻 Desenvolvedores
+
+Projeto desenvolvido para fins acadêmicos no SENAI.
+
+* Nícolas Mendes
+* Equipe GRMP
+
+---
+
+# 📄 Licença
+
+Este projeto é destinado para fins educacionais.
