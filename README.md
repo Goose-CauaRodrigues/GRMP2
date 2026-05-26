@@ -152,7 +152,7 @@ F5
 Projeto desenvolvido para fins acadêmicos no SENAI.
 
 * Nícolas Mendes
-* Cauã Rodrigue
+* Cauã Rodrigues
 * Enzo Tavares
 * Guilherme Bobato
 
