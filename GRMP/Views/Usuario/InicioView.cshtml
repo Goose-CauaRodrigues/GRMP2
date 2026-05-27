@@ -129,6 +129,14 @@
                         @(c["nomeExecutor"] != DBNull.Value ? c["nomeExecutor"] : "-")
                     </p>
 
+                    <div class="card-actions">
+                        <button type="button"
+                                class="botao-gerenciar"
+                                onclick="window.location.href='@Url.Action("AlterarUsuarioExibir", "GerenciarUsuarios", new { id = c["idUsuario"] })'">
+                            Gerenciar
+                        </button>
+                    </div>
+
                     <div class="detalhes">
 
                         <p>

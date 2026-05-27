@@ -1,38 +1,37 @@
-﻿:root {
-    --senai-red: hsl(0, 75%, 35%);
-    --senai-red-glow: hsl(0, 80%, 48%);
-    --senai-red-deep: hsl(0, 70%, 22%);
-    --senai-red-soft: hsl(0, 75%, 96%);
-    --border: hsl(0, 0%, 90%);
-    --shadow-soft: 0 10px 30px -10px hsl(0 70% 15% / 0.18);
-    --gradient-hero: linear-gradient( 135deg, hsl(0 70% 22%) 0%, hsl(0 75% 35%) 50%, hsl(0 80% 28%) 100% );
-}
-
+﻿/* ==========================================
+   RESET GERAL
+   ========================================== */
+html,
 body {
     margin: 0;
-    font-family: 'Inter', sans-serif;
-    background: #f7f7f7;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+    background-color: #f4f4f4;
+    font-family: 'Montserrat', sans-serif;
 }
 
-/* ---------- Header SENAI (opcional) ---------- */
+/* ==========================================
+   HEADER / TOPBAR
+   ========================================== */
 .senai-header {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 24px;
     padding: 14px 28px;
-    background: var(--gradient-hero);
+    background: #8b0000;
     color: #fff;
-    box-shadow: var(--shadow-soft);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    box-sizing: border-box;
 }
 
-    .senai-header .brand {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
+.senai-header .brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
 
 .senai-badge {
     display: inline-flex;
@@ -40,13 +39,13 @@ body {
     justify-content: center;
     padding: 6px 14px;
     background: #fff;
-    color: var(--senai-red);
+    color: #8b0000;
     font-weight: 900;
     font-style: italic;
     letter-spacing: .08em;
     font-size: 18px;
     transform: skewX(-8deg);
-    box-shadow: 0 4px 12px hsl(0 70% 10% / .35);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .senai-header h1 {
@@ -61,26 +60,33 @@ body {
     opacity: .85;
 }
 
-main {
-    width: 100vw;
-    margin-top: -2.5em;
+/* ==========================================
+   TOPBAR
+   ========================================== */
+.topbar {
+    background: #8b0000;
+    color: white;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-/* Essa classe vai alinhar o topo perfeitamente com os cartões de baixo */
 .topbar-left {
     display: flex;
     align-items: center;
     gap: 15px;
     width: 100%;
-    max-width: 1200px; /* Mesma largura máxima do container de baixo */
+    max-width: 1200px;
 }
 
-    .topbar-left h3 {
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 600;
-        font-size: 18px;
-        margin: 0;
-    }
+.topbar-left h3 {
+    font-weight: 600;
+    font-size: 18px;
+    margin: 0;
+}
 
 .logo-badge {
     background: white;
@@ -90,15 +96,23 @@ main {
     align-items: center;
 }
 
-    .logo-badge span {
-        color: #cc0000;
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 800;
-        font-size: 14px;
-    }
+.logo-badge span {
+    color: #cc0000;
+    font-weight: 800;
+    font-size: 14px;
+}
 
 /* ==========================================
-   CONTAINER E CONTEÚDO (Expandido para 1200px)
+   MAIN
+   ========================================== */
+main {
+    width: 100%;
+    margin-top: 0;
+    box-sizing: border-box;
+}
+
+/* ==========================================
+   CONTAINER
    ========================================== */
 .container {
     flex: 1;
@@ -107,132 +121,207 @@ main {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    box-sizing: border-box;
 }
 
+/* ==========================================
+   PAGE HEADER
+   ========================================== */
 .page-header {
     width: 100%;
-    max-width: 1200px; /* Mudado de 700px para 1200px */
+    max-width: 1200px;
     margin-bottom: 24px;
 }
 
-    .page-header h2 {
-        font-family: 'Montserrat', sans-serif;
-        font-weight: 800;
-        color: #1a1a1a;
-        font-size: 26px;
-    }
-
-    .page-header p {
-        color: #888;
-        font-size: 14px;
-        margin-top: 4px;
-    }
-
-    button {
-        color: white;
-        background-color: #cc0000;
-        border: 2px solid red;
-        border-radius: 12px;
-        margin-top: -5em;
-        margin-bottom: 1em;
-        margin-left: 63.6em;
-        padding: 5px 15px;
-    }
-
-    button:hover {
-        background-color: #8b0000;
-        border: 2px solid rgb(179, 0, 0);
-    }
-
-.historico {
-    width: 100%;
-    max-width: 1200px; /* Mudado de 700px para 1200px */
+.page-header-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
 }
 
+.page-header h2 {
+    font-weight: 800;
+    color: #1a1a1a;
+    font-size: 26px;
+    margin-bottom: 5px;
+}
+
+.page-header p {
+    color: #888;
+    font-size: 14px;
+    margin-top: 4px;
+}
+
+/* ==========================================
+   CARD ACTIONS
+   ========================================== */
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+}
+
+/* ==========================================
+   BOTÕES
+   ========================================== */
+button,
+.botao-adicionar,
+.botao-gerenciar {
+    color: white;
+    background-color: #cc0000;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover,
+.botao-adicionar:hover,
+.botao-gerenciar:hover {
+    background-color: #8b0000;
+}
+
+/* ==========================================
+   HISTÓRICO
+   ========================================== */
+.historico {
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* ==========================================
+   CARD CHAMADO
+   ========================================== */
 .card-chamado {
     background: white;
     border-radius: 12px;
     padding: 20px 24px;
     margin-bottom: 14px;
     border: 1px solid #eee;
-    border-left: 4px solid #ccc; /* Cor padrão cinza para quando não tiver status mapeado */
-    cursor: pointer;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    border-left: 5px solid #cc0000;
+    transition: 0.3s;
 }
 
-    .card-chamado:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,0.07);
-    }
+.card-chamado:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    transform: translateY(-2px);
+}
 
-    /* Cores dinâmicas baseadas no status que você colocou no C# */
-    .card-chamado .status.andamento {
-        background: #ff9800; /* Laranja para Em Andamento */
-    }
-
-    .card-chamado .status.resolvido {
-        background: #2e7d32; /* Verde para Concluída */
-    }
-
-    .card-chamado .status.cancelado {
-        background: #d32f2f; /* Vermelho escuro para Cancelada */
-    }
-
-    /* Mantém o padrão vermelho caso seja "Aberta" (sem classe específica) */
-    .card-chamado .status {
-        background: #cc0000;
-        color: white;
-        padding: 4px 12px;
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-    }
-
+/* ==========================================
+   TOPO CARD
+   ========================================== */
 .card-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
 }
 
-.card-date {
-    font-size: 13px;
-    color: #666;
-    margin-top: 6px;
+.card-top strong {
+    font-size: 18px;
+    color: #222;
 }
 
-/* Detalhes expansíveis */
-.detalhes {
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.4s ease, opacity 0.3s ease;
-}
-
-.card-chamado.expandido .detalhes {
-    max-height: 800px; /* Aumentado para caber todos os dados do seu HTML */
-    opacity: 1;
-    margin-top: 15px;
-    padding-top: 12px;
-    border-top: 1px solid #eee;
-}
-
-.teste {
-}
-
-.btn-word {
-    display: inline-block;
-    margin-top: 12px;
-    padding: 10px 14px;
-    background: #1f5eff;
+/* ==========================================
+   STATUS
+   ========================================== */
+.status {
+    background: #cc0000;
     color: white;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    transition: .2s;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
-    .btn-word:hover {
-        background: #1748c7;
+.status.admin {
+    background: #2e7d32;
+}
+
+.status.usuario {
+    background: #1565c0;
+}
+
+/* ==========================================
+   INFORMAÇÕES
+   ========================================== */
+.card-date {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+/* ==========================================
+   DETALHES
+   ========================================== */
+.detalhes {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid #eee;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+}
+
+.detalhes p {
+    margin: 0;
+    color: #444;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.detalhes strong {
+    color: #111;
+}
+
+/* ==========================================
+   EMPTY STATE
+   ========================================== */
+.empty-state {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    border: 1px solid #eee;
+}
+
+.empty-state .icon {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #777;
+    font-size: 15px;
+}
+
+/* ==========================================
+   RESPONSIVO
+   ========================================== */
+@media (max-width: 768px) {
+
+    .card-top {
+        flex-direction: column;
+        align-items: flex-start;
     }
+
+    .detalhes {
+        grid-template-columns: 1fr;
+    }
+
+    .page-header h2 {
+        font-size: 22px;
+    }
+
+    .topbar-left h3 {
+        font-size: 16px;
+    }
+}
