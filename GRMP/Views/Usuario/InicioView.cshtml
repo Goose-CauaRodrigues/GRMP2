@@ -10,15 +10,17 @@
 <div class="container">
 
     <div class="page-header">
-        <h2>Ordens de Serviço Registradas</h2>
-        <p>Visualização de todos os chamados do sistema</p>
-        <button type="button"
-                class="botao-adicionar"
-                onclick="window.location.href='@Url.Action("CriarOSExibir", "Usuario")'">
-
-            Adicionar Solicitação
-
-        </button>
+        <div class="page-header-top">
+            <div>
+                <h2>Ordens de Serviço Registradas</h2>
+                <p>Visualização de todos os chamados do sistema</p>
+            </div>
+            <button type="button"
+                    class="botao-adicionar"
+                    onclick="window.location.href='@Url.Action("CriarOSExibir", "Usuario")'">
+                Adicionar Solicitação
+            </button>
+        </div>
     </div>
 
     <div class="historico">
@@ -50,7 +52,6 @@
                     _ => "Não definido"
                 };
 
-                // Classe CSS do status
                 string statusClass = statusValor switch
                 {
                     2 => "resolvido",
@@ -88,16 +89,13 @@
                     _ => "Não definida"
                 };
 
+                string idOS = c["idOrdemServico"] != DBNull.Value ? c["idOrdemServico"].ToString() : "";
+
                 <div class="card-chamado" onclick="expandir(this)">
 
                     <div class="card-top">
-                        <strong>
-                            @c["nomeBloco"] - @c["nomeLocal"]
-                        </strong>
-
-                        <span class="status @statusClass">
-                            @status
-                        </span>
+                        <strong>@c["nomeBloco"] - @c["nomeLocal"]</strong>
+                        <span class="status @statusClass">@status</span>
                     </div>
 
                     <p class="card-date">
@@ -105,7 +103,6 @@
                         @(c["dataSolicitacao"] != DBNull.Value
                             ? Convert.ToDateTime(c["dataSolicitacao"]).ToString("dd/MM/yyyy")
                             : "-")
-
                     </p>
 
                     <p class="card-date">
@@ -118,7 +115,6 @@
                         @(c["dataFinalizacao"] != DBNull.Value
                             ? Convert.ToDateTime(c["dataFinalizacao"]).ToString("dd/MM/yyyy")
                             : "-")
-
                     </p>
 
                     <p class="card-date">
@@ -190,10 +186,25 @@
                            asp-action="BaixarOSWord"
                            asp-route-id="@c["idOrdemServico"]"
                            class="btn-word">
-
                             Baixar Word
-
                         </a>
+
+                        <a asp-controller="Usuario"
+                           asp-action="AlterarOSExibir"
+                           asp-route-id="@c["idOrdemServico"]"
+                           class="btn-gen" style="color: white;
+                            background-color: #cc0000;
+                            border: none;
+                            border-radius: 10px;
+                            padding: 12.5px 23px;
+                            font-size: 14px;
+                            font-weight: 600;
+                            cursor: pointer;
+                            transition: 0.3s;">
+                            Alterar
+                        </a>
+
+                       
 
                     </div>
 
