@@ -320,7 +320,7 @@ namespace GRMP.Controllers
             //-----------------------------------
 
             return View(
-                "AlteraOSExibirView",
+                "AlterarOSExibirView",
                 osVm
             );
         }
