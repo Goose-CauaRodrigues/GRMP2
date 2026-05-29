@@ -189,47 +189,77 @@
             }
 
             <!-- DEPÓSITO ALMOXARIFADO -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="DEP_ALMO" title="Depósito Almoxarifado">
+            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Depósito Almoxarifado" title="Depósito Almoxarifado">
                 <div class="bloco"
                      style="clip-path: polygon(14.6% 7.1%, 16.6% 7.1%, 16.7% 11.2%, 14.5% 11.0%);">
                 </div>
             </a>
-            @if (Model.BlocosComOs.Contains("DEP_ALMO"))
+            @if (Model.BlocosComOs.Contains("Depósito Almoxarifado"))
             {
                 <div class="pin" style="top:6.3%; left:15.5%;"></div>
             }
 
             <!-- DEPÓSITO QUÍMICO -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="DEP_QUIM" title="Depósito Químico">
+            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Depósito Quimica" title="Depósito Químico">
                 <div class="bloco"
                      style="clip-path: polygon(23.3% 7.1%, 25.9% 9.0%, 25.2% 12.4%, 22.4% 10.7%);">
                 </div>
             </a>
-            @if (Model.BlocosComOs.Contains("DEP_QUIM"))
+            @if (Model.BlocosComOs.Contains("Depósito Quimica"))
             {
                 <div class="pin" style="top:7.5%; left:24.5%;"></div>
             }
 
-            <!-- RESTAURANTE / VESTIÁRIO -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="REST" title="Restaurante / Vestiário">
+            <!-- VESTIÁRIO -->
+            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Vestiário" title="Vestiário">
                 <div class="bloco"
                      style="clip-path: polygon(96.8% 15.0%, 99.0% 17.0%, 95.8% 27.8%, 93.3% 26.6%);">
                 </div>
             </a>
-            @if (Model.BlocosComOs.Contains("REST"))
+            @if (Model.BlocosComOs.Contains("Vestiário"))
             {
                 <div class="pin" style="top:18.8%; left:96.6%;"></div>
             }
 
             <!-- SERVIÇOS -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="SERV" title="Serviços">
+            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Serviços" title="Serviços">
                 <div class="bloco"
                      style="clip-path: polygon(59.6% 87.4%, 57.7% 85.7%, 54.3% 97.3%, 56.3% 98.7%);">
                 </div>
             </a>
-            @if (Model.BlocosComOs.Contains("SERV"))
+            @if (Model.BlocosComOs.Contains("Serviços"))
             {
                 <div class="pin" style="top:89.5%; left:57.1%;"></div>
+            }
+
+            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Sala de Máquinas" title="Sala de Máquinas">
+                <div class="bloco"
+                     style="clip-path: polygon(40.8% 32.7%, 42.5% 33.9%, 41.1% 38.2%, 39.7% 37.0%);">
+                </div>
+            </a>
+            @if (Model.BlocosComOs.Contains("Sala de Máquinas"))
+            {
+                <div class="pin" style="top:32.5%; left:41.1%;"></div>
+            }
+
+            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Banda Marcial" title="Banda Marcial">
+                <div class="bloco"
+                     style="clip-path: polygon(53.6% 84.9%, 52.1% 90.6%, 53.6% 91.6%, 55.3% 85.8%);">
+                </div>
+            </a>
+            @if (Model.BlocosComOs.Contains("Banda Marcial"))
+            {
+                <div class="pin" style="top:85.6%; left:53.5%;"></div>
+            }
+
+            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Instituto de Informação" title="Instituto de Informação">
+                <div class="bloco"
+                     style="clip-path: polygon(36.2% 86.5%, 29.0% 80.3%, 29.8% 77.2%, 36.9% 83.4%);">
+                </div>
+            </a>
+            @if (Model.BlocosComOs.Contains("Instituto de Informação"))
+            {
+                <div class="pin" style="top:78.1%; left:32.7%;"></div>
             }
 
         </div>

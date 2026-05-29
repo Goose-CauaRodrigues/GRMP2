@@ -71,7 +71,7 @@ namespace GRMP.Controllers
         // =========================
         // MAPA GERAL
         // =========================
-        public IActionResult Index(int? status)
+        public IActionResult MapaExibir(int? status)
         {
             string idUsuario = HttpContext.Session.GetString("idUsuario");
 
@@ -97,7 +97,7 @@ namespace GRMP.Controllers
                 // Se for nível 1 -> redireciona
                 else if (nvAcesso == 2)
                 {
-                    return RedirectToAction("Index", "Mapa");
+                    return RedirectToAction("MapaExibir", "Mapa");
 
 
                 }
@@ -192,7 +192,7 @@ namespace GRMP.Controllers
 
             viewModel.StatusSelecionado = status;
 
-            return View(viewModel);
+            return View("MapaView", viewModel);
         }
 
         // =========================
