@@ -82,7 +82,7 @@
                 if (nv == "3")
                 {
                     <a asp-controller="Dashboard"
-                       asp-action="Index"
+                       asp-action="DashboardExibir"
                        style="
                         text-decoration:none;
                         color:white;
@@ -96,6 +96,23 @@
                         Relatório
                     </a>
                 }
+                
+                // Fica a vontade de trocar o A por um BUTTON se precisar
+
+                <a asp-controller="ESCREVER"
+                   asp-action="ESCREVER"
+                   style="
+                    text-decoration:none;
+                    color:white;
+                    font-size:14px;
+                    font-weight:600;
+                    padding:10px 16px;
+                    border-radius:8px;
+                    transition:0.2s;
+                    display:inline-block;
+                    ">
+                    Sair
+                </a>
             }
         </nav>
     </header>
@@ -113,7 +130,7 @@
                  A <a> cobre todo o mapa (position absolute inset 0 pointer-events none).
                  O .bloco tem o clip-path e pointer-events all — só a área do polígono recebe clique. -->
             <!-- BLOCO A -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Bloco A" title="Bloco A">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Bloco A" title="Bloco A">
                 <div class="bloco"
                      style="clip-path: polygon(42.1% 14.3%, 22.0% 88.6%, 12.6% 80.4%, 32.5% 7.1%);">
                 </div>
@@ -124,7 +141,7 @@
             }
 
             <!-- BLOCO B -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Bloco B" title="Bloco B">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Bloco B" title="Bloco B">
                 <div class="bloco"
                      style="clip-path: polygon(52.1% 67.9%, 44.3% 94.6%, 35.9% 87.2%, 44.2% 60.0%);">
                 </div>
@@ -135,7 +152,7 @@
             }
 
             <!-- BLOCO C -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Bloco C" title="Bloco C">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Bloco C" title="Bloco C">
                 <div class="bloco"
                      style="clip-path: polygon(54.9% 58.6%, 37.1% 42.7%, 34.3% 51.1%, 52.1% 67.7%);">
                 </div>
@@ -146,7 +163,7 @@
             }
 
             <!-- BLOCO D -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Bloco D" title="Bloco D">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Bloco D" title="Bloco D">
                 <div class="bloco"
                      style="clip-path: polygon(55.7% 51.3%, 66.0% 16.7%, 53.6% 6.2%, 42.9% 40.3%);">
                 </div>
@@ -157,7 +174,7 @@
             }
 
             <!-- BLOCO E -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Bloco E" title="Bloco E">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Bloco E" title="Bloco E">
                 <div class="bloco"
                      style="clip-path: polygon(68.7% 27.3%, 74.9% 33.1%, 66.6% 61.0%, 59.9% 55.4%);">
                 </div>
@@ -168,7 +185,7 @@
             }
 
             <!-- BLOCO F -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Bloco F" title="Bloco F">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Bloco F" title="Bloco F">
                 <div class="bloco"
                      style="clip-path: polygon(55.2% 73.0%, 58.2% 62.6%, 76.6% 78.3%, 73.5% 89.3%);">
                 </div>
@@ -179,7 +196,7 @@
             }
 
             <!-- BLOCO G -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Bloco G" title="Bloco G">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Bloco G" title="Bloco G">
                 <div class="bloco"
                      style="clip-path: polygon(72.7% 56.4%, 83.7% 65.8%, 81.2% 73.7%, 70.3% 64.6%);">
                 </div>
@@ -190,7 +207,7 @@
             }
 
             <!-- BLOCO H -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Bloco H" title="Bloco H">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Bloco H" title="Bloco H">
                 <div class="bloco"
                      style="clip-path: polygon(82.6% 43.9%, 92.9% 52.1%, 88.8% 67.0%, 78.1% 58.1%);">
                 </div>
@@ -201,7 +218,7 @@
             }
 
             <!-- DEPÓSITO ALMOXARIFADO -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Depósito Almoxarifado" title="Depósito Almoxarifado">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Depósito Almoxarifado" title="Depósito Almoxarifado">
                 <div class="bloco"
                      style="clip-path: polygon(14.6% 7.1%, 16.6% 7.1%, 16.7% 11.2%, 14.5% 11.0%);">
                 </div>
@@ -212,7 +229,7 @@
             }
 
             <!-- DEPÓSITO QUÍMICO -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Depósito Quimica" title="Depósito Químico">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Depósito Quimica" title="Depósito Químico">
                 <div class="bloco"
                      style="clip-path: polygon(23.3% 7.1%, 25.9% 9.0%, 25.2% 12.4%, 22.4% 10.7%);">
                 </div>
@@ -223,7 +240,7 @@
             }
 
             <!-- VESTIÁRIO -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Vestiário" title="Vestiário">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Vestiário" title="Vestiário">
                 <div class="bloco"
                      style="clip-path: polygon(96.8% 15.0%, 99.0% 17.0%, 95.8% 27.8%, 93.3% 26.6%);">
                 </div>
@@ -234,7 +251,7 @@
             }
 
             <!-- SERVIÇOS -->
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Serviços" title="Serviços">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Serviços" title="Serviços">
                 <div class="bloco"
                      style="clip-path: polygon(59.6% 87.4%, 57.7% 85.7%, 54.3% 97.3%, 56.3% 98.7%);">
                 </div>
@@ -244,7 +261,7 @@
                 <div class="pin" style="top:89.5%; left:57.1%;"></div>
             }
 
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Sala de Máquinas" title="Sala de Máquinas">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Sala de Máquinas" title="Sala de Máquinas">
                 <div class="bloco"
                      style="clip-path: polygon(40.8% 32.7%, 42.5% 33.9%, 41.1% 38.2%, 39.7% 37.0%);">
                 </div>
@@ -254,7 +271,7 @@
                 <div class="pin" style="top:32.5%; left:41.1%;"></div>
             }
 
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Banda Marcial" title="Banda Marcial">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Banda Marcial" title="Banda Marcial">
                 <div class="bloco"
                      style="clip-path: polygon(53.6% 84.9%, 52.1% 90.6%, 53.6% 91.6%, 55.3% 85.8%);">
                 </div>
@@ -264,7 +281,7 @@
                 <div class="pin" style="top:85.6%; left:53.5%;"></div>
             }
 
-            <a asp-controller="Mapa" asp-action="Bloco" asp-route-id="Instituto de Informação" title="Instituto de Informação">
+            <a asp-controller="Mapa" asp-action="BlocoExibir" asp-route-id="Instituto de Informação" title="Instituto de Informação">
                 <div class="bloco"
                      style="clip-path: polygon(36.2% 86.5%, 29.0% 80.3%, 29.8% 77.2%, 36.9% 83.4%);">
                 </div>
@@ -283,18 +300,18 @@
 
             <div class="tabs">
 
-                <a asp-action="Index"
+                <a asp-action="MapaExibir"
                    class="@(Model.StatusSelecionado == null ? "active" : "")">
                     Todos
                 </a>
 
-                <a asp-action="Index"
+                <a asp-action="MapaExibir"
                    asp-route-status="0"
                    class="@(Model.StatusSelecionado == 0 ? "active" : "")">
                     Abertos
                 </a>
 
-                <a asp-action="Index"
+                <a asp-action="MapaExibir"
                    asp-route-status="1"
                    class="@(Model.StatusSelecionado == 1 ? "active" : "")">
                     Em andamento
@@ -311,9 +328,9 @@
 
                         <span class="status-badge
                             @(chamado.Status == 0 ? "aberto" :
-                                chamado.Status == 1 ? "andamento" :
-                                chamado.Status == 2 ? "resolvido" :
-                                "cancelado")">
+                                  chamado.Status == 1 ? "andamento" :
+                                  chamado.Status == 2 ? "resolvido" :
+                                  "cancelado")">
 
                             @chamado.StatusTexto
                         </span>
@@ -327,7 +344,6 @@
             }
 
         </aside>
-        <!-- /side-panel -->
 
     </main>
 

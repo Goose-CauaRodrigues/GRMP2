@@ -76,7 +76,7 @@
                 if (nv == "3")
                 {
             <a asp-controller="Dashboard"
-               asp-action="Index"
+               asp-action="DashboardExibir"
                style="
                 text-decoration:none;
                 color:white;
@@ -90,6 +90,23 @@
                 Relatório
             </a>
                 }
+
+                // Fica a vontade de trocar o A por um BUTTON se precisar
+
+                <a asp-controller="ESCREVER"
+                   asp-action="ESCREVER"
+                   style="
+                    text-decoration:none;
+                    color:white;
+                    font-size:14px;
+                    font-weight:600;
+                    padding:10px 16px;
+                    border-radius:8px;
+                    transition:0.2s;
+                    display:inline-block;
+                    ">
+                    Sair
+                </a>
             }
         </nav>
     </header>

@@ -39,13 +39,13 @@
             <form asp-controller="Login" asp-action="LoginProcessar" method="post">
                 <div class="field">
                     <label asp-for="Email">Digite seu Email</label>
-                    <input asp-for="Email" type="email" autocomplete="username" placeholder="Exemplo@gmail.com" required/>
+                    <input asp-for="Email" type="email" autocomplete="username" placeholder="Digite o seu email" required/>
                     <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
 
                 <div class="field">
                     <label asp-for="Senha">Digite sua senha</label>
-                    <input asp-for="Senha" type="password" autocomplete="current-password" placeholder="Senha123" required/>
+                    <input asp-for="Senha" type="password" autocomplete="current-password" placeholder="Digite a sua senha" required/>
                     <span asp-validation-for="Senha" class="text-danger"></span>
                </div>
  

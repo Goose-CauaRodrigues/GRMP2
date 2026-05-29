@@ -103,7 +103,7 @@
             );
         }
 
-        var chamadosFiltrados = listaFiltrada.ToList();        
+        var chamadosFiltrados = listaFiltrada.ToList();
     }
 
     @{
@@ -282,7 +282,7 @@
 
                     <div class="card-top">
                         <strong>@c["nomeBloco"] - @c["nomeLocal"]</strong>
-                        <span class="status @statusClass">@status</span>
+                        <span class="status @status">@status</span>
                     </div>
 
                     <p class="card-date">
@@ -369,34 +369,33 @@
                             @(c["emailExecutor"] != DBNull.Value ? c["emailExecutor"] : "-")
                         </p>
 
-                        <a asp-controller="Usuario"
-                           asp-action="BaixarOSWord"
-                           asp-route-id="@c["idOrdemServico"]"
-                           class="btn-word">
-                            Baixar Word
-                        </a>
-                        @{
-                            string id = Context.Session.GetString("idUsuario");
-                            if (id == "1")
-                            {
+                        
+
+                    </div>
+
+                    @{
+                        string id = Context.Session.GetString("idUsuario");
+                        if (id == "1")
+                        {
+                            <div class="acoes-card">
+
+                                <a asp-controller="Usuario"
+                                   asp-action="BaixarOSWord"
+                                   asp-route-id="@c["idOrdemServico"]"
+                                   class="btn-word">
+                                    Baixar Word
+                                </a>
+
                                 <a asp-controller="Usuario"
                                    asp-action="AlterarOSExibir"
                                    asp-route-id="@c["idOrdemServico"]"
-                                   class="btn-gen" style="color: white;
-                                    background-color: #cc0000;
-                                    border: none;
-                                    border-radius: 10px;
-                                    padding: 12.5px 23px;
-                                    font-size: 14px;
-                                    font-weight: 600;
-                                    cursor: pointer;
-                                    transition: 0.3s;">
+                                   class="btn-gen">
                                     Alterar
                                 </a>
-                            }
-                       }
 
-                    </div>
+                            </div>
+                        }
+                    }
 
                 </div>
             }

@@ -89,17 +89,15 @@ namespace GRMP.Controllers
             {
                 int nvAcesso = Convert.ToInt32(dr["nvAcesso"]);
 
-                // Se for nível 3 -> continua normalmente
-                if (nvAcesso == 3)
+                // Se for nível 3 ou 2 -> continua normalmente
+                if (nvAcesso == 3 || nvAcesso == 2)
                 {
                     break;
                 }
                 // Se for nível 1 -> redireciona
-                else if (nvAcesso == 2)
+                else if (nvAcesso == 1)
                 {
-                    return RedirectToAction("MapaExibir", "Mapa");
-
-
+                    return RedirectToAction("InicioExibir", "Usuario");
                 }
                 else
                 {
@@ -146,7 +144,7 @@ namespace GRMP.Controllers
 
                 // CHAMADOS
                 string sqlChamados = $@"
-                    SELECT TOP 10
+                    SELECT
                         os.idOrdemServico,
                         os.descricaoServico,
                         b.nome AS bloco,
@@ -198,11 +196,11 @@ namespace GRMP.Controllers
         // =========================
         // BLOCO
         // =========================
-        public IActionResult Bloco(string id, int? localId)
+        public IActionResult BlocoExibir(string id, int? localId)
         {
             ViewBag.Bloco = id;
 
-            var vm = new BlocoViewModel
+            var viewModel = new BlocoViewModel
             {
                 NomeBloco = id,
                 LocalSelecionado = localId
@@ -236,7 +234,7 @@ namespace GRMP.Controllers
 
                     while (dr.Read())
                     {
-                        vm.Locais.Add(new LocalBlocoViewModel
+                        viewModel.Locais.Add(new LocalBlocoViewModel
                         {
                             Id = Convert.ToInt32(dr["idLocal"]),
                             Nome = dr["nome"].ToString()
@@ -276,7 +274,7 @@ namespace GRMP.Controllers
 
                     while (dr.Read())
                     {
-                        vm.Chamados.Add(new ChamadoBlocoViewModel
+                        viewModel.Chamados.Add(new ChamadoBlocoViewModel
                         {
                             Id = Convert.ToInt32(dr["idOrdemServico"]),
                             Titulo = dr["descricaoServico"].ToString(),
@@ -287,7 +285,7 @@ namespace GRMP.Controllers
                 }
             }
 
-            return View(vm);
+            return View("BlocoView", viewModel);
         }
     }
 }
