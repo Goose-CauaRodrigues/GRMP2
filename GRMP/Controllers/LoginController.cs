@@ -2,6 +2,7 @@
 using GRMP.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjBancoDados.BancoDados;
 using System.Data;
@@ -33,9 +34,21 @@ namespace GRMP.Controllers
 
                 if (dt != null)
                 {
+
                     DataRow row = dt.Rows[0];
 
-                    if (row["Senha"].ToString() == senhaHash)
+
+                    var passwordHasher = new PasswordHasher<Usuario>();
+
+                    string senhaBanco = row["Senha"].ToString();
+
+                    var resultado = passwordHasher.VerifyHashedPassword(
+                        null,
+                        senhaBanco,
+                        Vm_Login.Senha
+                    );
+
+                    if (resultado == PasswordVerificationResult.Success)
                     {
                         HttpContext.Session.SetString("idUsuario", row["idUsuario"].ToString());
                         HttpContext.Session.SetString("nvAcesso", row["nvAcesso"].ToString());
@@ -51,9 +64,26 @@ namespace GRMP.Controllers
                             return RedirectToAction("ListarOSExibir", "Usuario");
                         }
                     }
+
+                    //    if (row["Senha"].ToString() == senhaHash)
+                    //    {
+                    //        HttpContext.Session.SetString("idUsuario", row["idUsuario"].ToString());
+                    //        HttpContext.Session.SetString("nvAcesso", row["nvAcesso"].ToString());
+
+                    //        string nvAcesso = row["nvAcesso"].ToString();
+
+                    //        if (nvAcesso == "3" || nvAcesso == "2")
+                    //        {
+                    //            return RedirectToAction("MapaExibir", "Mapa");
+                    //        }
+                    //        else
+                    //        {
+                    //            return RedirectToAction("ListarOSExibir", "Usuario");
+                    //        }
+                    //    }
                 }
 
-                ViewBag.Erro = "Email ou senha inválidos." + senhaHash;
+                ViewBag.Erro = "Email ou senha inválidos.";
                 return View("LoginExibirView");
             }
             catch (Exception ex)
