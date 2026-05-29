@@ -373,3 +373,9 @@ html, body {
 .status-badge.cancelado {
     background: #555;
 }
+
+.chamado-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}

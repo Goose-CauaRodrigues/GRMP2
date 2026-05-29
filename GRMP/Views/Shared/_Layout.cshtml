@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - GRMP</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Geral.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/GRMP.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -15,7 +15,7 @@
     <header class="senai-header">
         <div class="brand">
             <span class="senai-badge">SENAI</span>
-            <h1>Mapa de Manutenção Predial</h1>
+            <h1>Gestão de Recursos e Manutenção Predial</h1>
         </div>
         <nav style="display:flex; align-items:center; gap:10px;">
             @{
@@ -41,7 +41,7 @@
             </a>
                 }
             <a asp-controller="Usuario"
-               asp-action="InicioExibir"
+                   asp-action="ListarOSExibir"
                style="
                 text-decoration:none;
                 color:white;
@@ -52,7 +52,7 @@
                 transition:0.2s;
                 display:inline-block;
                 ">
-                Início
+                Ordens de Serviço
             </a>
                 if (id == "1")
                 {
@@ -126,68 +126,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        :root {
-        --primary: #d62828;
-        --primary-glow: #ef3b3b;
-        --primary-deep: #7a1414;
-        --background: #1a0808;
-        --foreground: #fbeaea;
-        --muted-foreground: #b89a9a;
-        --border: rgba(255, 255, 255, 0.1);
-        --gradient-primary: linear-gradient(135deg, #d62828, #7a1414);
-        --gradient-radial: radial-gradient(circle at 20% 0%, rgba(214, 40, 40, 0.45), transparent 60%);
-        --shadow-glow: 0 10px 40px -10px rgba(214, 40, 40, 0.6);
-        }
 
-        .link-underline:hover::after {
-        width: 100%;
-        }
-
-        .link-underline:hover {
-        color: var(--primary);
-        }
-
-        .social {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 2.5rem;
-        height: 2.5rem;
-        border-radius: 9999px;
-        border: 1px solid var(--border);
-        color: var(--muted-foreground);
-        transition: all .3s;
-        }
-
-        .social:hover {
-        color: #fff;
-        border-color: var(--primary);
-        }
-
-        .social .bg {
-        position: absolute;
-        inset: 0;
-        border-radius: 9999px;
-        background: var(--gradient-primary);
-        opacity: 0;
-        transition: opacity .3s;
-        }
-
-        .social:hover .bg {
-        opacity: 1;
-        }
-
-        .social svg {
-        position: relative;
-        z-index: 1;
-        }
-
-        .pulse {
-        animation: pulse 2s ease-in-out infinite;
-        }
-    </style>
     <footer class="relative overflow-hidden">
         <!-- glow background -->
         <div aria-hidden class="pointer-events-none absolute inset-0" style="background: var(--gradient-radial)"></div>
@@ -197,23 +136,23 @@
         <div class="relative mx-auto max-w-7xl px-6 pb-10 pt-20 lg:px-10">
 
             <!-- Brand row -->
-            <div class="pb-14" style="border-bottom: 1px solid var(--border)">
+            <div class="pb-14" style="border-bottom: 1px solid var(--footer-border)">
                 <div class="flex items-center gap-3">
                     <div class="flex h-11 w-11 items-center justify-center rounded-xl gradient-primary">
                         <i data-lucide="flame" class="w-5 h-5 text-white"></i>
                     </div>
-                    <span class="text-2xl font-bold tracking-tight">SENAI<span class="text-primary">.</span></span>
+                    <span class="text-2xl font-bold tracking-tight">SENAI</span>
                 </div>
                 <h2 class="mt-6 max-w-2xl text-4xl md:text-5xl font-bold leading-[1.05] tracking-tight">
-                    Educação que <span class="italic text-primary">transforma</span> o futuro da indústria.
+                    Educação que <span class="italic text-danger">transforma</span> o futuro da indústria.
                 </h2>
-                <p class="mt-4 max-w-xl text-base text-muted">
+                <p class="mt-4 max-w-xl text-base">
                     Formando profissionais qualificados para os desafios da indústria brasileira há mais de 80 anos.
                 </p>
             </div>
 
             <!-- Link grid -->
-            <div class="grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
+            @* <div class="grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
 
                 <div>
                     <h3 class="text-xs font-semibold uppercase tracking-[0.2em]">Produto</h3>
@@ -258,22 +197,14 @@
                         <li><a href="#" class="link-underline">Segurança</a></li>
                     </ul>
                 </div>
-            </div>
+            </div> *@
 
             <!-- Bottom bar -->
             <div class="flex flex-col items-start justify-between gap-6 pt-8 md:flex-row md:items-center"
-                 style="border-top: 1px solid var(--border)">
-                <p class="text-xs text-muted">© 2026 SENAI. Todos os direitos reservados.</p>
+                 style="border-top: 1px solid var(--footer-border)">
+                <p class="text-xs">© 2026 SENAI. Todos os direitos reservados.</p>
 
-                <div class="flex items-center gap-2">
-                    <a href="#" class="social" aria-label="Instagram"><span class="bg"></span><i data-lucide="instagram" class="w-4 h-4"></i></a>
-                    <a href="#" class="social" aria-label="Twitter"><span class="bg"></span><i data-lucide="twitter" class="w-4 h-4"></i></a>
-                    <a href="#" class="social" aria-label="Facebook"><span class="bg"></span><i data-lucide="facebook" class="w-4 h-4"></i></a>
-                    <a href="#" class="social" aria-label="Youtube"><span class="bg"></span><i data-lucide="youtube" class="w-4 h-4"></i></a>
-                    <a href="#" class="social" aria-label="Github"><span class="bg"></span><i data-lucide="github" class="w-4 h-4"></i></a>
-                </div>
-
-                <div class="flex items-center gap-2 text-xs text-muted">
+                <div class="flex items-center gap-2 text-xs">
                     <span class="h-1.5 w-1.5 rounded-full bg-primary pulse"></span>
                     Todos os sistemas operacionais
                 </div>

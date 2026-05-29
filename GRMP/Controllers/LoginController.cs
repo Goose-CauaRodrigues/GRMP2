@@ -13,9 +13,9 @@ namespace GRMP.Controllers
 {
     public class LoginController : Controller
     {
-        public IActionResult Login()
+        public IActionResult LoginExibir()
         {
-            return View("LoginView");
+            return View("LoginExibirView");
         }
 
 
@@ -48,18 +48,18 @@ namespace GRMP.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("InicioExibir", "Usuario");
+                            return RedirectToAction("ListarOSExibir", "Usuario");
                         }
                     }
                 }
 
                 ViewBag.Erro = "Email ou senha inválidos." + senhaHash;
-                return View("LoginView");
+                return View("LoginExibirView");
             }
             catch (Exception ex)
             {
                 ViewBag.Erro = ex.Message;
-                return View("LoginView");
+                return View("LoginExibirView");
             }
         }
 

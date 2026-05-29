@@ -20,7 +20,7 @@ namespace GRMP.Controllers
 
             if (string.IsNullOrEmpty(idUsuario))
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("LoginExibir", "Login");
             }
 
             Usuario Us = new Usuario();
@@ -46,7 +46,7 @@ namespace GRMP.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("InicioExibir", "Usuario");
+                    return RedirectToAction("ListarOSExibir", "Usuario");
 
                 }
             }
@@ -63,7 +63,7 @@ namespace GRMP.Controllers
 
             if (string.IsNullOrEmpty(idUsuario))
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("LoginExibir", "Login");
             }
             return View("CriarUsuarioExibirView");
         }
@@ -136,7 +136,7 @@ namespace GRMP.Controllers
 
             if (string.IsNullOrEmpty(idUsuario))
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("LoginExibir", "Login");
             }
 
             UsuarioViewModel USVM = new UsuarioViewModel();

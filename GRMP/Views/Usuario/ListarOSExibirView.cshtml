@@ -185,11 +185,7 @@
 
                 @if (paginaAtual > 1)
                 {
-                    <a href="?pagina=@(paginaAtual - 1)
-                        &busca=@busca
-                        &executor=@executorFiltro
-                        &solicitante=@solicitanteFiltro
-                        &periodo=@periodoFiltro">
+                    <a href="?pagina=@(paginaAtual - 1)&busca=@busca&executor=@executorFiltro&solicitante=@solicitanteFiltro&periodo=@periodoFiltro">
                         ← Anterior
                     </a>
                 }
@@ -200,11 +196,7 @@
 
                 @if (paginaAtual < totalPaginas)
                 {
-                    <a href="?pagina=@(paginaAtual + 1)
-                        &busca=@busca
-                        &executor=@executorFiltro
-                        &solicitante=@solicitanteFiltro
-                        &periodo=@periodoFiltro">
+                    <a href="?pagina=@(paginaAtual + 1)&busca=@busca&executor=@executorFiltro&solicitante=@solicitanteFiltro&periodo=@periodoFiltro">
                         Próxima →
                     </a>
                 }

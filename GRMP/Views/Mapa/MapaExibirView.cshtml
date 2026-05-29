@@ -21,7 +21,7 @@
     <header class="senai-header">
         <div class="brand">
             <span class="senai-badge">SENAI</span>
-            <h1>Mapa de Manutenção Predial</h1>
+            <h1>Gestão de Recursos e Manutenção Predial</h1>
         </div>
         <nav style="display:flex; align-items:center; gap:10px;">
             @{
@@ -47,7 +47,7 @@
                     </a>
                 }
                 <a asp-controller="Usuario"
-                   asp-action="InicioExibir"
+                   asp-action="ListarOSExibir"
                    style="
                     text-decoration:none;
                     color:white;
@@ -58,7 +58,7 @@
                     transition:0.2s;
                     display:inline-block;
                     ">
-                    Início
+                    Ordens de Serviço
                 </a>
                 if (id == "1")
                 {
@@ -321,26 +321,33 @@
 
             @foreach (var chamado in Model.Chamados)
             {
-                <div class="chamado-card">
+                <a asp-controller="Usuario"
+                   asp-action="ListarOSExibir"
+                   asp-route-busca="@chamado.Titulo"
+                   class="chamado-link">
 
-                    <div class="top">
-                        <span class="id">#@chamado.Id</span>
+                    <div class="chamado-card">
 
-                        <span class="status-badge
-                            @(chamado.Status == 0 ? "aberto" :
-                                  chamado.Status == 1 ? "andamento" :
-                                  chamado.Status == 2 ? "resolvido" :
-                                  "cancelado")">
+                        <div class="top">
+                            <span class="id">#@chamado.Id</span>
 
-                            @chamado.StatusTexto
-                        </span>
+                            <span class="status-badge
+                                @(chamado.Status == 0 ? "aberto" :
+                                        chamado.Status == 1 ? "andamento" :
+                                        chamado.Status == 2 ? "resolvido" :
+                                        "cancelado")">
+
+                                @chamado.StatusTexto
+                            </span>
+                        </div>
+
+                        <p class="titulo">@chamado.Titulo</p>
+
+                        <p class="meta">@chamado.Bloco</p>
+
                     </div>
 
-                    <p class="titulo">@chamado.Titulo</p>
-
-                    <p class="meta">@chamado.Bloco</p>
-
-                </div>
+                </a>
             }
 
         </aside>

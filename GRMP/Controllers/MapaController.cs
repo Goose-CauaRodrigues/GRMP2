@@ -77,7 +77,7 @@ namespace GRMP.Controllers
 
             if (string.IsNullOrEmpty(idUsuario))
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("LoginExibir", "Login");
             }
 
             Usuario Us = new Usuario();
@@ -97,11 +97,11 @@ namespace GRMP.Controllers
                 // Se for nível 1 -> redireciona
                 else if (nvAcesso == 1)
                 {
-                    return RedirectToAction("InicioExibir", "Usuario");
+                    return RedirectToAction("ListarOSExibir", "Usuario");
                 }
                 else
                 {
-                    return RedirectToAction("InicioExibir", "Usuario");
+                    return RedirectToAction("ListarOSExibir", "Usuario");
 
                 }
             }
@@ -190,7 +190,7 @@ namespace GRMP.Controllers
 
             viewModel.StatusSelecionado = status;
 
-            return View("MapaView", viewModel);
+            return View("MapaExibirView", viewModel);
         }
 
         // =========================
@@ -285,7 +285,7 @@ namespace GRMP.Controllers
                 }
             }
 
-            return View("BlocoView", viewModel);
+            return View("BlocoExibirView", viewModel);
         }
     }
 }

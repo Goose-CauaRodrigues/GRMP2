@@ -183,7 +183,8 @@
                         else statusClass = "nao-iniciado";
 
                         lista.innerHTML += `
-                            <a href="#" class="chamado-card"> <!-- Adicionado <a> para o card ser clicável -->
+                             <a href="/Usuario/ListarOSExibir?busca=${encodeURIComponent(os.titulo)}"
+                             class="chamado-card">
                                 <div class="top">
                                     <span class="id">#${os.id}</span>
                                     <span class="status-badge ${statusClass}">
@@ -191,7 +192,7 @@
                                     </span>
                                 </div>
                                 <p class="titulo">${os.titulo}</p>
-                                <p class="meta">${localNome}</p> <!-- Adicionado meta para o nome do local -->
+                                <p class="meta">${localNome}</p>
                             </a>`;
                     });
 
