@@ -18,7 +18,13 @@
             <h1>Mapa de Manutenção Predial</h1>
         </div>
         <nav style="display:flex; align-items:center; gap:10px;">
-
+            @{
+                string id = Context.Session.GetString("idUsuario");
+                string nv = Context.Session.GetString("nvAcesso");
+            }
+            @{
+                if(nv == "2" || nv == "3")
+                {
             <a asp-controller="Mapa"
                asp-action="Index"
                style="
@@ -33,7 +39,7 @@
                 ">
                 Mapa
             </a>
-
+                }
             <a asp-controller="Usuario"
                asp-action="InicioExibir"
                style="
@@ -48,7 +54,8 @@
                 ">
                 Início
             </a>
-
+                if (id == "1")
+                {
             <a asp-controller="GerenciarUsuarios"
                asp-action="ListaUsuariosExibir"
                style="
@@ -63,7 +70,8 @@
                 ">
                 Usuarios
             </a>
-
+                }else if (nv == "3")
+                {
             <a asp-controller="Dashboard"
                asp-action="Index"
                style="
@@ -78,7 +86,8 @@
                 ">
                 Relatório
             </a>
-
+                }
+            }
         </nav>
     </header>
 

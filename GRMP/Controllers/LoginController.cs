@@ -38,6 +38,7 @@ namespace GRMP.Controllers
                     if (row["Senha"].ToString() == senhaHash)
                     {
                         HttpContext.Session.SetString("idUsuario", row["idUsuario"].ToString());
+                        HttpContext.Session.SetString("nvAcesso", row["nvAcesso"].ToString());
 
                         string nvAcesso = row["nvAcesso"].ToString();
 
