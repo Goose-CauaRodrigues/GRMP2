@@ -19,17 +19,17 @@
 
 //Cauã sala adriano
 
-//{
-//  "connectionstrings": {
-//    "stringconexaosqlserver": "data source=desktop-8a0m9r5\\sqlexpress;database=grmpbancodados;user id=sa;password=sa;trustservercertificate=true"
-//  }
-//} //cauã em casa
-
 {
-  "ConnectionStrings": {
-    "StringConexaoSQLServer": "Data Source=.;Initial Catalog=GRMPBancoDados;Integrated Security=True;TrustServerCertificate=True"
-  } // nicolas em casa
-}
+  "connectionstrings": {
+    "stringconexaosqlserver": "data source=desktop-8a0m9r5\\sqlexpress;database=grmpbancodados;user id=sa;password=sa;trustservercertificate=true"
+  }
+} //cauã em casa
+
+//{
+//  "ConnectionStrings": {
+//    "StringConexaoSQLServer": "Data Source=.;Initial Catalog=GRMPBancoDados;Integrated Security=True;TrustServerCertificate=True"
+//  } // nicolas em casa
+//}
 
 //{
 //  "ConnectionStrings": {

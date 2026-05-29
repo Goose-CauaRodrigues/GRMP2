@@ -63,6 +63,12 @@ namespace GRMP.Controllers
             }
         }
 
+        public IActionResult SairProcessar()
+        {
+            HttpContext.Session.Clear();
+
+            return View("LoginExibirView");
+        }
         private string GerarHash(string senha)
         {
             var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(senha));
