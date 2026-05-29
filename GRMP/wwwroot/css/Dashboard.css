@@ -202,44 +202,99 @@ body {
         text-decoration: none;
     }
 
+/* ===== Metric Cards (redesign) ===== */
 .metric-card {
-    background: #f8f9fa;
-    border-radius: 10px;
-    padding: .9rem 1rem;
     position: relative;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.06);
+    border-radius: 14px;
+    padding: 1rem 1.1rem 1rem 1.25rem;
     overflow: hidden;
-    border: none;
+    box-shadow: 0 1px 2px rgba(16,24,40,.04), 0 4px 16px -8px rgba(16,24,40,.08);
+    transition: transform .25s cubic-bezier(.4,0,.2,1), box-shadow .25s cubic-bezier(.4,0,.2,1), border-color .25s ease;
+    isolation: isolate;
 }
 
-    .metric-card .mc-bar {
+    .metric-card::before {
+        /* faixa lateral colorida */
+        content: "";
         position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
+        inset: 0 auto 0 0;
         width: 4px;
-        border-radius: 0;
+        background: var(--mc-accent, #378ADD);
+        border-radius: 4px 0 0 4px;
     }
+
+    /*.metric-card::after {*/
+        /* glow sutil de fundo */
+        /*content: "";
+        position: absolute;
+        top: -40%;
+        right: -20%;
+        width: 180px;
+        height: 180px;
+        background: radial-gradient(circle, var(--mc-accent, #378ADD) 0%, transparent 70%);
+        opacity: .08;
+        z-index: -1;
+        transition: opacity .3s ease;
+    }*/
+
+    .metric-card:hover {
+        transform: translateY(-2px);
+        border-color: rgba(0,0,0,.10);
+        box-shadow: 0 4px 8px rgba(16,24,40,.05), 0 16px 32px -12px rgba(16,24,40,.15);
+    }
+
+        .metric-card:hover::after {
+            opacity: .14;
+        }
 
     .metric-card .mc-label {
         font-size: 11px;
+        font-weight: 600;
+        letter-spacing: .06em;
+        text-transform: uppercase;
         color: #6c757d;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 6px;
     }
 
+        .metric-card .mc-label::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--mc-accent, #378ADD);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--mc-accent, #378ADD) 18%, transparent);
+        }
+
     .metric-card .mc-val {
-        font-size: 26px;
-        font-weight: 500;
-        line-height: 1;
-        color: #212529;
+        font-size: 30px;
+        font-weight: 700;
+        line-height: 1.05;
+        color: #1a1a1a;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: -.02em;
+        background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .metric-card .mc-sub {
         font-size: 11px;
-        color: #adb5bd;
-        margin-top: 3px;
+        color: #8a93a0;
+        margin-top: 6px;
+        font-weight: 500;
+    }
+
+    .metric-card.mc-total,
+    .metric-card.mc-abertas,
+    .metric-card.mc-andamento,
+    .metric-card.mc-concluidas {
+        --mc-accent: #DC2626;
     }
 
 .chart-card {
