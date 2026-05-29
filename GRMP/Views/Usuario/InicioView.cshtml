@@ -377,21 +377,22 @@
                         </a>
                         @{
                             string id = Context.Session.GetString("idUsuario");
-                            if(id == "1"){
-                        <a asp-controller="Usuario"
-                           asp-action="AlterarOSExibir"
-                           asp-route-id="@c["idOrdemServico"]"
-                           class="btn-gen" style="color: white;
-                            background-color: #cc0000;
-                            border: none;
-                            border-radius: 10px;
-                            padding: 12.5px 23px;
-                            font-size: 14px;
-                            font-weight: 600;
-                            cursor: pointer;
-                            transition: 0.3s;">
-                            Alterar
-                        </a>
+                            if (id == "1")
+                            {
+                                <a asp-controller="Usuario"
+                                   asp-action="AlterarOSExibir"
+                                   asp-route-id="@c["idOrdemServico"]"
+                                   class="btn-gen" style="color: white;
+                                    background-color: #cc0000;
+                                    border: none;
+                                    border-radius: 10px;
+                                    padding: 12.5px 23px;
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                    cursor: pointer;
+                                    transition: 0.3s;">
+                                    Alterar
+                                </a>
                             }
                        }
 
@@ -407,5 +408,9 @@
 <script>
     function expandir(card) {
         card.classList.toggle("expandido");
+    }
+
+        function toggleCard(header) {
+        header.closest('.card-os').classList.toggle('aberto');
     }
 </script>

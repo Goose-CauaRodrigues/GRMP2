@@ -196,6 +196,87 @@ button:hover,
 }
 
 /* ==========================================
+   FILTROS
+   ========================================== */
+.filtros {
+    width: 100%;
+    max-width: 1200px;
+    background: white;
+    border: 1px solid #eee;
+    border-left: 5px solid #cc0000;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr auto;
+    gap: 12px;
+    align-items: center;
+    box-sizing: border-box;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+    .filtros input[type="text"],
+    .filtros input[name="busca"],
+    .filtros select {
+        width: 100%;
+        padding: 10px 14px;
+        font-size: 14px;
+        font-family: 'Montserrat', sans-serif;
+        color: #333;
+        background: #fafafa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-sizing: border-box;
+        transition: 0.2s;
+        outline: none;
+    }
+
+        .filtros input[type="text"]:focus,
+        .filtros input[name="busca"]:focus,
+        .filtros select:focus {
+            border-color: #cc0000;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(204, 0, 0, 0.12);
+        }
+
+    .filtros select {
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23cc0000' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        padding-right: 34px;
+        cursor: pointer;
+    }
+
+    .filtros button {
+        padding: 10px 22px;
+        white-space: nowrap;
+    }
+
+/* Responsivo */
+@media (max-width: 900px) {
+    .filtros {
+        grid-template-columns: 1fr 1fr;
+    }
+
+        .filtros input[name="busca"] {
+            grid-column: 1 / -1;
+        }
+
+        .filtros button {
+            grid-column: 1 / -1;
+        }
+}
+
+@media (max-width: 500px) {
+    .filtros {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ==========================================
    CARD CHAMADO
    ========================================== */
 .card-chamado {
@@ -362,3 +443,47 @@ button:hover,
     .paginacao span {
         font-weight: 600;
     }
+
+/* ===== ADICIONAR ao seu CSS existente ===== */
+
+/* Header do card: coloca título à esquerda e botões à direita */
+.card-os-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    cursor: pointer;
+}
+
+.card-os-header-acoes {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Corpo do card fechado por padrão */
+.card-os-body {
+    display: none;
+}
+
+/* Quando o card estiver aberto, mostra o corpo */
+.card-os.aberto .card-os-body {
+    display: block;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+/* Indicador de seta opcional (gira ao abrir) */
+.card-os-header::after {
+    content: "▼";
+    font-size: 12px;
+    color: #cc0000;
+    transition: transform 0.3s;
+    margin-left: auto;
+}
+
+.card-os.aberto .card-os-header::after {
+    transform: rotate(180deg);
+}
