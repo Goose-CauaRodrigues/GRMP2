@@ -1,0 +1,95 @@
+﻿@model UsuarioViewModel
+
+@{
+    ViewData["Title"] = "Alterar Usuário";
+}
+@{
+    Layout = null;
+}
+
+<link rel="stylesheet" href="~/css/UsuarioCriar.css" />
+
+<div class="container-os">
+
+    <div class="header-pagina">
+
+        <div>
+            <h1>Alterar Usuário</h1>
+            <p>Alterar um usuário no sistema</p>
+        </div>
+
+        <a href="@Url.Action("ListaUsuariosExibir", "GerenciarUsuarios")"
+           class="btn-voltar">
+
+            Voltar
+
+        </a>
+
+    </div>
+
+    <form asp-action="AlterarUsuarioProcessar"
+          asp-controller="GerenciarUsuarios"
+          method="post"
+          class="card-formulario">
+
+
+        <input type="number" asp-for="IdUsuario" value="@Model.IdUsuario" hidden readonly />
+
+        <!-- NOME -->
+        <div class="grupo-form">
+
+            <label asp-for="Nome">
+                Nome
+            </label>
+
+            <input type="text"
+                   asp-for="Nome"
+                   value="@Model.Nome" />
+
+        </div>
+
+        <!-- EMAIL -->
+        <div class="grupo-form">
+
+            <label asp-for="Email">
+                Email
+            </label>
+
+            <input type="email"
+                   asp-for="Email"
+                   value="@Model.Email"
+                   placeholder="@Model.Email" />
+
+        </div>
+
+        <!-- SENHA -->
+        <div class="grupo-form">
+
+            <label asp-for="Senha">
+                Senha
+            </label>
+
+            <input type="password"
+                   asp-for="Senha"
+                   value="@Model.Senha"
+                   placeholder="@Model.Senha" />
+
+        </div>
+
+       
+
+        <!-- BOTÃO -->
+        <div class="acoes-form">
+
+            <button type="submit"
+                    class="btn-salvar">
+
+                Alterar Usuário
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>

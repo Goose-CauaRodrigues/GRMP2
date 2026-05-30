@@ -212,5 +212,96 @@ namespace GRMP.Controllers
                 );
             }
         }
+        public IActionResult AlterarSenhaExibir()
+        {
+            string idUsuario = HttpContext.Session.GetString("idUsuario");
+
+            if (string.IsNullOrEmpty(idUsuario))
+            {
+                return RedirectToAction("LoginExibir", "Login");
+            }
+
+            UsuarioViewModel USVM = new UsuarioViewModel();
+
+            Usuario Us = new Usuario();
+
+            DataTable dt = Us.BuscarPorID(int.Parse(idUsuario));
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow dr = dt.Rows[0];
+
+                USVM.IdUsuario = Convert.ToInt32(dr["IdUsuario"]);
+                USVM.Nome = Convert.ToString(dr["Nome"]);
+                USVM.Email = Convert.ToString(dr["Email"]);
+
+                // NÃO envie hash para a view
+                USVM.Senha = "";
+
+
+            }
+
+            return View("AlterarSenhaExibirView", USVM);
+        }
+        public IActionResult AlterarSenhaProcessar(UsuarioViewModel USVM)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return View(
+                        "AlterarUsuarioExibirView",
+                        USVM
+                    );
+                }
+
+                Usuario Us = new Usuario();
+
+                //-----------------------------------
+                // PREENCHER
+                //-----------------------------------
+
+                Us.idUsuario = USVM.IdUsuario;
+
+                Us.nome = USVM.Nome;
+
+                Us.email = USVM.Email;
+
+                var passwordHasher = new PasswordHasher<Usuario>();
+
+                Us.senha = passwordHasher.HashPassword(
+                    Us,
+                    USVM.Senha
+                );
+
+                Us.nvAcesso = USVM.NvAcesso;
+
+                //-----------------------------------
+                // ALTERAR
+                //-----------------------------------
+
+                Us.Alterar();
+
+                //-----------------------------------
+                // REDIRECIONAR
+                //-----------------------------------
+
+                return RedirectToAction(
+                    "ListarOSExibir","Usuario"
+                );
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(
+                    "",
+                    ex.Message
+                );
+
+                return View(
+                    "AlterarUsuarioExibirView",
+                    USVM
+                );
+            }
+        }
     }
 }
