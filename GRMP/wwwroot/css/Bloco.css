@@ -1,9 +1,5 @@
-﻿/* =========================================================
-   SENAI · Bloco Individual
-   Paleta consistente com Mapa.css
-   ========================================================= */
-:root {
-    --senai-red: hsl(0, 75%, 35%);
+﻿:root {
+    --senai-red: hsl(0, 75%, 35% );
     --senai-red-glow: hsl(0, 80%, 48%);
     --senai-red-deep: hsl(0, 70%, 22%);
     --senai-red-soft: hsl(0, 75%, 96%);
@@ -24,7 +20,7 @@
     --gradient-hero: linear-gradient(135deg, hsl(0 70% 22%) 0%, hsl(0 75% 35%) 50%, hsl(0 80% 28%) 100%);
 }
 
-/* ---------- Reset base ---------- */
+/* Reset base */
 *, *::before, *::after {
     box-sizing: border-box;
 }
@@ -38,10 +34,9 @@ body {
     min-height: 100vh;
 }
 
-/* ---------- Header ---------- */
+/* Header */
 .senai-header {
-    width: 100vw;
-    margin-left: calc(50% - 50vw);
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -80,15 +75,16 @@ body {
     letter-spacing: .02em;
 }
 
-/* ---------- Layout principal: 3 linhas ----------
-   Linha 1: bloco-header (full width)
-   Linha 2: grid-locais  |  painel lateral
-   ------------------------------------------------ */
+/* Layout principal */
 .bloco-wrapper {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 420px; /* Aumentado para 420px igual ao mapa */
-    gap: 24px;
-    padding: 32px 28px;
+    grid-template-columns: minmax(0, 1fr) 420px; /* Ajustado para 420px */
+    grid-template-rows: auto 1fr;
+    gap: 0 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 28px 48px;
+    align-items: start;
 }
 
 /* Header ocupa as duas colunas */
@@ -102,7 +98,7 @@ body {
     min-width: 0;
 }
 
-/* ---------- Back link ---------- */
+/* Back link */
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -119,7 +115,7 @@ body {
         color: var(--senai-red);
     }
 
-/* ---------- Título ---------- */
+/* Título */
 .bloco-titulo {
     display: flex;
     align-items: baseline;
@@ -152,14 +148,14 @@ body {
     line-height: 1.5;
 }
 
-/* ---------- Grade de locais ---------- */
+/* Grade de locais */
 .grid-locais {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 14px;
 }
 
-/* ---------- Card de local ---------- */
+/* Card de local */
 .local-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -234,7 +230,7 @@ body {
     transform: translateX(0);
 }
 
-/* ---------- Empty state ---------- */
+/* Empty state */
 .empty-state {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -255,19 +251,21 @@ body {
     margin: 0;
 }
 
-/* ---------- Painel lateral ---------- */
+/* Painel lateral */
 .side-panel {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow-soft);
+    overflow: hidden;
     position: sticky;
     top: 24px;
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 100px); /* Ajuste para caber na tela */
     overflow-y: auto;
-    transition: var(--transition);
+    transition: box-shadow var(--transition);
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
 }
-
 
     .side-panel::-webkit-scrollbar {
         width: 5px;
@@ -317,28 +315,19 @@ body {
 
 /* Cabeçalho do painel (quando aberto) */
 .panel-content {
-    padding: 20px;
+    /* Removido padding aqui, será adicionado em #listaOs */
     animation: fadeSlideIn .22s ease;
 }
 
-@keyframes fadeSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .panel-header {
-    padding: 20px;
-    border-bottom: 1px solid var(--border);
     display: flex;
-    justify-content: space-between;
     align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 0; /* Removido margin-bottom */
+    padding: 20px; /* Adicionado padding aqui */
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
     background: var(--surface);
     position: sticky;
     top: 0;
@@ -388,7 +377,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 24px 0;
+    padding: 24px 20px; /* Adicionado padding lateral */
     color: var(--text-muted);
     font-size: 13px;
 }
@@ -403,19 +392,13 @@ body {
     flex-shrink: 0;
 }
 
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
 /* Vazio (nenhuma OS) */
 .panel-vazio {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    padding: 32px 0;
+    padding: 32px 20px; /* Adicionado padding lateral */
     color: var(--text-muted);
     font-size: 13px;
     text-align: center;
@@ -429,48 +412,51 @@ body {
         margin: 0;
     }
 
-/* ---------- Cards de OS ---------- */
+/* Cards de OS */
 #listaOs {
-    padding: 16px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 12px; /* Ajustado para 12px */
+    padding: 16px 20px; /* Adicionado padding para os cards */
 }
+
 .chamado-card {
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    padding: 14px;
     background: var(--surface);
-    transition: var(--transition);
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-    display: block;
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--senai-red);
+    border-radius: var(--radius-sm);
+    padding: 13px 14px;
+    box-shadow: var(--shadow-soft);
+    transition: transform var(--transition), box-shadow var(--transition), border-left-color var(--transition);
+    text-decoration: none; /* Garante que o link não tenha sublinhado */
+    color: inherit; /* Garante que a cor do texto seja herdada */
+    display: block; /* Garante que o card ocupe a largura total */
 }
 
     .chamado-card:hover {
-        border-color: var(--senai-red);
-        box-shadow: var(--shadow-soft);
         transform: translateY(-2px);
+        box-shadow: var(--shadow-hover);
+        border-left-color: var(--senai-red-glow);
     }
 
     .chamado-card .top {
         display: flex;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
         margin-bottom: 8px;
     }
 
     .chamado-card .id {
         font-size: 12px;
+        font-weight: 700;
         color: var(--text-muted);
-        font-weight: 600;
+        font-variant-numeric: tabular-nums;
     }
 
     .chamado-card .titulo {
-        font-weight: 600;
+        margin: 0;
         font-size: 14px;
-        margin: 4px 0;
+        font-weight: 600;
         color: var(--text);
         line-height: 1.4;
     }
@@ -480,14 +466,18 @@ body {
         color: var(--text-muted);
         margin-top: 4px;
     }
-/* Badges de Status */
+
+/* Badges de status */
 .status-badge {
+    display: inline-block;
     padding: 3px 10px;
     font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    border-radius: 6px;
+    letter-spacing: .05em;
+    border-radius: 999px;
     color: #fff;
+    white-space: nowrap;
 }
 
     .status-badge.aberto {
@@ -496,7 +486,7 @@ body {
 
     .status-badge.andamento {
         background: var(--status-progress);
-        color: #000;
+        color: #1a1a1a;
     }
 
     .status-badge.finalizado {
@@ -506,37 +496,3 @@ body {
     .status-badge.nao-iniciado {
         background: var(--status-pending);
     }
-
-/* ---------- Responsivo ---------- */
-@media (max-width: 1100px) {
-    .bloco-wrapper {
-        grid-template-columns: 1fr;
-    }
-
-    .side-panel {
-        position: static;
-        max-height: none;
-    }
-}
-
-@media (max-width: 768px) {
-    .bloco-wrapper {
-        padding: 20px 16px 40px;
-    }
-
-    .senai-header {
-        padding: 12px 16px;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 6px;
-    }
-
-    .bloco-titulo h2 {
-        font-size: 22px;
-    }
-
-    .grid-locais {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 10px;
-    }
-}

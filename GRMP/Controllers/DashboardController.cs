@@ -7,13 +7,13 @@ namespace GRMP.Controllers
 {
     public class DashboardController : Controller
     {
-        public IActionResult Index()
+        public IActionResult DashboardExibir()
         {
             string idUsuario = HttpContext.Session.GetString("idUsuario");
 
             if (string.IsNullOrEmpty(idUsuario))
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("LoginExibir", "Login");
             }
 
             Usuario Us = new Usuario();
@@ -33,13 +33,11 @@ namespace GRMP.Controllers
                 // Se for nível 1 -> redireciona
                 else if (nvAcesso == 2)
                 {
-                    return RedirectToAction("Index", "Mapa");
-
-
+                    return RedirectToAction("MapaExibir", "Mapa");
                 }
                 else
                 {
-                    return RedirectToAction("InicioExibir", "Usuario");
+                    return RedirectToAction("ListarOSExibir", "Usuario");
 
                 }
             }
@@ -55,7 +53,7 @@ namespace GRMP.Controllers
                 null
             );
 
-            return View(dados);
+            return View("DashboardExibirView", dados);
         }
     }
 }

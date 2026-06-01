@@ -1,7 +1,7 @@
 ﻿@model UsuarioViewModel
 
 @{
-    ViewData["Title"] = "Novo Usuário";
+    ViewData["Title"] = "Alterar Usuário";
 }
 @{
     Layout = null;
@@ -14,11 +14,11 @@
     <div class="header-pagina">
 
         <div>
-            <h1>Novo Usuário</h1>
-            <p>Registrar um novo usuário no sistema</p>
+            <h1>Alterar Usuário</h1>
+            <p>Alterar um usuário no sistema</p>
         </div>
 
-        <a href="@Url.Action("ListaUsuariosExibir", "GerenciarUsuarios")"
+        <a href="@Url.Action("ListarOSExibir", "Usuario")"
            class="btn-voltar">
 
             Voltar
@@ -27,10 +27,13 @@
 
     </div>
 
-    <form asp-action="CriarUsuarioProcessar"
+    <form asp-action="AlterarSenhaProcessar"
           asp-controller="GerenciarUsuarios"
           method="post"
           class="card-formulario">
+
+
+        <input type="number" asp-for="IdUsuario" value="@Model.IdUsuario" hidden readonly />
 
         <!-- NOME -->
         <div class="grupo-form">
@@ -41,7 +44,7 @@
 
             <input type="text"
                    asp-for="Nome"
-                   placeholder="Digite o nome do usuário" />
+                   value="@Model.Nome" />
 
         </div>
 
@@ -54,7 +57,8 @@
 
             <input type="email"
                    asp-for="Email"
-                   placeholder="Digite o email" />
+                   value="@Model.Email"
+                   placeholder="@Model.Email" />
 
         </div>
 
@@ -67,38 +71,12 @@
 
             <input type="password"
                    asp-for="Senha"
-                   value="Senha123" readonly />
+                   value="@Model.Senha"
+                   placeholder="@Model.Senha" />
 
         </div>
 
-        <!-- NÍVEL DE ACESSO -->
-        <div class="grupo-form">
-
-            <label asp-for="NvAcesso">
-                Nível de Acesso
-            </label>
-
-            <select asp-for="NvAcesso">
-
-                <option value="">
-                    Selecione
-                </option>
-
-                <option value="3">
-                    Administrador
-                </option>
-
-                <option value="2">
-                    Técnico
-                </option>
-
-                <option value="1">
-                    Usuário
-                </option>
-
-            </select>
-
-        </div>
+       
 
         <!-- BOTÃO -->
         <div class="acoes-form">
@@ -106,7 +84,7 @@
             <button type="submit"
                     class="btn-salvar">
 
-                Criar Usuário
+                Alterar Usuário
 
             </button>
 

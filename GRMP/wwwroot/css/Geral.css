@@ -1,0 +1,121 @@
+html {
+  font-size: 14px;
+}
+
+.container{
+    min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+:root {
+    --senai-red: hsl(0, 75%, 35% );
+    --senai-red-glow: hsl(0, 80%, 48%);
+    --senai-red-deep: hsl(0, 70%, 22%);
+    --senai-red-soft: hsl(0, 75%, 96%);
+    --bg: hsl(0, 0%, 98%);
+    --surface: hsl(0, 0%, 100%);
+    --border: hsl(0, 0%, 90%);
+    --text: hsl(0, 0%, 10%);
+    --text-muted: hsl(0, 0%, 42%);
+    --status-open: hsl(0, 75%, 45%);
+    --status-progress: hsl(38, 92%, 50%);
+    --status-done: hsl(150, 60%, 40%);
+    --status-pending: hsl(0, 0%, 46%);
+    --radius: 14px;
+    --radius-sm: 10px;
+    --shadow-soft: 0 10px 30px -10px hsl(0 70% 15% / 0.14);
+    --shadow-hover: 0 20px 40px -12px hsl(0 70% 15% / 0.22);
+    --transition: .25s cubic-bezier(.4, 0, .2, 1);
+    --gradient-hero: linear-gradient(135deg, hsl(0 70% 22%) 0%, hsl(0 75% 35%) 50%, hsl(0 80% 28%) 100%);
+    --footer-border: rgba(255,255,255,0.1);
+    --primary: #d62828;
+    --primary-glow: #ef3b3b;
+    --primary-deep: #7a1414;
+    --background: #1a0808;
+    --foreground: #fbeaea;
+    --muted-foreground: #b89a9a;
+    --border: rgba(255, 255, 255, 0.1);
+    --gradient-primary: linear-gradient(135deg, #d62828, #7a1414);
+    --gradient-radial: radial-gradient(circle at 20% 0%, rgba(214, 40, 40, 0.45), transparent 60%);
+    --shadow-glow: 0 10px 40px -10px rgba(214, 40, 40, 0.6);
+}
+
+.link-underline:hover::after {
+    width: 100%;
+}
+
+.link-underline:hover {
+    color: var(--primary);
+}
+
+.social {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 9999px;
+    border: 1px solid var(--footer-border);
+    color: var(--muted-foreground);
+    transition: all .3s;
+}
+
+    .social:hover {
+        color: #fff;
+        border-color: var(--primary);
+    }
+
+    .social .bg {
+        position: absolute;
+        inset: 0;
+        border-radius: 9999px;
+        background: var(--gradient-primary);
+        opacity: 0;
+        transition: opacity .3s;
+    }
+
+    .social:hover .bg {
+        opacity: 1;
+    }
+
+    .social svg {
+        position: relative;
+        z-index: 1;
+    }
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+footer {
+    background: var(--background);
+    color: var(--foreground);
+}

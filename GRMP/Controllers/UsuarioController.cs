@@ -24,19 +24,19 @@ namespace GRMP.Controllers
             _configuration = configuration;
         }
 
-        public IActionResult InicioExibir()
+        public IActionResult ListarOSExibir()
         {
             string idUsuario = HttpContext.Session.GetString("idUsuario");
 
             if (string.IsNullOrEmpty(idUsuario))
             {
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("LoginExibir", "Login");
             }
 
             Os Os = new Os();
             DataTable dt = Os.SelecionarOS();
 
-            return View("InicioView" , dt);// teste 234
+            return View("ListarOSExibirView" , dt);// teste 234
         }
 
         public IActionResult CriarOSExibir()
@@ -60,7 +60,7 @@ namespace GRMP.Controllers
 
                 if (string.IsNullOrEmpty(idUsuario))
                 {
-                    return RedirectToAction("Login", "Login");
+                    return RedirectToAction("LoginExibir", "Login");
                 }
 
                 //---------------------------------
@@ -114,7 +114,7 @@ namespace GRMP.Controllers
                 // Redireciona
                 //---------------------------------
 
-                return RedirectToAction("InicioExibir");
+                return RedirectToAction("ListarOSExibir");
             }
             catch (Exception ex)
             {
@@ -140,7 +140,7 @@ namespace GRMP.Controllers
             if (string.IsNullOrEmpty(idUsuario))
             {
                 return RedirectToAction(
-                    "Login",
+                    "LoginExibir",
                     "Login"
                 );
             }
@@ -167,7 +167,7 @@ namespace GRMP.Controllers
                 if (nvAcesso == 1)
                 {
                     return RedirectToAction(
-                        "InicioExibir",
+                        "ListarOSExibir",
                         "Usuario"
                     );
                 }
@@ -199,7 +199,7 @@ namespace GRMP.Controllers
                 dtOS.Rows.Count == 0)
             {
                 return RedirectToAction(
-                    "InicioExibir",
+                    "ListarOSExibir",
                     "Usuario"
                 );
             }
@@ -343,7 +343,7 @@ namespace GRMP.Controllers
                 if (string.IsNullOrEmpty(idUsuario))
                 {
                     return RedirectToAction(
-                        "Login",
+                        "LoginExibir",
                         "Login"
                     );
                 }
@@ -463,7 +463,7 @@ namespace GRMP.Controllers
                 //---------------------------------
 
                 return RedirectToAction(
-                    "InicioExibir"
+                    "ListarOSExibir"
                 );
             }
             catch (Exception ex)

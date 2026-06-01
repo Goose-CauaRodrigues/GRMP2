@@ -1,0 +1,407 @@
+﻿@using System.Data;
+@model DataTable
+
+@{
+    ViewData["Title"] = "Histórico de Ordens de Serviço";
+}
+
+<link href="~/css/Inicio.css" rel="stylesheet" />
+
+<div class="container">
+
+    <div class="page-header">
+        <div class="page-header-top">
+            <div>
+                <h2>Ordens de Serviço Registradas</h2>
+                <p>Visualização de todos os chamados do sistema</p>
+            </div>
+            <button type="button"
+                    class="botao-adicionar"
+                    onclick="window.location.href='@Url.Action("CriarOSExibir", "Usuario")'">
+                Adicionar Solicitação
+            </button>
+        </div>
+    </div>
+
+    @{
+        var busca = Context.Request.Query["busca"].ToString();
+        var executorFiltro = Context.Request.Query["executor"].ToString();
+        var solicitanteFiltro = Context.Request.Query["solicitante"].ToString();
+        var periodoFiltro = Context.Request.Query["periodo"].ToString();
+
+        var executores = Model.AsEnumerable()
+            .Where(x => x["nomeExecutor"] != DBNull.Value)
+            .Select(x => x["nomeExecutor"].ToString())
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+
+        var solicitantes = Model.AsEnumerable()
+            .Where(x => x["nomeCriador"] != DBNull.Value)
+            .Select(x => x["nomeCriador"].ToString())
+            .Distinct()
+            .OrderBy(x => x)
+            .ToList();
+
+        var listaFiltrada = Model.AsEnumerable();
+
+        // BUSCA
+        if (!string.IsNullOrWhiteSpace(busca))
+        {
+            listaFiltrada = listaFiltrada.Where(x =>
+                x["descricaoServico"].ToString().Contains(busca, StringComparison.OrdinalIgnoreCase)
+                || x["nomeBloco"].ToString().Contains(busca, StringComparison.OrdinalIgnoreCase)
+                || x["nomeLocal"].ToString().Contains(busca, StringComparison.OrdinalIgnoreCase)
+            );
+        }
+
+        // EXECUTOR
+        if (!string.IsNullOrWhiteSpace(executorFiltro))
+        {
+            listaFiltrada = listaFiltrada.Where(x =>
+                x["nomeExecutor"] != DBNull.Value &&
+                x["nomeExecutor"].ToString() == executorFiltro
+            );
+        }
+
+        // SOLICITANTE
+        if (!string.IsNullOrWhiteSpace(solicitanteFiltro))
+        {
+            listaFiltrada = listaFiltrada.Where(x =>
+                x["nomeCriador"] != DBNull.Value &&
+                x["nomeCriador"].ToString() == solicitanteFiltro
+            );
+        }
+
+        // PERÍODO
+        if (!string.IsNullOrWhiteSpace(periodoFiltro))
+        {
+            DateTime limite = DateTime.Now;
+
+            switch (periodoFiltro)
+            {
+                case "7":
+                    limite = DateTime.Now.AddDays(-7);
+                    break;
+
+                case "30":
+                    limite = DateTime.Now.AddDays(-30);
+                    break;
+
+                case "90":
+                    limite = DateTime.Now.AddDays(-90);
+                    break;
+
+                case "365":
+                    limite = DateTime.Now.AddDays(-365);
+                    break;
+            }
+
+            listaFiltrada = listaFiltrada.Where(x =>
+                x["dataSolicitacao"] != DBNull.Value &&
+                Convert.ToDateTime(x["dataSolicitacao"]) >= limite
+            );
+        }
+
+        var chamadosFiltrados = listaFiltrada.ToList();
+    }
+
+    @{
+        int paginaAtual = 1;
+
+        if (!string.IsNullOrWhiteSpace(Context.Request.Query["pagina"]))
+        {
+            paginaAtual = Convert.ToInt32(Context.Request.Query["pagina"]);
+        }
+
+        int itensPorPagina = 20;
+
+        int totalItens = chamadosFiltrados.Count;
+
+        int totalPaginas = (int)Math.Ceiling((double)totalItens / itensPorPagina);
+
+        var chamadosPaginados = chamadosFiltrados
+            .Skip((paginaAtual - 1) * itensPorPagina)
+            .Take(itensPorPagina)
+            .ToList();
+    }
+
+    <form method="get" class="filtros">
+
+        <input type="text"
+               name="busca"
+               placeholder="Buscar descrição, bloco ou local..."
+               value="@busca" />
+
+        <select name="executor">
+            <option value="">Todos os executores</option>
+
+            @foreach (var e in executores)
+            {
+                <option value="@e" selected="@(e == executorFiltro)">
+                    @e
+                </option>
+            }
+        </select>
+
+        <select name="solicitante">
+            <option value="">Todos os solicitantes</option>
+
+            @foreach (var s in solicitantes)
+            {
+                <option value="@s" selected="@(s == solicitanteFiltro)">
+                    @s
+                </option>
+            }
+        </select>
+
+        <select name="periodo">
+            <option value="">Todo período</option>
+            <option value="7" selected="@(periodoFiltro == "7")">
+                Últimos 7 dias
+            </option>
+            <option value="30" selected="@(periodoFiltro == "30")">
+                Últimos 30 dias
+            </option>
+            <option value="90" selected="@(periodoFiltro == "90")">
+                Últimos 90 dias
+            </option>
+            <option value="365" selected="@(periodoFiltro == "365")">
+                Último ano
+            </option>
+        </select>
+
+        <button type="submit" class="botao-adicionar">
+            Filtrar
+        </button>
+
+    </form>
+
+    <div class="historico">
+
+        @if (totalPaginas > 1)
+        {
+            <div class="paginacao">
+
+                @if (paginaAtual > 1)
+                {
+                    <a href="?pagina=@(paginaAtual - 1)&busca=@busca&executor=@executorFiltro&solicitante=@solicitanteFiltro&periodo=@periodoFiltro">
+                        ← Anterior
+                    </a>
+                }
+
+                <span>
+                    Página @paginaAtual de @totalPaginas
+                </span>
+
+                @if (paginaAtual < totalPaginas)
+                {
+                    <a href="?pagina=@(paginaAtual + 1)&busca=@busca&executor=@executorFiltro&solicitante=@solicitanteFiltro&periodo=@periodoFiltro">
+                        Próxima →
+                    </a>
+                }
+
+            </div>
+        }
+
+        @if (Model == null || Model.Rows.Count == 0)
+        {
+            <div class="empty-state">
+                <div class="icon">📭</div>
+                <p>Nenhuma ordem de serviço encontrada.</p>
+            </div>
+        }
+        else
+        {
+            @foreach (DataRow c in chamadosPaginados)
+            {
+                // =========================
+                // STATUS
+                // =========================
+                int statusValor = c["status"] != DBNull.Value
+                    ? Convert.ToInt32(c["status"])
+                    : -1;
+
+                string status = statusValor switch
+                {
+                    0 => "Aberta",
+                    1 => "Em andamento",
+                    2 => "Concluída",
+                    3 => "Cancelada",
+                    _ => "Não definido"
+                };
+
+                string statusClass = statusValor switch
+                {
+                    2 => "resolvido",
+                    1 => "andamento",
+                    3 => "cancelado",
+                    _ => ""
+                };
+
+                // =========================
+                // PRIORIDADE
+                // =========================
+                int prioridadeValor = c["prioridade"] != DBNull.Value
+                    ? Convert.ToInt32(c["prioridade"])
+                    : -1;
+
+                string prioridade = prioridadeValor switch
+                {
+                    1 => "Baixa",
+                    2 => "Média",
+                    3 => "Alta",
+                    _ => "Não definida"
+                };
+
+                // =========================
+                // CATEGORIA
+                // =========================
+                int categoriaValor = c["categoria"] != DBNull.Value
+                    ? Convert.ToInt32(c["categoria"])
+                    : -1;
+
+                string categoria = categoriaValor switch
+                {
+                    1 => "Predial",
+                    2 => "Ativo",
+                    _ => "Não definida"
+                };
+
+                string idOS = c["idOrdemServico"] != DBNull.Value ? c["idOrdemServico"].ToString() : "";
+
+                <div class="card-chamado" onclick="expandir(this)">
+
+                    <div class="card-top">
+                        <strong>@c["nomeBloco"] - @c["nomeLocal"]</strong>
+                        <span class="status @status">@status</span>
+                    </div>
+
+                    <p class="card-date">
+                        <strong>Solicitação:</strong>
+                        @(c["dataSolicitacao"] != DBNull.Value
+                            ? Convert.ToDateTime(c["dataSolicitacao"]).ToString("dd/MM/yyyy")
+                            : "-")
+                    </p>
+
+                    <p class="card-date">
+                        <strong>Início:</strong>
+                        @(c["dataInicio"] != DBNull.Value
+                            ? Convert.ToDateTime(c["dataInicio"]).ToString("dd/MM/yyyy")
+                            : "-")
+
+                        <strong>Finalização:</strong>
+                        @(c["dataFinalizacao"] != DBNull.Value
+                            ? Convert.ToDateTime(c["dataFinalizacao"]).ToString("dd/MM/yyyy")
+                            : "-")
+                    </p>
+
+                    <p class="card-date">
+                        <strong>Solicitante:</strong>
+                        @(c["nomeCriador"] != DBNull.Value ? c["nomeCriador"] : "-")
+
+                        <strong>Executor:</strong>
+                        @(c["nomeExecutor"] != DBNull.Value ? c["nomeExecutor"] : "-")
+                    </p>
+
+                    <div class="detalhes">
+
+                        <p>
+                            <strong>Descrição:</strong><br>
+                            @c["descricaoServico"]
+                        </p>
+
+                        <p>
+                            <strong>Categoria:</strong><br>
+                            @categoria
+                        </p>
+
+                        <p>
+                            <strong>Nº Patrimônio:</strong><br>
+                            @(c["numeroPatrimonio"] != DBNull.Value ? c["numeroPatrimonio"] : "-")
+                        </p>
+
+                        <p>
+                            <strong>Bloco:</strong><br>
+                            @c["nomeBloco"]
+                        </p>
+
+                        <p>
+                            <strong>Local:</strong><br>
+                            @c["nomeLocal"]
+                        </p>
+
+                        <p>
+                            <strong>Prioridade:</strong><br>
+                            @prioridade
+                        </p>
+
+                        <p>
+                            <strong>Observações:</strong><br>
+                            @(c["observacoes"] != DBNull.Value ? c["observacoes"] : "-")
+                        </p>
+
+                        <p>
+                            <strong>Status:</strong><br>
+                            @status
+                        </p>
+
+                        <p>
+                            <strong>Ativo:</strong><br>
+                            @(Convert.ToBoolean(c["ativo"]) ? "Sim" : "Não")
+                        </p>
+
+                        <p>
+                            <strong>Email Solicitante:</strong><br>
+                            @(c["emailCriador"] != DBNull.Value ? c["emailCriador"] : "-")
+                        </p>
+
+                        <p>
+                            <strong>Email Executor:</strong><br>
+                            @(c["emailExecutor"] != DBNull.Value ? c["emailExecutor"] : "-")
+                        </p>
+
+                        
+
+                    </div>
+
+                    @{
+                        string id = Context.Session.GetString("idUsuario");
+                        if (id == "1")
+                        {
+                            <div class="acoes-card">
+
+                                <a asp-controller="Usuario"
+                                   asp-action="BaixarOSWord"
+                                   asp-route-id="@c["idOrdemServico"]"
+                                   class="btn-word">
+                                    Baixar Word
+                                </a>
+
+                                <a asp-controller="Usuario"
+                                   asp-action="AlterarOSExibir"
+                                   asp-route-id="@c["idOrdemServico"]"
+                                   class="btn-gen">
+                                    Alterar
+                                </a>
+
+                            </div>
+                        }
+                    }
+
+                </div>
+            }
+        }
+
+    </div>
+</div>
+
+<script>
+    function expandir(card) {
+        card.classList.toggle("expandido");
+    }
+
+        function toggleCard(header) {
+        header.closest('.card-os').classList.toggle('aberto');
+    }
+</script>

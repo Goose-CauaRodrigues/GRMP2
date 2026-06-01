@@ -2,6 +2,7 @@
 using GRMP.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjBancoDados.BancoDados;
 using System.Data;
@@ -13,9 +14,9 @@ namespace GRMP.Controllers
 {
     public class LoginController : Controller
     {
-        public IActionResult Login()
+        public IActionResult LoginExibir()
         {
-            return View("LoginView");
+            return View("LoginExibirView");
         }
 
 
@@ -33,35 +34,71 @@ namespace GRMP.Controllers
 
                 if (dt != null)
                 {
+
                     DataRow row = dt.Rows[0];
 
-                    if (row["Senha"].ToString() == senhaHash)
+
+                    var passwordHasher = new PasswordHasher<Usuario>();
+
+                    string senhaBanco = row["Senha"].ToString();
+
+                    var resultado = passwordHasher.VerifyHashedPassword(
+                        null,
+                        senhaBanco,
+                        Vm_Login.Senha
+                    );
+
+                    if (resultado == PasswordVerificationResult.Success)
                     {
                         HttpContext.Session.SetString("idUsuario", row["idUsuario"].ToString());
+                        HttpContext.Session.SetString("nvAcesso", row["nvAcesso"].ToString());
 
                         string nvAcesso = row["nvAcesso"].ToString();
 
                         if (nvAcesso == "3" || nvAcesso == "2")
                         {
-                            return RedirectToAction("Index", "Mapa");
+                            return RedirectToAction("MapaExibir", "Mapa");
                         }
                         else
                         {
-                            return RedirectToAction("InicioExibir", "Usuario");
+                            return RedirectToAction("ListarOSExibir", "Usuario");
                         }
                     }
+
+                    //    if (row["Senha"].ToString() == senhaHash)
+                    //    {
+                    //        HttpContext.Session.SetString("idUsuario", row["idUsuario"].ToString());
+                    //        HttpContext.Session.SetString("nvAcesso", row["nvAcesso"].ToString());
+
+                    //        string nvAcesso = row["nvAcesso"].ToString();
+
+                    //        if (nvAcesso == "3" || nvAcesso == "2")
+                    //        {
+                    //            return RedirectToAction("MapaExibir", "Mapa");
+                    //        }
+                    //        else
+                    //        {
+                    //            return RedirectToAction("ListarOSExibir", "Usuario");
+                    //        }
+                    //    }
                 }
 
                 ViewBag.Erro = "Email ou senha inválidos.";
-                return View("LoginView");
+                return View("LoginExibirView");
             }
             catch (Exception ex)
             {
                 ViewBag.Erro = ex.Message;
-                return View("LoginView");
+                return View("LoginExibirView");
             }
         }
 
+        public IActionResult SairProcessar()
+        {
+            HttpContext.Session.Clear();
+
+            return View("LoginExibirView");
+        }
         private string GerarHash(string senha)
         {
             var bytes = SHA256.HashData(Encoding.UTF8.GetBytes(senha));

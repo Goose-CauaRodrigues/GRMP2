@@ -4,6 +4,9 @@
 @{
     ViewData["Title"] = "Alterar Ordem de Serviço";
 }
+@{
+    Layout = null;
+}
 
 <link rel="stylesheet" href="~/css/OsCriar.css" />
 
@@ -16,7 +19,7 @@
             <p>Atualize as informações da solicitação</p>
         </div>
 
-        <a href="@Url.Action("InicioExibir", "Usuario")"
+        <a href="@Url.Action("ListarOSExibir", "Usuario")"
            class="btn-voltar">
 
             Voltar

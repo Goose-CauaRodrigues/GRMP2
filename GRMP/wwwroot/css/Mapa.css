@@ -37,9 +37,13 @@ body {
     -webkit-font-smoothing: antialiased;
 }
 
+html, body {
+    overflow-x: hidden;
+}
+
 /* ---------- Header SENAI (opcional) ---------- */
 .senai-header {
-    width: 100vw;
+    width: 100%;
     margin-left: calc(50% - 50vw);
     display: flex;
     align-items: center;
@@ -87,7 +91,7 @@ body {
 /* ---------- Layout ---------- */
 .map-wrapper {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 420px;
+    grid-template-columns: 1fr min(420px, 100%);
     gap: 24px;
     padding: 42px 28px 28px;
     align-items: start;
@@ -96,6 +100,10 @@ body {
 @media (max-width: 1100px) {
     .map-wrapper {
         grid-template-columns: 1fr;
+    }
+
+    .side-panel {
+        max-height: none;
     }
 }
 
@@ -197,7 +205,7 @@ body {
     padding: 20px;
     /* IMPORTANTE */
     height: fit-content;
-    max-height: 462px; /* ajuste se quiser */
+    max-height: 596px;
     overflow-y: auto;
 }
 
@@ -364,4 +372,10 @@ body {
 
 .status-badge.cancelado {
     background: #555;
+}
+
+.chamado-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
