@@ -274,7 +274,7 @@ namespace GRMP.Controllers
                     USVM.Senha
                 );
 
-                Us.nvAcesso = USVM.NvAcesso;
+                Us.nvAcesso = int.Parse(HttpContext.Session.GetString("nvAcesso"));
 
                 //-----------------------------------
                 // ALTERAR
