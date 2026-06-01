@@ -237,8 +237,6 @@ namespace GRMP.Controllers
 
                 // NÃO envie hash para a view
                 USVM.Senha = "";
-
-
             }
 
             return View("AlterarSenhaExibirView", USVM);
@@ -249,8 +247,8 @@ namespace GRMP.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return View(
-                        "AlterarUsuarioExibirView",
+                    return RedirectToAction(
+                        "ListarOSExibir", "Usuario",
                         USVM
                     );
                 }
@@ -297,8 +295,8 @@ namespace GRMP.Controllers
                     ex.Message
                 );
 
-                return View(
-                    "AlterarUsuarioExibirView",
+                return RedirectToAction(
+                    "ListarOSExibir", "Usuario",
                     USVM
                 );
             }

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/GRMP.styles.css" asp-append-version="true" />
 </head>
 <body>
-    
+
     <!-- ===== Header SENAI ===== -->
     <header class="senai-header">
         <div class="brand">
@@ -23,77 +23,88 @@
                 string nv = Context.Session.GetString("nvAcesso");
             }
             @{
-                if(nv == "2" || nv == "3")
+                if (nv == "2" || nv == "3")
                 {
-            <a asp-controller="Mapa"
-               asp-action="MapaExibir"
-               style="
-                text-decoration:none;
-                color:white;
-                font-size:14px;
-                font-weight:600;
-                padding:10px 16px;
-                border-radius:8px;
-                transition:0.2s;
-                display:inline-block;
-                ">
-                Mapa
-            </a>
+                    <a asp-controller="Mapa"
+                       asp-action="MapaExibir"
+                       style="
+                        text-decoration:none;
+                        color:white;
+                        font-size:14px;
+                        font-weight:600;
+                        padding:10px 16px;
+                        border-radius:8px;
+                        transition:0.2s;
+                        display:inline-block;
+                        ">
+                        Mapa
+                    </a>
                 }
-            <a asp-controller="Usuario"
+                <a asp-controller="Usuario"
                    asp-action="ListarOSExibir"
-               style="
-                text-decoration:none;
-                color:white;
-                font-size:14px;
-                font-weight:600;
-                padding:10px 16px;
-                border-radius:8px;
-                transition:0.2s;
-                display:inline-block;
-                ">
-                Ordens de Serviço
-            </a>
+                   style="
+                    text-decoration:none;
+                    color:white;
+                    font-size:14px;
+                    font-weight:600;
+                    padding:10px 16px;
+                    border-radius:8px;
+                    transition:0.2s;
+                    display:inline-block;
+                    ">
+                    Ordens de Serviço
+                </a>
                 if (id == "1")
                 {
-            <a asp-controller="GerenciarUsuarios"
-               asp-action="ListaUsuariosExibir"
-               style="
-                text-decoration:none;
-                color:white;
-                font-size:14px;
-                font-weight:600;
-                padding:10px 16px;
-                border-radius:8px;
-                transition:0.2s;
-                display:inline-block;
-                ">
-                Usuarios
-            </a>
+                    <a asp-controller="GerenciarUsuarios"
+                       asp-action="ListaUsuariosExibir"
+                       style="
+                        text-decoration:none;
+                        color:white;
+                        font-size:14px;
+                        font-weight:600;
+                        padding:10px 16px;
+                        border-radius:8px;
+                        transition:0.2s;
+                        display:inline-block;
+                        ">
+                        Usuarios
+                    </a>
                 }
-                
+
                 
                 if (nv == "3")
                 {
-            <a asp-controller="Dashboard"
-               asp-action="DashboardExibir"
-               style="
-                text-decoration:none;
-                color:white;
-                font-size:14px;
-                font-weight:600;
-                padding:10px 16px;
-                border-radius:8px;
-                transition:0.2s;
-                display:inline-block;
-                ">
-                Relatório
-            </a>
+                    <a asp-controller="Dashboard"
+                       asp-action="DashboardExibir"
+                       style="
+                        text-decoration:none;
+                        color:white;
+                        font-size:14px;
+                        font-weight:600;
+                        padding:10px 16px;
+                        border-radius:8px;
+                        transition:0.2s;
+                        display:inline-block;
+                        ">
+                        Relatório
+                    </a>
                 }
-
-                // Fica a vontade de trocar o A por um BUTTON se precisar
-                // nao precisa
-
+                                
+                <a asp-controller="GerenciarUsuarios"
+                   asp-action="AlterarSenhaExibir"
+                   style="
+                    text-decoration:none;
+                    color:white;
+                    font-size:14px;
+                    font-weight:600;
+                    padding:10px 16px;
+                    border-radius:8px;
+                    transition:0.2s;
+                    display:inline-block;
+                    ">
+                    Minha Conta
+                </a>
 
                 <a asp-controller="Login"
                    asp-action="SairProcessar"
