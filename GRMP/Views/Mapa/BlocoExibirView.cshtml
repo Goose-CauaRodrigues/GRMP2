@@ -176,18 +176,20 @@
                     }
 
                     data.forEach(os => {
-                        let statusClass = "";
-                        if (os.statusTexto === "Aberto") statusClass = "aberto";
-                        else if (os.statusTexto === "Em andamento") statusClass = "andamento";
-                        else if (os.statusTexto === "Finalizado") statusClass = "finalizado";
-                        else statusClass = "nao-iniciado";
+                        let status = "";
+                        if (os.statusTexto === "Aberta") status = "aberta";
+                        else if (os.statusTexto === "Em andamento") status = "em andamento";
+                        else if (os.statusTexto === "Concluída") status = "concluída";
+                        else if (os.statusTexto === "Cancelada") status = "cancelada";
+                        else if (os.statusTexto === "Em pausa") status = "em pausa";
+                        else status = "nao-iniciado";
 
                         lista.innerHTML += `
                              <a href="/Usuario/ListarOSExibir?busca=${encodeURIComponent(os.titulo)}"
                              class="chamado-card">
                                 <div class="top">
                                     <span class="id">#${os.id}</span>
-                                    <span class="status-badge ${statusClass}">
+                                    <span class="status-badge ${status}">
                                         ${os.statusTexto}
                                     </span>
                                 </div>

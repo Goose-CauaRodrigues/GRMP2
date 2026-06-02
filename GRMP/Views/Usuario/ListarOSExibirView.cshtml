@@ -228,15 +228,8 @@
                     1 => "Em andamento",
                     2 => "Concluída",
                     3 => "Cancelada",
+                    4 => "Em pausa",
                     _ => "Não definido"
-                };
-
-                string statusClass = statusValor switch
-                {
-                    2 => "resolvido",
-                    1 => "andamento",
-                    3 => "cancelado",
-                    _ => ""
                 };
 
                 // =========================

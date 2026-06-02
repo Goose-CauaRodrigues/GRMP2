@@ -234,7 +234,15 @@
                     </option>
 
                     <option value="2">
-                        Finalizada
+                        Concluída
+                    </option>
+
+                    <option value="3">
+                        Cancelada
+                    </option>
+
+                    <option value="4">
+                        Em pausa
                     </option>
                 }
                 else if (Model.Status == 1)
@@ -248,13 +256,21 @@
                     </option>
 
                     <option value="2">
-                        Finalizada
+                        Concluída
+                    </option>
+
+                    <option value="3">
+                        Cancelada
+                    </option>
+
+                    <option value="4">
+                        Em pausa
                     </option>
                 }
-                else
+                else if (Model.Status == 2)
                 {
                     <option value="2" selected>
-                        Finalizada
+                        Concluída
                     </option>
 
                     <option value="0">
@@ -263,6 +279,58 @@
 
                     <option value="1">
                         Em andamento
+                    </option>
+
+                    <option value="3">
+                        Cancelada
+                    </option>
+
+                    <option value="4">
+                        Em pausa
+                    </option>
+                }
+                else if (Model.Status == 3)
+                {
+                    <option value="3" selected>
+                        Cancelada
+                    </option>
+
+                    <option value="2">
+                        Concluída
+                    </option>
+
+                    <option value="0">
+                        Aberta
+                    </option>
+
+                    <option value="1">
+                        Em andamento
+                    </option>
+
+                    <option value="4">
+                        Em pausa
+                    </option>
+                }
+                else
+                {
+                    <option value="4" selected>
+                        Em pausa
+                    </option>
+
+                    <option value="0">
+                        Aberta
+                    </option>
+
+                    <option value="1">
+                        Em andamento
+                    </option>
+
+                    <option value="2">
+                        Finalizada
+                    </option>
+
+                    <option value="3">
+                        Cancelada
                     </option>
                 }
 

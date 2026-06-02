@@ -19,6 +19,7 @@
                     1 => "Aberto",
                     2 => "Em andamento",
                     3 => "Resolvido",
+                    4 => "Em pausa",
                     _ => "Desconhecido"
                 };
             }

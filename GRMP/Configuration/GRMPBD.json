@@ -25,11 +25,11 @@
 //  }
 //} //cauã em casa
 
-{
-  "ConnectionStrings": {
-    "StringConexaoSQLServer": "Data Source=.;Initial Catalog=GRMPBancoDados;Integrated Security=True;TrustServerCertificate=True"
-  } // nicolas em casa
-}
+//{
+//  "ConnectionStrings": {
+//    "StringConexaoSQLServer": "Data Source=.;Initial Catalog=GRMPBancoDados;Integrated Security=True;TrustServerCertificate=True"
+//  } // nicolas em casa
+//}
 
 //{
 //  "ConnectionStrings": {
@@ -43,10 +43,9 @@
 //  }
 //} // nicolas senai adriano
 
-
-{
-  "ConnectionStrings": {
-    "StringConexaoSQLServer": "Data Source=ECFP602D1301690\\SQLEXPRESS; Database=GRMPBancoDados; User ID=sa; Password=sa; TrustServerCertificate=True"
-  }
-} // enzo senai
+//{
+//  "ConnectionStrings": {
+//    "StringConexaoSQLServer": "Data Source=ECFP602D1301690\\SQLEXPRESS; Database=GRMPBancoDados; User ID=sa; Password=sa; TrustServerCertificate=True"
+//  }
+//} // enzo senai
 

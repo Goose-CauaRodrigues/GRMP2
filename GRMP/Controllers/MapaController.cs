@@ -57,8 +57,7 @@ namespace GRMP.Controllers
                                     status == 0 ? "Aberto" :
                                     status == 1 ? "Em andamento" :
                                     status == 2 ? "Concluída" :
-                                    status == 3 ? "Cancelada" :
-                                    "Pausado"
+                                    status == 3 ? "Cancelada" : "Em pausa"
                             });
                         }
                     }
@@ -181,6 +180,7 @@ namespace GRMP.Controllers
                                 1 => "Em andamento",
                                 2 => "Concluída",
                                 3 => "Cancelada",
+                                4 => "Em pausa",
                                 _ => "Desconhecido"
                             }
                         });

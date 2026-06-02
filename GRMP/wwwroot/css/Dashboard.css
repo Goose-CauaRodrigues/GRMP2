@@ -290,11 +290,29 @@ body {
         font-weight: 500;
     }
 
-    .metric-card.mc-total,
-    .metric-card.mc-abertas,
-    .metric-card.mc-andamento,
+    .metric-card.mc-total {
+        --mc-accent: #7C3AED;
+    }
+
+
+    .metric-card.mc-abertas {
+        --mc-accent: #6B7280;
+    }
+
+    .metric-card.mc-andamento {
+        --mc-accent: #EAB308;
+    }
+
     .metric-card.mc-concluidas {
+        --mc-accent: #16A34A;
+    }
+
+    .metric-card.mc-canceladas {
         --mc-accent: #DC2626;
+    }
+
+    .metric-card.mc-pausa {
+        --mc-accent: #2563EB;
     }
 
 .chart-card {

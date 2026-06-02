@@ -20,8 +20,8 @@
 
     <style>
             /* =========================================================
-                                   SENAI · Estilos do Header (Corrigidos para evitar deslocamento)
-                                   ========================================================= */
+                                                           SENAI · Estilos do Header (Corrigidos para evitar deslocamento)
+                                                           ========================================================= */
             :root {
                 --senai-red: hsl(0, 75%, 35%);
                 --senai-red-glow: hsl(0, 80%, 48%);
@@ -143,6 +143,7 @@
         var emAndamento = lista.Count(x => x.status == "Em andamento");
         var concluidas = lista.Count(x => x.status == "Concluída");
         var canceladas = lista.Count(x => x.status == "Cancelada");
+        var emPausa = lista.Count(x => x.status == "Em pausa");
 
         Func<int, string> pct = n => total > 0 ? Math.Round(n * 100.0 / total) + "% do filtro" : "—";
         Func<int, int> pctSimples = n => total > 0 ? (int)Math.Round(n * 100.0 / total) : 0;
@@ -178,6 +179,7 @@
                             <option value="Em andamento" selected="@(fStatus == "Em andamento")">Em andamento</option>
                             <option value="Concluída" selected="@(fStatus == "Concluída")">Concluída</option>
                             <option value="Cancelada" selected="@(fStatus == "Cancelada")">Cancelada</option>
+                            <option value="Em pausa" selected="@(fStatus == "Em pausa")">Em pausa</option>
                         </select>
                     </div>
                     <div class="filter-group">
@@ -307,6 +309,20 @@
                     <div class="mc-sub">@pct(concluidas)</div>
                 </div>
             </div>
+            <div style="flex: 1;">
+                <div class="metric-card mc-canceladas">
+                    <div class="mc-label">Canceladas</div>
+                    <div class="mc-val">@canceladas</div>
+                    <div class="mc-sub">@pct(canceladas)</div>
+                </div>
+            </div>
+            <div style="flex: 1;">
+                <div class="metric-card mc-pausa">
+                    <div class="mc-label">Em pausa</div>
+                    <div class="mc-val">@emPausa</div>
+                    <div class="mc-sub">@pct(emPausa)</div>
+                </div>
+            </div>
         </div>
 
         <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem;">
@@ -382,14 +398,36 @@
     new Chart(document.getElementById('graficoStatus'), {
     type: 'doughnut',
     data: {
-    labels: ['Aberta', 'Em andamento', 'Concluída', 'Cancelada'],
+    labels: [
+    'Aberta',
+    'Em andamento',
+    'Concluída',
+    'Cancelada',
+    'Em pausa'
+    ],
     datasets: [{
-    data: [@abertas, @emAndamento, @concluidas, @canceladas],
-    backgroundColor: ['#EF9F27', '#378ADD', '#639922', '#888780'],
+    data: [
+    @abertas,
+    @emAndamento,
+    @concluidas,
+    @canceladas,
+    @emPausa
+    ],
+    backgroundColor: [
+    '#6B7280', // Vermelho
+    '#EAB308', // Amarelo
+    '#16A34A', // Verde
+    '#DC2626', // Cinza
+    '#2563EB'  // Azul
+    ],
     borderWidth: 0
     }]
     },
-    options: { responsive: true, maintainAspectRatio: false, cutout: '65%' }
+    options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%'
+    }
     });
 
     new Chart(document.getElementById('graficoPrioridade'), {

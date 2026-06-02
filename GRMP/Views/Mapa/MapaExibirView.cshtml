@@ -330,6 +330,12 @@
                     Em andamento
                 </a>
 
+                <a asp-action="MapaExibir"
+                       asp-route-status="4"
+                       class="@(Model.StatusSelecionado == 4 ? "active" : "")">
+                    Em pausa
+                </a>
+
             </div>
 
             @foreach (var chamado in Model.Chamados)
@@ -345,10 +351,11 @@
                             <span class="id">#@chamado.Id</span>
 
                             <span class="status-badge
-                                @(chamado.Status == 0 ? "aberto" :
-                                        chamado.Status == 1 ? "andamento" :
-                                        chamado.Status == 2 ? "resolvido" :
-                                        "cancelado")">
+                                @(chamado.Status == 0 ? "aberta" :
+                                        chamado.Status == 1 ? "em andamento" :
+                                        chamado.Status == 2 ? "concluída" :
+                                        chamado.Status == 3 ? "cancelada" :
+                                        "em pausa")">
 
                                 @chamado.StatusTexto
                             </span>
