@@ -29,8 +29,8 @@
         <div class="grupo-form">
             <label asp-for="Bloco">Bloco</label>
 
-            <select asp-for="Bloco" id="bloco">
-                <option value="">Selecione um bloco</option>
+            <select asp-for="Bloco" id="bloco" required>
+                <option value="">Selecione um bloco</option >
 
                 @foreach (DataRow bloco in Model.DtBlocos.Rows)
                 {
@@ -43,9 +43,9 @@
 
         <!-- LOCAL -->
         <div class="grupo-form">
-            <label asp-for="Local">Local</label>
+            <label asp-for="Local">Local</label >
 
-            <select asp-for="Local" id="local" disabled>
+            <select asp-for="Local" id="local" disabled required>
                 <option value="">
                     Primeiro selecione um bloco
                 </option>
@@ -56,7 +56,7 @@
         <div class="grupo-form">
             <label asp-for="Categoria">Categoria</label>
 
-            <select asp-for="Categoria" id="categoria">
+            <select asp-for="Categoria" id="categoria" required>
                 <option value="">Selecione</option>
 
                 <option value="1">
