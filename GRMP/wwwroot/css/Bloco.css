@@ -480,19 +480,18 @@ body {
     white-space: nowrap;
 }
 
-    .status-badge.aberto {
+    .status-badge.aberta {
         background: var(--status-open);
     }
 
     .status-badge.andamento {
         background: var(--status-progress);
-        color: #1a1a1a;
-    }
-
-    .status-badge.finalizado {
-        background: var(--status-done);
-    }
+    } 
 
     .status-badge.nao-iniciado {
         background: var(--status-pending);
+    }
+
+    .status-badge.pausa {
+        background: #6f42c1;
     }

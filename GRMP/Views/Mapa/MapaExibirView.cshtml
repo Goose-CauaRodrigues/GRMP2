@@ -352,10 +352,10 @@
 
                             <span class="status-badge
                                 @(chamado.Status == 0 ? "aberta" :
-                                        chamado.Status == 1 ? "em andamento" :
-                                        chamado.Status == 2 ? "concluída" :
+                                        chamado.Status == 1 ? "andamento" :
+                                        chamado.Status == 2 ? "concluida" :
                                         chamado.Status == 3 ? "cancelada" :
-                                        "em pausa")">
+                                        "pausa")">
 
                                 @chamado.StatusTexto
                             </span>

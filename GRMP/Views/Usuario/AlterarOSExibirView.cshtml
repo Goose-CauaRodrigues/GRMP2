@@ -213,7 +213,38 @@
             </select>
 
         </div>
+        <div class="grupo-form">
 
+            <label asp-for="Ativo">
+                Ativo
+            </label>
+
+            <select asp-for="Ativo">
+
+                @if (Model.Ativo == true)
+                {
+                    <option value="true" selected>
+                        ativado
+                    </option>
+
+                    <option value="false">
+                        desativado
+                    </option>
+                }
+                else
+                {
+                    <option value="true" >
+                        ativado
+                    </option>
+
+                    <option value="false" selected>
+                        desativado
+                    </option>
+                }
+
+            </select>
+
+        </div>
         <!-- STATUS -->
         <div class="grupo-form">
 
@@ -326,7 +357,7 @@
                     </option>
 
                     <option value="2">
-                        Finalizada
+                        Concluída
                     </option>
 
                     <option value="3">

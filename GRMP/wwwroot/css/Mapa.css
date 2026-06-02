@@ -307,7 +307,7 @@ html, body {
     color: #fff;
 }
 
-    .status-badge.aberto {
+    .status-badge.aberta {
         background: var(--status-open);
     }
 
@@ -315,8 +315,12 @@ html, body {
         background: var(--status-progress);
     }
 
-    .status-badge.resolvido {
+    .status-badge.concluida {
         background: var(--status-done);
+    }
+
+    .status-badge.pausa {
+        background: #1a7edb;
     }
 
 /* ---------- Legenda (canto inferior esquerdo) ---------- */
@@ -348,7 +352,7 @@ html, body {
         flex-shrink: 0;
     }
 
-        .legend .dot.aberto {
+        .legend .dot.aberta {
             background: var(--status-open);
         }
 
@@ -356,7 +360,7 @@ html, body {
             background: var(--status-progress);
         }
 
-        .legend .dot.resolvido {
+        .legend .dot.concluida {
             background: var(--status-done);
         }
 
