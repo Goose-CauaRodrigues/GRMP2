@@ -313,7 +313,6 @@ button:hover,
    STATUS
    ========================================== */
 .status {
-    background: #cc0000;
     color: white;
     padding: 5px 12px;
     border-radius: 20px;
@@ -322,6 +321,36 @@ button:hover,
     letter-spacing: 0.5px;
     text-transform: uppercase;
 }
+
+    /* Aberta */
+    .status.aberta {
+        background: #dc3545;
+    }
+
+    /* Em andamento */
+    .status.andamento {
+        background: #ffa807;
+    }
+
+    /* Concluída */
+    .status.concluida {
+        background: #198754;
+    }
+
+    /* Cancelada */
+    .status.cancelada {
+        background: #6c757d;
+    }
+
+    /* Em pausa */
+    .status.pausa {
+        background: #6f42c1;
+    }
+
+    /* Não definido */
+    .status.indefinido {
+        background: #343a40;
+    }
 
 .status.admin {
     background: #2e7d32;

@@ -424,6 +424,23 @@ body {
     color: #A32D2D;
 }
 
+.badge-pausa {
+    background: #E8F0FF;
+    color: #2563EB;
+}
+
+.badge,
+.badge-aberta,
+.badge-andamento,
+.badge-concluida,
+.badge-cancelada {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
 .pri-alta {
     color: #A32D2D;
     font-weight: 500;

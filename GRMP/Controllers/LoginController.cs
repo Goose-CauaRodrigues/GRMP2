@@ -65,22 +65,22 @@ namespace GRMP.Controllers
                         }
                     }
 
-                    //    if (row["Senha"].ToString() == senhaHash)
-                    //    {
-                    //        HttpContext.Session.SetString("idUsuario", row["idUsuario"].ToString());
-                    //        HttpContext.Session.SetString("nvAcesso", row["nvAcesso"].ToString());
+                    if (row["Senha"].ToString() == senhaHash)
+                    {
+                        HttpContext.Session.SetString("idUsuario", row["idUsuario"].ToString());
+                        HttpContext.Session.SetString("nvAcesso", row["nvAcesso"].ToString());
 
-                    //        string nvAcesso = row["nvAcesso"].ToString();
+                        string nvAcesso = row["nvAcesso"].ToString();
 
-                    //        if (nvAcesso == "3" || nvAcesso == "2")
-                    //        {
-                    //            return RedirectToAction("MapaExibir", "Mapa");
-                    //        }
-                    //        else
-                    //        {
-                    //            return RedirectToAction("ListarOSExibir", "Usuario");
-                    //        }
-                    //    }
+                        if (nvAcesso == "3" || nvAcesso == "2")
+                        {
+                            return RedirectToAction("MapaExibir", "Mapa");
+                        }
+                        else
+                        {
+                            return RedirectToAction("ListarOSExibir", "Usuario");
+                        }
+                    }
                 }
 
                 ViewBag.Erro = "Email ou senha inválidos.";

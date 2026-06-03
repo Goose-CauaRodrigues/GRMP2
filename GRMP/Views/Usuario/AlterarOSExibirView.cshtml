@@ -53,7 +53,7 @@
             </label>
 
             <select asp-for="Bloco"
-                    id="bloco">
+                    id="bloco" required>
 
                 <option value="">
                     Selecione um bloco
@@ -410,3 +410,33 @@
     </form>
 
 </div>
+<script>
+        document.getElementById("bloco").addEventListener("change", function () {
+
+        let idBloco = this.value;
+        let selectLocal = document.getElementById("local");
+
+        selectLocal.innerHTML =
+            '<option value="">Selecione um local</option>';
+
+        if (!idBloco) {
+            return;
+        }
+
+        fetch(`/Usuario/BuscarLocaisPorBloco?idBloco=${idBloco}`)
+            .then(response => response.json())
+            .then(data => {
+
+                data.forEach(local => {
+
+                    let option = document.createElement("option");
+
+                    option.value = local.idLocal;
+                    option.text = local.nome;
+
+                    selectLocal.appendChild(option);
+                });
+
+            });
+    });
+</script>

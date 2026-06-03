@@ -371,7 +371,18 @@
                                     <td style="padding: 12px; border-top: 1px solid #eee; font-family: monospace;">@item.idOrdemServico</td>
                                     <td style="padding: 12px; border-top: 1px solid #eee;">@item.solicitante</td>
                                     <td style="padding: 12px; border-top: 1px solid #eee;">@item.executor</td>
-                                    <td style="padding: 12px; border-top: 1px solid #eee;"><span class="badge">@item.status</span></td>
+                                    <td style="padding: 12px; border-top: 1px solid #eee;">
+                                        <span class="
+                                            @(item.status == "Aberta" ? "badge-aberta" :
+                                                item.status == "Em andamento" ? "badge-andamento" :
+                                                item.status == "Concluída" ? "badge-concluida" :
+                                                item.status == "Cancelada" ? "badge-cancelada" :
+                                                item.status == "Em pausa" ? "badge-pausa" :
+                                                "badge")
+                                            ">
+                                            @item.status
+                                        </span>
+                                    </td>
                                     <td style="padding: 12px; border-top: 1px solid #eee;">@item.prioridade</td>
                                     <td style="padding: 12px; border-top: 1px solid #eee;">@item.bloco</td>
                                     <td style="padding: 12px; border-top: 1px solid #eee; color: #888;">@item.dataSolicitacao.ToString("dd/MM/yyyy")</td>
