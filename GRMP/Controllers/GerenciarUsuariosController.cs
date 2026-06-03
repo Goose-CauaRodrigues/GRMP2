@@ -36,7 +36,7 @@ namespace GRMP.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("ListarOSExibir", "Usuario");
+                    return RedirectToAction("ListarOSExibir", "OrdemServico");
                 }
             }
 
@@ -248,7 +248,7 @@ namespace GRMP.Controllers
                 if (!ModelState.IsValid)
                 {
                     return RedirectToAction(
-                        "ListarOSExibir", "Usuario",
+                        "ListarOSExibir", "OrdemServico",
                         USVM
                     );
                 }
@@ -285,7 +285,7 @@ namespace GRMP.Controllers
                 //-----------------------------------
 
                 return RedirectToAction(
-                    "ListarOSExibir","Usuario"
+                    "ListarOSExibir", "OrdemServico"
                 );
             }
             catch (Exception ex)
@@ -296,7 +296,7 @@ namespace GRMP.Controllers
                 );
 
                 return RedirectToAction(
-                    "ListarOSExibir", "Usuario",
+                    "ListarOSExibir", "OrdemServico",
                     USVM
                 );
             }

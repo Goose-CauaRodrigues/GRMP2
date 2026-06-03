@@ -46,7 +46,7 @@
                         Mapa
                     </a>
                 }
-                <a asp-controller="Usuario"
+                <a asp-controller="OrdemServico"
                    asp-action="ListarOSExibir"
                    style="
                     text-decoration:none;
@@ -340,7 +340,7 @@
 
             @foreach (var chamado in Model.Chamados)
             {
-                <a asp-controller="Usuario"
+                <a asp-controller="OrdemServico"
                    asp-action="ListarOSExibir"
                    asp-route-busca="@chamado.Titulo"
                    class="chamado-link">

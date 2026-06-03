@@ -19,7 +19,7 @@
             <p>Atualize as informações da solicitação</p>
         </div>
 
-        <a href="@Url.Action("ListarOSExibir", "Usuario")"
+        <a href="@Url.Action("ListarOSExibir", "OrdemServico")"
            class="btn-voltar">
 
             Voltar
@@ -29,7 +29,7 @@
     </div>
 
     <form asp-action="AlterarOSProcessar"
-          asp-controller="Usuario"
+          asp-controller="OrdemServico"
           method="post"
           class="card-formulario">
 
@@ -423,7 +423,7 @@
             return;
         }
 
-        fetch(`/Usuario/BuscarLocaisPorBloco?idBloco=${idBloco}`)
+        fetch(`/OrdemServico/BuscarLocaisPorBloco?idBloco=${idBloco}`)
             .then(response => response.json())
             .then(data => {
 

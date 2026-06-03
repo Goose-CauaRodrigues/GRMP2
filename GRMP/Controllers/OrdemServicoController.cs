@@ -2,12 +2,9 @@
 using GRMP.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
-
 using ProjBancoDados.BancoDados;
-
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-
 using System.Data;
 using System.Text;
 using Xceed.Document.NET;
@@ -15,11 +12,11 @@ using Xceed.Words.NET;
 
 namespace GRMP.Controllers
 {
-    public class UsuarioController : Controller
+    public class OrdemServicoController : Controller
     {
         private readonly IConfiguration _configuration;
 
-        public UsuarioController(IConfiguration configuration)
+        public OrdemServicoController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -168,7 +165,7 @@ namespace GRMP.Controllers
                 {
                     return RedirectToAction(
                         "ListarOSExibir",
-                        "Usuario"
+                        "OrdemServico"
                     );
                 }
 
@@ -176,7 +173,7 @@ namespace GRMP.Controllers
                 {
                     return RedirectToAction(
                         "InicioNivelDoisMapa",
-                        "Usuario"
+                        "OrdemServico"
                     );
                 }
             }
@@ -200,7 +197,7 @@ namespace GRMP.Controllers
             {
                 return RedirectToAction(
                     "ListarOSExibir",
-                    "Usuario"
+                    "OrdemServico"
                 );
             }
 
@@ -722,8 +719,6 @@ namespace GRMP.Controllers
                 "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                 $"OS_{id}.docx"
             );
-//>>>>>>> 65efe0ec33b53afecc82489989377b6c3b08f5b7
         }
-
     }
 }

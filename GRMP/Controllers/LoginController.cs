@@ -61,7 +61,7 @@ namespace GRMP.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("ListarOSExibir", "Usuario");
+                            return RedirectToAction("ListarOSExibir", "OrdemServico");
                         }
                     }
 
@@ -78,7 +78,7 @@ namespace GRMP.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("ListarOSExibir", "Usuario");
+                            return RedirectToAction("ListarOSExibir", "OrdemServico");
                         }
                     }
                 }

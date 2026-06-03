@@ -18,12 +18,12 @@
             <p>Registrar uma nova solicitação no sistema</p>
         </div>
 
-        <a href="@Url.Action("ListarOSExibir", "Usuario")" class="btn-voltar">
+        <a href="@Url.Action("ListarOSExibir", "OrdemServico")" class="btn-voltar">
             Voltar
         </a>
     </div>
 
-    <form asp-action="CriarOSProcessar" asp-controller="Usuario" method="post" class="card-formulario">
+    <form asp-action="CriarOSProcessar" asp-controller="OrdemServico" method="post" class="card-formulario">
 
         <!-- BLOCO -->
         <div class="grupo-form">
@@ -150,7 +150,7 @@
             // BUSCAR LOCAIS
             //-----------------------------------
 
-            fetch(`/Usuario/BuscarLocaisPorBloco?idBloco=${idBloco}`)
+                fetch(`/OrdemServico/BuscarLocaisPorBloco?idBloco=${idBloco}`)
 
                 .then(response => response.json())
 

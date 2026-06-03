@@ -17,7 +17,7 @@
             </div>
             <button type="button"
                     class="botao-adicionar"
-                    onclick="window.location.href='@Url.Action("CriarOSExibir", "Usuario")'">
+                    onclick="window.location.href='@Url.Action("CriarOSExibir", "OrdemServico")'">
                 Adicionar Solicitação
             </button>
         </div>
@@ -374,14 +374,14 @@
                         {
                             <div class="acoes-card">
 
-                                <a asp-controller="Usuario"
+                                <a asp-controller="OrdemServico"
                                    asp-action="BaixarOSWord"
                                    asp-route-id="@c["idOrdemServico"]"
                                    class="btn-word">
                                     Baixar Word
                                 </a>
 
-                                <a asp-controller="Usuario"
+                                <a asp-controller="OrdemServico"
                                    asp-action="AlterarOSExibir"
                                    asp-route-id="@c["idOrdemServico"]"
                                    class="btn-gen">
