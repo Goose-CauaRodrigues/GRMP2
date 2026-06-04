@@ -23,7 +23,6 @@ namespace GRMP.Classes
         public DateTime? dataInicio;
         public DateTime? dataFinalizacao;
         public int? status;
-        public bool ativo;
 
         SqlConnection con;
 
@@ -71,8 +70,7 @@ namespace GRMP.Classes
                         dataSolicitacao,
                         dataInicio,
                         dataFinalizacao,
-                        status,
-                        ativo
+                        status
                     )
                     VALUES
                     (
@@ -88,8 +86,7 @@ namespace GRMP.Classes
                         @dataSolicitacao,
                         @dataInicio,
                         @dataFinalizacao,
-                        @status,
-                        @ativo
+                        @status
                     )";
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
@@ -107,7 +104,6 @@ namespace GRMP.Classes
                 cmd.Parameters.AddWithValue("@dataInicio", (object?)dataInicio ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@dataFinalizacao", (object?)dataFinalizacao ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@status", (object?)status ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@ativo", ativo);
 
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -139,8 +135,7 @@ namespace GRMP.Classes
                         dataSolicitacao = @dataSolicitacao,
                         dataInicio = @dataInicio,
                         dataFinalizacao = @dataFinalizacao,
-                        status = @status,
-                        ativo = @ativo
+                        status = @status
                     WHERE idOrdemServico = @idOrdemServico";
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
@@ -159,7 +154,6 @@ namespace GRMP.Classes
                 cmd.Parameters.AddWithValue("@dataInicio", (object?)dataInicio ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@dataFinalizacao", (object?)dataFinalizacao ?? DBNull.Value);
                 cmd.Parameters.AddWithValue("@status", (object?)status ?? DBNull.Value);
-                cmd.Parameters.AddWithValue("@ativo", ativo);
 
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -268,7 +262,6 @@ namespace GRMP.Classes
                 os.dataInicio,
                 os.dataFinalizacao,
                 os.observacoes,
-                os.ativo,
 
                 criador.nome AS nomeCriador,
                 criador.email AS emailCriador,
@@ -329,7 +322,6 @@ namespace GRMP.Classes
             os.dataInicio,
             os.dataFinalizacao,
             os.observacoes,
-            os.ativo,
 
             criador.nome AS nomeCriador,
             criador.email AS emailCriador,

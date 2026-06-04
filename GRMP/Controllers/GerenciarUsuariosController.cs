@@ -156,62 +156,40 @@ namespace GRMP.Controllers
         {
             try
             {
+                ModelState.Remove("Senha");
+
                 if (!ModelState.IsValid)
                 {
-                    return View(
-                        "AlterarUsuarioExibirView",
-                        USVM
-                    );
+                    return View("AlterarUsuarioExibirView", USVM);
                 }
 
                 Usuario Us = new Usuario();
 
-                //-----------------------------------
-                // PREENCHER
-                //-----------------------------------
-
                 Us.idUsuario = USVM.IdUsuario;
-
                 Us.nome = USVM.Nome;
-
                 Us.email = USVM.Email;
-
-                var passwordHasher = new PasswordHasher<Usuario>();
-
-                Us.senha = passwordHasher.HashPassword(
-                    Us,
-                    USVM.Senha
-                );
-
                 Us.nvAcesso = USVM.NvAcesso;
 
-                //-----------------------------------
-                // ALTERAR
-                //-----------------------------------
+                if (!string.IsNullOrWhiteSpace(USVM.Senha))
+                {
+                    var passwordHasher = new PasswordHasher<Usuario>();
+                    Us.senha = passwordHasher.HashPassword(Us, USVM.Senha);
+                    Us.Alterar();         
+                }
+                else
+                {
+                    Us.AlterarSemSenha();
+                }
 
-                Us.Alterar();
-
-                //-----------------------------------
-                // REDIRECIONAR
-                //-----------------------------------
-
-                return RedirectToAction(
-                    "ListaUsuariosExibir"
-                );
+                return RedirectToAction("ListaUsuariosExibir");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(
-                    "",
-                    ex.Message
-                );
-
-                return View(
-                    "AlterarUsuarioExibirView",
-                    USVM
-                );
+                ModelState.AddModelError("", ex.Message);
+                return View("AlterarUsuarioExibirView", USVM);
             }
         }
+
         public IActionResult AlterarSenhaExibir()
         {
             string idUsuario = HttpContext.Session.GetString("idUsuario");
@@ -245,58 +223,38 @@ namespace GRMP.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return RedirectToAction(
-                        "ListarOSExibir", "OrdemServico",
-                        USVM
-                    );
-                }
-
                 Usuario Us = new Usuario();
 
-                //-----------------------------------
-                // PREENCHER
-                //-----------------------------------
-
                 Us.idUsuario = USVM.IdUsuario;
-
                 Us.nome = USVM.Nome;
 
-                Us.email = USVM.Email;
+                if (!string.IsNullOrWhiteSpace(USVM.Senha))
+                {
+                    var passwordHasher = new PasswordHasher<Usuario>();
 
-                var passwordHasher = new PasswordHasher<Usuario>();
+                    Us.senha = passwordHasher.HashPassword(
+                        Us,
+                        USVM.Senha
+                    );
 
-                Us.senha = passwordHasher.HashPassword(
-                    Us,
-                    USVM.Senha
-                );
-
-                Us.nvAcesso = int.Parse(HttpContext.Session.GetString("nvAcesso"));
-
-                //-----------------------------------
-                // ALTERAR
-                //-----------------------------------
-
-                Us.Alterar();
-
-                //-----------------------------------
-                // REDIRECIONAR
-                //-----------------------------------
+                    Us.AlterarPerfilComSenha();
+                }
+                else
+                {
+                    Us.AlterarPerfil();
+                }
 
                 return RedirectToAction(
-                    "ListarOSExibir", "OrdemServico"
+                    "ListarOSExibir",
+                    "OrdemServico"
                 );
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(
-                    "",
-                    ex.Message
-                );
+                ModelState.AddModelError("", ex.Message);
 
-                return RedirectToAction(
-                    "ListarOSExibir", "OrdemServico",
+                return View(
+                    "AlterarSenhaExibirView",
                     USVM
                 );
             }

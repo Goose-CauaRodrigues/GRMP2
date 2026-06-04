@@ -99,8 +99,6 @@ namespace GRMP.Controllers
 
                 os.status = 0;
 
-                os.ativo = true;
-
                 //---------------------------------
                 // Inserir
                 //---------------------------------
@@ -297,11 +295,6 @@ namespace GRMP.Controllers
                     );
             }
 
-            osVm.Ativo =
-                Convert.ToBoolean(
-                    linha["ativo"]
-                );
-
             //-----------------------------------
             // DROPDOWN BLOCO
             //-----------------------------------
@@ -441,13 +434,6 @@ namespace GRMP.Controllers
 
                 os.status =
                     OsVM.Status;
-
-                //---------------------------------
-                // Ativo
-                //---------------------------------
-
-                os.ativo =
-                    OsVM.Ativo;
 
                 //---------------------------------
                 // ALTERAR
@@ -676,8 +662,6 @@ namespace GRMP.Controllers
                 document.InsertParagraph($"Observações: {os["observacoes"]}");
 
                 document.InsertParagraph($"Status: {os["status"]}");
-
-                document.InsertParagraph($"Ativo: {os["ativo"]}");
 
                 document.InsertParagraph($"Data Solicitação: {os["dataSolicitacao"]}");
 

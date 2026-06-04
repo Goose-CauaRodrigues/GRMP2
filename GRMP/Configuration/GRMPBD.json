@@ -1,8 +1,8 @@
-{
-  "connectionstrings": {
-    "stringconexaosqlserver": "data source=ecfp602d1301689\\sqlexpress; database=grmpbancodados; user id=sa; password=sa; trustservercertificate=true"
-  }
-} // nicolas
+//{
+//  "connectionstrings": {
+//    "stringconexaosqlserver": "data source=ecfp602d1301689\\sqlexpress; database=grmpbancodados; user id=sa; password=sa; trustservercertificate=true"
+//  }
+//} // nicolas
 
 //{
 //  "ConnectionStrings": {
@@ -25,11 +25,11 @@
 //  }
 //} //cauã em casa
 
-//{
-//  "ConnectionStrings": {
-//    "StringConexaoSQLServer": "Data Source=.;Initial Catalog=GRMPBancoDados;Integrated Security=True;TrustServerCertificate=True"
-//  } // nicolas em casa
-//}
+{
+  "ConnectionStrings": {
+    "StringConexaoSQLServer": "Data Source=.;Initial Catalog=GRMPBancoDados;Integrated Security=True;TrustServerCertificate=True"
+  } // nicolas em casa
+}
 
 //{
 //  "ConnectionStrings": {

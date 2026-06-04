@@ -62,8 +62,7 @@ namespace GRMP.Classes
                         dataSolicitacao,
                         dataInicio,
                         dataFinalizacao,
-                        tempoConclusaoHoras,
-                        ativo
+                        tempoConclusaoHoras
                     FROM relatorio
                     WHERE 1 = 1";
 
@@ -175,7 +174,6 @@ namespace GRMP.Classes
                         dataInicio = row["dataInicio"] as DateTime?,
                         dataFinalizacao = row["dataFinalizacao"] as DateTime?,
                         tempoConclusaoHoras = row["tempoConclusaoHoras"] as int?,
-                        ativo = Convert.ToBoolean(row["ativo"])
                     });
                 }
 

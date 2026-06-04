@@ -34,7 +34,6 @@ namespace GRMP.Controllers
                 os.status
             FROM OrdemServico os
             WHERE os.local = @localId
-            AND os.ativo = 1
             AND os.status != 2
             AND os.status != 3
             ";
@@ -124,7 +123,6 @@ namespace GRMP.Controllers
                     SELECT DISTINCT b.nome
                     FROM OrdemServico os
                     INNER JOIN Bloco b ON b.idBloco = os.Bloco
-                    WHERE os.ativo = 1
                     AND os.status != 2
                     AND os.status != 3
                     {filtroStatus}
@@ -150,7 +148,6 @@ namespace GRMP.Controllers
                         os.status
                     FROM OrdemServico os
                     INNER JOIN Bloco b ON b.idBloco = os.Bloco
-                    WHERE os.ativo = 1
                     AND os.status != 2
                     AND os.status != 3
                     {filtroStatus}
@@ -222,7 +219,6 @@ namespace GRMP.Controllers
                     WHERE b.nome = @bloco
                     AND os.status != 2
                     AND os.status != 3
-                    AND os.ativo = 1
                     ORDER BY l.nome
                 ";
 
@@ -255,7 +251,6 @@ namespace GRMP.Controllers
                     WHERE b.nome = @bloco
                     AND os.status != 2
                     AND os.status != 3
-                    AND os.ativo = 1
                 ";
 
                 if (localId.HasValue)

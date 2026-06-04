@@ -41,7 +41,7 @@
 
             <input type="text"
                    asp-for="Nome"
-                   placeholder="Digite o nome do usuário" />
+                   placeholder="Digite o nome do usuário" required/>
 
         </div>
 
@@ -54,7 +54,7 @@
 
             <input type="email"
                    asp-for="Email"
-                   placeholder="Digite o email" />
+                   placeholder="Digite o email" required />
 
         </div>
 
@@ -67,7 +67,7 @@
 
             <input type="password"
                    asp-for="Senha"
-                   value="Senha123" readonly />
+                   value="Senha123" readonly required />
 
         </div>
 
@@ -78,7 +78,7 @@
                 Nível de Acesso
             </label>
 
-            <select asp-for="NvAcesso">
+            <select asp-for="NvAcesso" required>
 
                 <option value="">
                     Selecione

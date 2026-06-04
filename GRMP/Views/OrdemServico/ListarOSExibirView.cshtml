@@ -350,11 +350,6 @@
                         </p>
 
                         <p>
-                            <strong>Ativo:</strong><br>
-                            @(Convert.ToBoolean(c["ativo"]) ? "Sim" : "Não")
-                        </p>
-
-                        <p>
                             <strong>Email Solicitante:</strong><br>
                             @(c["emailCriador"] != DBNull.Value ? c["emailCriador"] : "-")
                         </p>

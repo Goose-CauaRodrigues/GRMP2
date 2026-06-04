@@ -40,8 +40,6 @@ namespace GRMP.Models
 
         public int? Status { get; set; }
 
-        public bool Ativo { get; set; }
-
         public DataTable DtBlocos { get; set; }
         public DataTable DtLocais { get; set; }
     }

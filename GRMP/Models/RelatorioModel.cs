@@ -31,7 +31,5 @@
         public DateTime? dataFinalizacao { get; set; }
 
         public int? tempoConclusaoHoras { get; set; }
-
-        public bool ativo { get; set; }
     }
 }

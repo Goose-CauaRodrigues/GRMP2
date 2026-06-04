@@ -199,5 +199,77 @@ namespace ProjBancoDados.BancoDados
                 con.Close();
             }
         }
+
+        public void AlterarPerfil()
+        {
+            try
+            {
+                string cmdSQL = @"UPDATE Usuario SET
+                            Nome = @Nome
+                          WHERE IdUsuario = @IdUsuario";
+
+                SqlCommand cmd = new SqlCommand(cmdSQL, con);
+
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+                cmd.Parameters.AddWithValue("@Nome", nome);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public void AlterarPerfilComSenha()
+        {
+            try
+            {
+                string cmdSQL = @"UPDATE Usuario SET
+                            Nome = @Nome,
+                            Senha = @Senha
+                          WHERE IdUsuario = @IdUsuario";
+
+                SqlCommand cmd = new SqlCommand(cmdSQL, con);
+
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+                cmd.Parameters.AddWithValue("@Nome", nome);
+                cmd.Parameters.AddWithValue("@Senha", senha);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public void AlterarSemSenha()
+        {
+            try
+            {
+                string cmdSQL = @"UPDATE Usuario SET
+                            Nome     = @Nome,
+                            Email    = @Email,
+                            NvAcesso = @NvAcesso
+                          WHERE IdUsuario = @IdUsuario";
+
+                SqlCommand cmd = new SqlCommand(cmdSQL, con);
+
+                cmd.Parameters.AddWithValue("@IdUsuario", idUsuario);
+                cmd.Parameters.AddWithValue("@Nome", nome);
+                cmd.Parameters.AddWithValue("@Email", email);
+                cmd.Parameters.AddWithValue("@NvAcesso", nvAcesso);
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
     }
 }
