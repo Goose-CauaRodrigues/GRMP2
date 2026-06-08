@@ -96,6 +96,8 @@ namespace GRMP.Controllers
 
                 Us.Inserir();
 
+                TempData["Sucesso"] = "Usuário criado com sucesso!";
+
                 //-----------------------------------
                 // REDIRECIONAR
                 //-----------------------------------
@@ -106,6 +108,8 @@ namespace GRMP.Controllers
             }
             catch (Exception ex)
             {
+                TempData["Erro"] = ex.Message;
+
                 ModelState.AddModelError(
                     "",
                     ex.Message
@@ -174,17 +178,22 @@ namespace GRMP.Controllers
                 {
                     var passwordHasher = new PasswordHasher<Usuario>();
                     Us.senha = passwordHasher.HashPassword(Us, USVM.Senha);
-                    Us.Alterar();         
+                    Us.Alterar();
+
+                    TempData["Sucesso"] = "Usuário alterado com sucesso!";
                 }
                 else
                 {
                     Us.AlterarSemSenha();
+
+                    TempData["Sucesso"] = "Usuário alterado com sucesso!";
                 }
 
                 return RedirectToAction("ListaUsuariosExibir");
             }
             catch (Exception ex)
             {
+                TempData["Erro"] = ex.Message;
                 ModelState.AddModelError("", ex.Message);
                 return View("AlterarUsuarioExibirView", USVM);
             }
@@ -238,10 +247,14 @@ namespace GRMP.Controllers
                     );
 
                     Us.AlterarPerfilComSenha();
+
+                    TempData["Sucesso"] = "Senha alterada com sucesso!";
                 }
                 else
                 {
                     Us.AlterarPerfil();
+
+                    TempData["Sucesso"] = "Nome alterado com sucesso!";
                 }
 
                 return RedirectToAction(
@@ -251,6 +264,8 @@ namespace GRMP.Controllers
             }
             catch (Exception ex)
             {
+                TempData["Erro"] = ex.Message;
+
                 ModelState.AddModelError("", ex.Message);
 
                 return View(

@@ -105,6 +105,8 @@ namespace GRMP.Controllers
 
                 os.Inserir();
 
+                TempData["Sucesso"] = "Ordem de serviço criada com sucesso!";
+
                 //---------------------------------
                 // Redireciona
                 //---------------------------------
@@ -118,6 +120,8 @@ namespace GRMP.Controllers
                 model.DtBlocos = BuscarBlocos();
 
                 ViewBag.Erro = ex.Message;
+
+                TempData["Erro"] = ex.Message;
 
                 return View("CriarOSExibirView", model);
             }
@@ -461,6 +465,8 @@ namespace GRMP.Controllers
 
                 os.Alterar();
 
+                TempData["Sucesso"] = "Ordem de serviço atualizada com sucesso!";
+
                 //---------------------------------
                 // REDIRECIONA
                 //---------------------------------
@@ -487,6 +493,8 @@ namespace GRMP.Controllers
 
                 ViewBag.Erro =
                     ex.Message;
+
+                TempData["Erro"] = ex.Message;
 
                 return View(
                     "AlterarOSExibirView",

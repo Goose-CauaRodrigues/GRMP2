@@ -119,3 +119,39 @@ footer {
     background: var(--background);
     color: var(--foreground);
 }
+
+.alert-global {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: 99999;
+    min-width: 320px;
+    max-width: 500px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    box-shadow: 0 8px 25px rgba(0,0,0,.15);
+    animation: slideIn .3s ease;
+}
+
+.alert-success-custom {
+    background: #16A34A;
+    color: white;
+}
+
+.alert-error-custom {
+    background: #DC2626;
+    color: white;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}

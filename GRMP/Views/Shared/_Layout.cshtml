@@ -124,21 +124,25 @@
         </nav>
     </header>
 
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert-global alert-success-custom">
+            @TempData["Sucesso"]
+        </div>
+    }
+
+    @if (TempData["Erro"] != null)
+    {
+        <div class="alert-global alert-error-custom">
+            @TempData["Erro"]
+        </div>
+    }
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
 
     <footer class="relative overflow-hidden">
         <!-- glow background -->
@@ -186,6 +190,36 @@
         </div>
     </footer>
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+        const alerta = document.querySelector('.alert-global');
+
+        if(alerta)
+        {
+        setTimeout(() => {
+
+        alerta.style.transition = 'all .4s ease';
+        alerta.style.opacity = '0';
+        alerta.style.transform = 'translateX(30px)';
+
+        setTimeout(() => alerta.remove(), 400);
+
+        }, 4000);
+        }
+        });
+    </script>
+
     <script>lucide.createIcons();</script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
