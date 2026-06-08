@@ -123,6 +123,25 @@ namespace GRMP.Controllers
             }
         }
 
+        public DataTable BuscarExecutores()
+        {
+            Usuario usuario = new Usuario();
+
+            DataTable dtUsuarios = usuario.SelecionarSeguro();
+
+            DataTable dtExecutores = dtUsuarios.Clone();
+
+            foreach (DataRow row in dtUsuarios.Rows)
+            {
+                if (Convert.ToInt32(row["nvAcesso"]) == 2)
+                {
+                    dtExecutores.ImportRow(row);
+                }
+            }
+
+            return dtExecutores;
+        }
+
         public IActionResult AlterarOSExibir(int id)
         {
             string idUsuario =
@@ -303,6 +322,7 @@ namespace GRMP.Controllers
                 BuscarBlocos();
             osVm.DtLocais =
                 BuscarLocaisPorBlocoAlterado(osVm.Bloco);
+            osVm.DtExecutores = BuscarExecutores();
 
 
             //-----------------------------------
@@ -456,6 +476,14 @@ namespace GRMP.Controllers
 
                 model.DtBlocos =
                     BuscarBlocos();
+
+                model.DtLocais =
+    BuscarLocaisPorBlocoAlterado(
+        OsVM.Bloco
+    );
+
+                model.DtExecutores =
+                    BuscarExecutores();
 
                 ViewBag.Erro =
                     ex.Message;

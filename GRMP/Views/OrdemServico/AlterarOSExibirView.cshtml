@@ -144,9 +144,9 @@
 
         </div>
 
-        <!-- PATRIMÔNIO -->
         <div class="grupo-form"
-             id="grupoPatrimonio">
+             id="grupoPatrimonio"
+             style="display:none;">
 
             <label asp-for="NumeroPatrimonio">
                 Código do Ativo
@@ -155,6 +155,64 @@
             <input type="text"
                    asp-for="NumeroPatrimonio"
                    placeholder="Digite o código do ativo" />
+
+        </div>
+
+        <div class="grupo-form">
+
+            <label asp-for="DataInicio">
+                Data Início
+            </label>
+
+            <input type="datetime-local"
+                   asp-for="DataInicio" />
+
+        </div>
+
+        <div class="grupo-form">
+
+            <label asp-for="DataFinalizacao">
+                Data Finalização
+            </label>
+
+            <input type="datetime-local"
+                   asp-for="DataFinalizacao" />
+
+        </div>
+
+        <!-- EXECUTOR -->
+        <div class="grupo-form">
+
+            <label asp-for="FkExecutor">
+                Executor
+            </label>
+
+            <select asp-for="FkExecutor">
+
+                <option value="">
+                    Selecione um executor
+                </option>
+
+                @foreach (DataRow executor in Model.DtExecutores.Rows)
+                {
+                    if (
+                        Model.FkExecutor.HasValue &&
+                        Convert.ToInt32(executor["idUsuario"]) == Model.FkExecutor.Value
+                    )
+                    {
+                        <option value="@executor["idUsuario"]" selected>
+                            @executor["nome"]
+                        </option>
+                    }
+                    else
+                    {
+                        <option value="@executor["idUsuario"]">
+                            @executor["nome"]
+                        </option>
+                    }
+                }
+
+            </select>
 
         </div>
 
@@ -378,32 +436,73 @@
 
 </div>
 <script>
-        document.getElementById("bloco").addEventListener("change", function () {
 
-        let idBloco = this.value;
-        let selectLocal = document.getElementById("local");
+    document.addEventListener("DOMContentLoaded", function () {
 
-        selectLocal.innerHTML =
-            '<option value="">Selecione um local</option>';
+        //-----------------------------------
+        // BLOCO -> LOCAIS
+        //-----------------------------------
 
-        if (!idBloco) {
-            return;
+        document.getElementById("bloco")
+            .addEventListener("change", function () {
+
+            let idBloco = this.value;
+            let selectLocal = document.getElementById("local");
+
+            selectLocal.innerHTML =
+                '<option value="">Selecione um local</option>';
+
+            if (!idBloco) {
+                return;
+            }
+
+            fetch(`/OrdemServico/BuscarLocaisPorBloco?idBloco=${idBloco}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    data.forEach(local => {
+
+                        let option =
+                            document.createElement("option");
+
+                        option.value = local.idLocal;
+                        option.text = local.nome;
+
+                        selectLocal.appendChild(option);
+                    });
+
+                });
+        });
+
+        //-----------------------------------
+        // CATEGORIA -> PATRIMÔNIO
+        //-----------------------------------
+
+        const categoria =
+            document.getElementById("categoria");
+
+        const grupoPatrimonio =
+            document.getElementById("grupoPatrimonio");
+
+        function atualizarPatrimonio() {
+
+            if (categoria.value === "2") {
+
+                grupoPatrimonio.style.display = "flex";
+            }
+            else {
+
+                grupoPatrimonio.style.display = "none";
+            }
         }
 
-        fetch(`/OrdemServico/BuscarLocaisPorBloco?idBloco=${idBloco}`)
-            .then(response => response.json())
-            .then(data => {
+        categoria.addEventListener(
+            "change",
+            atualizarPatrimonio
+        );
 
-                data.forEach(local => {
-
-                    let option = document.createElement("option");
-
-                    option.value = local.idLocal;
-                    option.text = local.nome;
-
-                    selectLocal.appendChild(option);
-                });
-
-            });
+        // executa ao abrir a tela
+        atualizarPatrimonio();
     });
+
 </script>

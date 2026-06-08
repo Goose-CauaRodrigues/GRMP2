@@ -273,39 +273,41 @@
 
                 string idOS = c["idOrdemServico"] != DBNull.Value ? c["idOrdemServico"].ToString() : "";
 
-                <div class="card-chamado" onclick="expandir(this)">
+                <div class="card-chamado">
+                    <div class="card-top" onclick="expandir(this)">
 
-                    <div class="card-top">
-                        <strong>@c["nomeBloco"] - @c["nomeLocal"]</strong>
-                        <span class="status @statusClasse">@status</span>
+                        <div class="card-name">
+                            <strong>@c["nomeBloco"] - @c["nomeLocal"]</strong>
+                            <span class="status @statusClasse">@status</span>
+                        </div>
+
+                        <p class="card-date">
+                            <strong>Solicitação:</strong>
+                            @(c["dataSolicitacao"] != DBNull.Value
+                                ? Convert.ToDateTime(c["dataSolicitacao"]).ToString("dd/MM/yyyy")
+                                : "-")
+                        </p>
+
+                        <p class="card-date">
+                            <strong>Início:</strong>
+                            @(c["dataInicio"] != DBNull.Value
+                                ? Convert.ToDateTime(c["dataInicio"]).ToString("dd/MM/yyyy")
+                                : "-")
+
+                            <strong>Finalização:</strong>
+                            @(c["dataFinalizacao"] != DBNull.Value
+                                ? Convert.ToDateTime(c["dataFinalizacao"]).ToString("dd/MM/yyyy")
+                                : "-")
+                        </p>
+
+                        <p class="card-date">
+                            <strong>Solicitante:</strong>
+                            @(c["nomeCriador"] != DBNull.Value ? c["nomeCriador"] : "-")
+
+                            <strong>Executor:</strong>
+                            @(c["nomeExecutor"] != DBNull.Value ? c["nomeExecutor"] : "-")
+                        </p>
                     </div>
-
-                    <p class="card-date">
-                        <strong>Solicitação:</strong>
-                        @(c["dataSolicitacao"] != DBNull.Value
-                            ? Convert.ToDateTime(c["dataSolicitacao"]).ToString("dd/MM/yyyy")
-                            : "-")
-                    </p>
-
-                    <p class="card-date">
-                        <strong>Início:</strong>
-                        @(c["dataInicio"] != DBNull.Value
-                            ? Convert.ToDateTime(c["dataInicio"]).ToString("dd/MM/yyyy")
-                            : "-")
-
-                        <strong>Finalização:</strong>
-                        @(c["dataFinalizacao"] != DBNull.Value
-                            ? Convert.ToDateTime(c["dataFinalizacao"]).ToString("dd/MM/yyyy")
-                            : "-")
-                    </p>
-
-                    <p class="card-date">
-                        <strong>Solicitante:</strong>
-                        @(c["nomeCriador"] != DBNull.Value ? c["nomeCriador"] : "-")
-
-                        <strong>Executor:</strong>
-                        @(c["nomeExecutor"] != DBNull.Value ? c["nomeExecutor"] : "-")
-                    </p>
 
                     <div class="detalhes">
 
@@ -395,8 +397,12 @@
 </div>
 
 <script>
-    function expandir(card) {
-        card.classList.toggle("expandido");
+    function expandir(elemento) {
+
+        elemento
+            .closest(".card-chamado")
+            .classList
+            .toggle("expandido");
     }
 
         function toggleCard(header) {

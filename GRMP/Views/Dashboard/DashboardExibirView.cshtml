@@ -20,8 +20,8 @@
 
     <style>
             /* =========================================================
-                                                           SENAI · Estilos do Header (Corrigidos para evitar deslocamento)
-                                                           ========================================================= */
+                                                                                   SENAI · Estilos do Header (Corrigidos para evitar deslocamento)
+                                                                                   ========================================================= */
             :root {
                 --senai-red: hsl(0, 75%, 35%);
                 --senai-red-glow: hsl(0, 80%, 48%);
@@ -80,21 +80,6 @@
                 margin: 0;
                 letter-spacing: .02em;
             }
-
-            /* Ajuste do container principal */
-            .db-wrap {
-                padding: 2rem;
-                max-width: 1400px;
-                margin: 0 auto;
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            /* Removendo possíveis margens negativas ou larguras excessivas */
-            main, .db-wrap, .filter-bar, .row {
-                margin-top: 0 !important;
-                max-width: 100%;
-            }
     </style>
 </head>
 <body>
@@ -138,6 +123,24 @@
         if (dataFim.HasValue) filtradas = filtradas.Where(x => x.dataSolicitacao <= dataFim.Value);
 
         var lista = filtradas.ToList();
+        int paginaAtual = 1;
+
+        if (!string.IsNullOrWhiteSpace(Context.Request.Query["pagina"]))
+        {
+            paginaAtual = Convert.ToInt32(Context.Request.Query["pagina"]);
+        }
+
+        int itensPorPagina = 50;
+
+        int totalItens = lista.Count;
+
+        int totalPaginas = (int)Math.Ceiling((double)totalItens / itensPorPagina);
+
+        var listaPaginada = lista
+            .OrderByDescending(x => x.dataSolicitacao)
+            .Skip((paginaAtual - 1) * itensPorPagina)
+            .Take(itensPorPagina)
+            .ToList();
         var total = lista.Count;
         var abertas = lista.Count(x => x.status == "Aberta");
         var emAndamento = lista.Count(x => x.status == "Em andamento");
@@ -203,7 +206,7 @@
                     </div>
                 </div>
 
-                <div class="filter-row" style="margin-top: 10px;">
+                <div class="filter-row">
                     <div class="filter-group">
                         <span class="filter-label">Solicitante</span>
                         <select name="solicitante" onchange="document.getElementById('filterForm').submit()">
@@ -280,60 +283,48 @@
             }
         </div>
 
-        <div class="row g-3 mb-4" style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
-            <div style="flex: 1;">
-                <div class="metric-card mc-total">
-                    <div class="mc-label">Total OS</div>
-                    <div class="mc-val">@total</div>
-                    <div class="mc-sub">*</div>
-                </div>
+        <div class="metric-grid">
+            <div class="metric-card mc-total">
+                <div class="mc-label">Total OS</div>
+                <div class="mc-val">@total</div>
+                <div class="mc-sub">*</div>
             </div>
-            <div style="flex: 1;">
-                <div class="metric-card mc-abertas">
-                    <div class="mc-label">Abertas</div>
-                    <div class="mc-val">@abertas</div>
-                    <div class="mc-sub">@pct(abertas)</div>
-                </div>
+            <div class="metric-card mc-abertas">
+                <div class="mc-label">Abertas</div>
+                <div class="mc-val">@abertas</div>
+                <div class="mc-sub">@pct(abertas)</div>
             </div>
-            <div style="flex: 1;">
-                <div class="metric-card mc-andamento">
-                    <div class="mc-label">Em andamento</div>
-                    <div class="mc-val">@emAndamento</div>
-                    <div class="mc-sub">@pct(emAndamento)</div>
-                </div>
+            <div class="metric-card mc-andamento">
+                <div class="mc-label">Em andamento</div>
+                <div class="mc-val">@emAndamento</div>
+                <div class="mc-sub">@pct(emAndamento)</div>
             </div>
-            <div style="flex: 1;">
-                <div class="metric-card mc-concluidas">
-                    <div class="mc-label">Concluídas</div>
-                    <div class="mc-val">@concluidas</div>
-                    <div class="mc-sub">@pct(concluidas)</div>
-                </div>
+            <div class="metric-card mc-concluidas">
+                <div class="mc-label">Concluídas</div>
+                <div class="mc-val">@concluidas</div>
+                <div class="mc-sub">@pct(concluidas)</div>
             </div>
-            <div style="flex: 1;">
-                <div class="metric-card mc-canceladas">
-                    <div class="mc-label">Canceladas</div>
-                    <div class="mc-val">@canceladas</div>
-                    <div class="mc-sub">@pct(canceladas)</div>
-                </div>
+            <div class="metric-card mc-canceladas">
+                <div class="mc-label">Canceladas</div>
+                <div class="mc-val">@canceladas</div>
+                <div class="mc-sub">@pct(canceladas)</div>
             </div>
-            <div style="flex: 1;">
-                <div class="metric-card mc-pausa">
-                    <div class="mc-label">Em pausa</div>
-                    <div class="mc-val">@emPausa</div>
-                    <div class="mc-sub">@pct(emPausa)</div>
-                </div>
+            <div class="metric-card mc-pausa">
+                <div class="mc-label">Em pausa</div>
+                <div class="mc-val">@emPausa</div>
+                <div class="mc-sub">@pct(emPausa)</div>
             </div>
         </div>
 
-        <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem;">
-            <div style="flex: 1; background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid #eee;">
-                <p style="font-weight: 600; margin-bottom: 1rem;">OS por status</p>
+        <div class="charts-grid">
+            <div class="charts-card">
+                <p class="chart-title">OS por status</p>
                 <div style="height: 250px; position: relative;">
                     <canvas id="graficoStatus"></canvas>
                 </div>
             </div>
-            <div style="flex: 1; background: #fff; padding: 1.5rem; border-radius: 12px; border: 1px solid #eee;">
-                <p style="font-weight: 600; margin-bottom: 1rem;">OS por prioridade</p>
+            <div class="charts-card">
+                <p class="chart-title">OS por prioridade</p>
                 <div style="height: 250px; position: relative;">
                     <canvas id="graficoPrioridade"></canvas>
                 </div>
@@ -365,7 +356,7 @@
                         }
                         else
                         {
-                            foreach (var item in lista.Take(50))
+                            foreach (var item in listaPaginada)
                             {
                                 <tr>
                                     <td style="padding: 12px; border-top: 1px solid #eee; font-family: monospace;">@item.idOrdemServico</td>
@@ -374,11 +365,11 @@
                                     <td style="padding: 12px; border-top: 1px solid #eee;">
                                         <span class="
                                             @(item.status == "Aberta" ? "badge-aberta" :
-                                                item.status == "Em andamento" ? "badge-andamento" :
-                                                item.status == "Concluída" ? "badge-concluida" :
-                                                item.status == "Cancelada" ? "badge-cancelada" :
-                                                item.status == "Em pausa" ? "badge-pausa" :
-                                                "badge")
+                                                    item.status == "Em andamento" ? "badge-andamento" :
+                                                    item.status == "Concluída" ? "badge-concluida" :
+                                                    item.status == "Cancelada" ? "badge-cancelada" :
+                                                    item.status == "Em pausa" ? "badge-pausa" :
+                                                    "badge")
                                             ">
                                             @item.status
                                         </span>
@@ -392,8 +383,37 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- PAGINAÇÃO AQUI -->
+            @if (totalPaginas > 1)
+            {
+                <div class="paginacao">
+
+                    @if (paginaAtual > 1)
+                    {
+                        <a href="?@MontarQuery(paginaAtual - 1)">
+                            ← Anterior
+                        </a>
+                    }
+
+                    <span>
+                        Página @paginaAtual de @totalPaginas
+                    </span>
+
+                    @if (paginaAtual < totalPaginas)
+                    {
+
+                        <a href="?@MontarQuery(paginaAtual + 1)">
+                            Próxima →
+                        </a>
+                    }
+
+                </div>
+            }
+
         </div>
-    </main>
+    </div>
+</main>
 
 @functions {
     public string JavaScriptQueryString(string keyToRemove)
@@ -401,6 +421,18 @@
         var queryMap = Context.Request.Query.ToDictionary(x => x.Key, x => x.Value.ToString());
         queryMap.Remove(keyToRemove);
         return string.Join("&", queryMap.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
+    }
+
+    public string MontarQuery(int pagina)
+    {
+        var query = Context.Request.Query
+            .ToDictionary(x => x.Key, x => x.Value.ToString());
+
+        query["pagina"] = pagina.ToString();
+
+        return string.Join("&",
+            query.Select(x =>
+                $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
     }
 }
 

@@ -297,17 +297,17 @@ button:hover,
 /* ==========================================
    TOPO CARD
    ========================================== */
-.card-top {
+.card-name {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
 }
 
-.card-top strong {
-    font-size: 18px;
-    color: #222;
-}
+    .card-name strong {
+        font-size: 18px;
+        color: #222;
+    }
 
 /* ==========================================
    STATUS
@@ -423,7 +423,7 @@ button:hover,
    ========================================== */
 @media (max-width: 768px) {
 
-    .card-top {
+    .card-name {
         flex-direction: column;
         align-items: flex-start;
     }

@@ -42,5 +42,7 @@ namespace GRMP.Models
 
         public DataTable DtBlocos { get; set; }
         public DataTable DtLocais { get; set; }
+
+        public DataTable DtExecutores { get; set; }
     }
 }

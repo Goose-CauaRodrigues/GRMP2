@@ -283,7 +283,7 @@ namespace GRMP.Classes
             LEFT JOIN Local l
                 ON os.local = l.idLocal
 
-            ORDER BY os.idOrdemServico";
+            ORDER BY os.idOrdemServico DESC";
 
                 SqlDataAdapter da = new SqlDataAdapter(sql, con);
 
