@@ -1,24 +1,15 @@
-﻿/* ==========================================
-   RESET GERAL
-   ========================================== */
-html,
+﻿html,
 body {
     background-color: #f4f4f4;
     font-family: 'Montserrat', sans-serif;
 }
 
-/* ==========================================
-   MAIN
-   ========================================== */
 main {
     width: 100%;
     margin-top: 0;
     box-sizing: border-box;
 }
 
-/* ==========================================
-   CONTAINER
-   ========================================== */
 .container {
     flex: 1;
     padding: 40px 20px;
@@ -29,9 +20,6 @@ main {
     box-sizing: border-box;
 }
 
-/* ==========================================
-   CARD ACTIONS
-   ========================================== */
 .card-actions {
     display: flex;
     justify-content: flex-end;
@@ -40,9 +28,6 @@ main {
     border-top: 1px solid #eee;
 }
 
-/* ==========================================
-   BOTÕES
-   ========================================== */
 button,
 .botao-adicionar,
 .botao-gerenciar {
@@ -57,15 +42,12 @@ button,
     transition: 0.3s;
 }
 
-button:hover,
-.botao-adicionar:hover,
-.botao-gerenciar:hover {
-    background-color: #8b0000;
-}
+    button:hover,
+    .botao-adicionar:hover,
+    .botao-gerenciar:hover {
+        background-color: #8b0000;
+    }
 
-/* ==========================================
-   FILTROS
-   ========================================== */
 .filtros {
     width: 100%;
     max-width: 1200px;
@@ -122,7 +104,6 @@ button:hover,
         white-space: nowrap;
     }
 
-/* Responsivo */
 @media (max-width: 900px) {
     .filtros {
         grid-template-columns: 1fr 1fr;
@@ -143,9 +124,6 @@ button:hover,
     }
 }
 
-/* ==========================================
-   TOPO CARD
-   ========================================== */
 .card-name {
     display: flex;
     justify-content: space-between;
@@ -158,9 +136,6 @@ button:hover,
         color: #222;
     }
 
-/* ==========================================
-   STATUS
-   ========================================== */
 .status {
     color: white;
     padding: 5px 12px;
@@ -171,47 +146,38 @@ button:hover,
     text-transform: uppercase;
 }
 
-    /* Aberta */
     .status.aberta {
         background: #dc3545;
     }
 
-    /* Em andamento */
     .status.andamento {
         background: #ffa807;
     }
 
-    /* Concluída */
     .status.concluida {
         background: #198754;
     }
 
-    /* Cancelada */
     .status.cancelada {
         background: #6c757d;
     }
 
-    /* Em pausa */
     .status.pausa {
         background: #6f42c1;
     }
 
-    /* Não definido */
     .status.indefinido {
         background: #343a40;
     }
 
-.status.admin {
-    background: #2e7d32;
-}
+    .status.admin {
+        background: #2e7d32;
+    }
 
-.status.usuario {
-    background: #1565c0;
-}
+    .status.usuario {
+        background: #1565c0;
+    }
 
-/* ==========================================
-   DETALHES
-   ========================================== */
 .detalhes {
     max-height: 0;
     overflow: hidden;
@@ -226,9 +192,6 @@ button:hover,
     transition: max-height 0.4s ease, opacity 0.3s ease, transform 0.3s ease, padding-top 0.3s ease, margin-top 0.3s ease;
 }
 
-/* ==========================================
-   RESPONSIVO
-   ========================================== */
 @media (max-width: 768px) {
 
     .card-name {
@@ -280,10 +243,8 @@ button:hover,
 
 .card-chamado.expandido .detalhes {
     max-height: 2000px;
-
     opacity: 1;
     transform: translateY(0);
-
     margin-top: 18px;
     padding-top: 14px;
     border-top: 1px solid #eee;

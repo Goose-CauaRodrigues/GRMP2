@@ -1,5 +1,4 @@
-﻿using GRMP.Classes;
-using GRMP.Models;
+﻿using GRMP.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ProjBancoDados.BancoDados;
@@ -65,17 +64,10 @@ namespace GRMP.Controllers
             {
                 if (!ModelState.IsValid)
                 {
-                    return View(
-                        "CriarUsuarioExibirView",
-                        USVM
-                    );
+                    return View("CriarUsuarioExibirView", USVM);
                 }
 
                 Usuario Us = new Usuario();
-
-                //-----------------------------------
-                // PREENCHER
-                //-----------------------------------
 
                 Us.nome = USVM.Nome;
 
@@ -83,42 +75,23 @@ namespace GRMP.Controllers
 
                 var passwordHasher = new PasswordHasher<Usuario>();
 
-                Us.senha = passwordHasher.HashPassword(
-                    Us,
-                    "Senha123"
-                );
+                Us.senha = passwordHasher.HashPassword(Us, "Senha123");
 
                 Us.nvAcesso = USVM.NvAcesso;
-
-                //-----------------------------------
-                // INSERIR
-                //-----------------------------------
 
                 Us.Inserir();
 
                 TempData["Sucesso"] = "Usuário criado com sucesso!";
 
-                //-----------------------------------
-                // REDIRECIONAR
-                //-----------------------------------
-
-                return RedirectToAction(
-                    "ListaUsuariosExibir"
-                );
+                return RedirectToAction("ListaUsuariosExibir");
             }
             catch (Exception ex)
             {
                 TempData["Erro"] = ex.Message;
 
-                ModelState.AddModelError(
-                    "",
-                    ex.Message
-                );
+                ModelState.AddModelError("", ex.Message);
 
-                return View(
-                    "CriarUsuarioExibirView",
-                    USVM
-                );
+                return View("CriarUsuarioExibirView", USVM);
             }
         }
 
@@ -145,7 +118,7 @@ namespace GRMP.Controllers
                 USVM.Nome = Convert.ToString(dr["Nome"]);
                 USVM.Email = Convert.ToString(dr["Email"]);
 
-                // NÃO envie hash para a view
+                // Não envia Hash para a View.
                 USVM.Senha = "";
 
                 USVM.NvAcesso = Convert.ToInt32(dr["NvAcesso"]);
@@ -222,7 +195,7 @@ namespace GRMP.Controllers
                 USVM.Nome = Convert.ToString(dr["Nome"]);
                 USVM.Email = Convert.ToString(dr["Email"]);
 
-                // NÃO envie hash para a view
+                // Não envia Hash para a View.
                 USVM.Senha = "";
             }
 
@@ -241,10 +214,7 @@ namespace GRMP.Controllers
                 {
                     var passwordHasher = new PasswordHasher<Usuario>();
 
-                    Us.senha = passwordHasher.HashPassword(
-                        Us,
-                        USVM.Senha
-                    );
+                    Us.senha = passwordHasher.HashPassword(Us, USVM.Senha);
 
                     Us.AlterarPerfilComSenha();
 
@@ -257,10 +227,7 @@ namespace GRMP.Controllers
                     TempData["Sucesso"] = "Nome alterado com sucesso!";
                 }
 
-                return RedirectToAction(
-                    "ListarOSExibir",
-                    "OrdemServico"
-                );
+                return RedirectToAction("ListarOSExibir", "OrdemServico");
             }
             catch (Exception ex)
             {
@@ -268,10 +235,7 @@ namespace GRMP.Controllers
 
                 ModelState.AddModelError("", ex.Message);
 
-                return View(
-                    "AlterarSenhaExibirView",
-                    USVM
-                );
+                return View("AlterarSenhaExibirView",USVM);
             }
         }
     }

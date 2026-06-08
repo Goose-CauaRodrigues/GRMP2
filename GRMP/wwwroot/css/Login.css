@@ -1,6 +1,4 @@
-﻿﻿
-
-*,
+﻿﻿*,
 *::before,
 *::after {
     box-sizing: border-box;
@@ -34,7 +32,6 @@ body {
     gap: 48px;
 }
 
-/* ── Esquerda ── */
 .left {
     flex: 1;
     display: flex;
@@ -67,7 +64,6 @@ body {
     line-height: 1.2;
 }
 
-/* ── Card branco ── */
 .card {
     background: #ffffff;
     border-radius: 20px;

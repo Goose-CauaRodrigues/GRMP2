@@ -1,5 +1,4 @@
-﻿/* Reset base */
-*, *::before, *::after {
+﻿*, *::before, *::after {
     box-sizing: border-box;
 }
 
@@ -9,12 +8,11 @@ body {
     color: var(--text);
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
-}   
+}
 
-/* Layout principal */
 .bloco-wrapper {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 420px; /* Ajustado para 420px */
+    grid-template-columns: minmax(0, 1fr) 420px;
     grid-template-rows: auto 1fr;
     gap: 0 24px;
     max-width: 1280px;
@@ -23,18 +21,15 @@ body {
     align-items: start;
 }
 
-/* Header ocupa as duas colunas */
 .bloco-header {
     grid-column: 1 / -1;
     margin-bottom: 28px;
 }
 
-/* Coluna do conteúdo (grid de locais) */
 .bloco-content {
     min-width: 0;
 }
 
-/* Back link */
 .back-link {
     display: inline-flex;
     align-items: center;
@@ -51,7 +46,6 @@ body {
         color: var(--senai-red);
     }
 
-/* Título */
 .bloco-titulo {
     display: flex;
     align-items: baseline;
@@ -84,14 +78,12 @@ body {
     line-height: 1.5;
 }
 
-/* Grade de locais */
 .grid-locais {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 14px;
 }
 
-/* Card de local */
 .local-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -113,7 +105,6 @@ body {
         border-left-color: var(--senai-red-glow);
     }
 
-    /* Estado ativo (clicado) */
     .local-card.ativo {
         background: var(--senai-red-soft);
         border-left-color: var(--senai-red-glow);
@@ -166,7 +157,6 @@ body {
     transform: translateX(0);
 }
 
-/* Empty state */
 .empty-state {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -187,7 +177,6 @@ body {
     margin: 0;
 }
 
-/* Painel lateral */
 .side-panel {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -196,7 +185,7 @@ body {
     overflow: hidden;
     position: sticky;
     top: 24px;
-    max-height: calc(100vh - 100px); /* Ajuste para caber na tela */
+    max-height: calc(100vh - 100px);
     overflow-y: auto;
     transition: box-shadow var(--transition);
     scrollbar-width: thin;
@@ -217,7 +206,6 @@ body {
         border-color: hsl(0 75% 35% / .25);
     }
 
-/* Estado vazio do painel */
 .panel-empty {
     display: flex;
     flex-direction: column;
@@ -249,9 +237,7 @@ body {
     max-width: 200px;
 }
 
-/* Cabeçalho do painel (quando aberto) */
 .panel-content {
-    /* Removido padding aqui, será adicionado em #listaOs */
     animation: fadeSlideIn .22s ease;
 }
 
@@ -260,8 +246,8 @@ body {
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 0; /* Removido margin-bottom */
-    padding: 20px; /* Adicionado padding aqui */
+    margin-bottom: 0; 
+    padding: 20px;
     padding-bottom: 14px;
     border-bottom: 1px solid var(--border);
     background: var(--surface);
@@ -308,12 +294,11 @@ body {
         color: var(--senai-red);
     }
 
-/* Loading spinner */
 .panel-loading {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 24px 20px; /* Adicionado padding lateral */
+    padding: 24px 20px; 
     color: var(--text-muted);
     font-size: 13px;
 }
@@ -328,13 +313,12 @@ body {
     flex-shrink: 0;
 }
 
-/* Vazio (nenhuma OS) */
 .panel-vazio {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
-    padding: 32px 20px; /* Adicionado padding lateral */
+    padding: 32px 20px; 
     color: var(--text-muted);
     font-size: 13px;
     text-align: center;
@@ -348,12 +332,11 @@ body {
         margin: 0;
     }
 
-/* Cards de OS */
 #listaOs {
     display: flex;
     flex-direction: column;
-    gap: 12px; /* Ajustado para 12px */
-    padding: 16px 20px; /* Adicionado padding para os cards */
+    gap: 12px; 
+    padding: 16px 20px; 
 }
 
 .chamado-card {
@@ -364,9 +347,9 @@ body {
     padding: 13px 14px;
     box-shadow: var(--shadow-soft);
     transition: transform var(--transition), box-shadow var(--transition), border-left-color var(--transition);
-    text-decoration: none; /* Garante que o link não tenha sublinhado */
-    color: inherit; /* Garante que a cor do texto seja herdada */
-    display: block; /* Garante que o card ocupe a largura total */
+    text-decoration: none; 
+    color: inherit; 
+    display: block; 
 }
 
     .chamado-card:hover {
@@ -403,7 +386,6 @@ body {
         margin-top: 4px;
     }
 
-/* Badges de status */
 .status-badge {
     display: inline-block;
     padding: 3px 10px;
@@ -422,7 +404,7 @@ body {
 
     .status-badge.andamento {
         background: var(--status-progress);
-    } 
+    }
 
     .status-badge.nao-iniciado {
         background: var(--status-pending);

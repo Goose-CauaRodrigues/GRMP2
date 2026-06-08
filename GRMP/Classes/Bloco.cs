@@ -5,17 +5,11 @@ namespace GRMP.Classes
 {
     public class Bloco
     {
-        //-----------------------------
-        // Atributos
-        //-----------------------------
         public int idBloco;
         public string nome;
 
         SqlConnection con;
 
-        //-----------------------------
-        // Construtor
-        //-----------------------------
         public Bloco()
         {
             try
@@ -35,22 +29,12 @@ namespace GRMP.Classes
             }
         }
 
-        //-----------------------------
-        // Inserir
-        //-----------------------------
         public void Inserir()
         {
             try
             {
-                string cmdSQL = @"
-                    INSERT INTO Bloco
-                    (
-                        nome
-                    )
-                    VALUES
-                    (
-                        @nome
-                    )";
+                string cmdSQL = @"INSERT INTO Bloco(nome)
+                                  VALUES(@nome)";
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
 
@@ -65,17 +49,13 @@ namespace GRMP.Classes
             }
         }
 
-        //-----------------------------
-        // Alterar
-        //-----------------------------
         public void Alterar()
         {
             try
             {
-                string cmdSQL = @"
-                    UPDATE Bloco SET
-                        nome = @nome
-                    WHERE idBloco = @idBloco";
+                string cmdSQL = @"UPDATE Bloco SET
+                                    nome = @nome
+                                  WHERE idBloco = @idBloco";
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
 
@@ -91,9 +71,6 @@ namespace GRMP.Classes
             }
         }
 
-        //-----------------------------
-        // Excluir
-        //-----------------------------
         public void Excluir()
         {
             try
@@ -113,9 +90,6 @@ namespace GRMP.Classes
             }
         }
 
-        //-----------------------------
-        // Selecionar
-        //-----------------------------
         public DataTable Selecionar()
         {
             try
@@ -136,17 +110,11 @@ namespace GRMP.Classes
             }
         }
 
-        //-----------------------------
-        // Buscar por ID
-        //-----------------------------
         public DataTable BuscarPorId(int id)
         {
             try
             {
-                string cmdSQL = @"
-                    SELECT * 
-                    FROM Bloco
-                    WHERE idBloco = @idBloco";
+                string cmdSQL = @"SELECT * FROM Bloco WHERE idBloco = @idBloco";
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
 

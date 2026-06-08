@@ -5,9 +5,6 @@ namespace ProjBancoDados.BancoDados
 {
     public class Usuario
     {
-        //-----------------------------
-        // Atributos
-        //-----------------------------
         public int idUsuario;
         public string nome;
         public string senha;
@@ -16,9 +13,6 @@ namespace ProjBancoDados.BancoDados
 
         SqlConnection con;
 
-        //-----------------------------
-        // Construtor
-        //-----------------------------
         public Usuario()
         {
             try
@@ -38,9 +32,6 @@ namespace ProjBancoDados.BancoDados
             }
         }
 
-        //-----------------------------
-        // Inserir
-        //-----------------------------
         public void Inserir()
         {
             try
@@ -64,9 +55,6 @@ namespace ProjBancoDados.BancoDados
             }
         }
 
-        //-----------------------------
-        // Alterar
-        //-----------------------------
         public void Alterar()
         {
             try
@@ -95,9 +83,6 @@ namespace ProjBancoDados.BancoDados
             }
         }
 
-        //-----------------------------
-        // Excluir
-        //-----------------------------
         public void Excluir()
         {
             try
@@ -116,9 +101,6 @@ namespace ProjBancoDados.BancoDados
             }
         }
 
-        //-----------------------------
-        // Selecionar
-        //-----------------------------
         public DataTable Selecionar()
         {
             try
@@ -142,7 +124,7 @@ namespace ProjBancoDados.BancoDados
         {
             try
             {
-                string cmdSQL = "SELECT idUsuario ,Email, nome, nvAcesso FROM Usuario ORDER BY IdUsuario";
+                string cmdSQL = "SELECT idUsuario, Email, nome, nvAcesso FROM Usuario ORDER BY IdUsuario";
 
                 SqlDataAdapter da = new SqlDataAdapter(cmdSQL, con);
 
@@ -205,8 +187,8 @@ namespace ProjBancoDados.BancoDados
             try
             {
                 string cmdSQL = @"UPDATE Usuario SET
-                            Nome = @Nome
-                          WHERE IdUsuario = @IdUsuario";
+                                    Nome = @Nome
+                                  WHERE IdUsuario = @IdUsuario";
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
 
@@ -227,9 +209,9 @@ namespace ProjBancoDados.BancoDados
             try
             {
                 string cmdSQL = @"UPDATE Usuario SET
-                            Nome = @Nome,
-                            Senha = @Senha
-                          WHERE IdUsuario = @IdUsuario";
+                                    Nome = @Nome,
+                                    Senha = @Senha
+                                  WHERE IdUsuario = @IdUsuario";
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
 
@@ -251,10 +233,10 @@ namespace ProjBancoDados.BancoDados
             try
             {
                 string cmdSQL = @"UPDATE Usuario SET
-                            Nome     = @Nome,
-                            Email    = @Email,
-                            NvAcesso = @NvAcesso
-                          WHERE IdUsuario = @IdUsuario";
+                                    Nome     = @Nome,
+                                    Email    = @Email,
+                                    NvAcesso = @NvAcesso
+                                  WHERE IdUsuario = @IdUsuario";
 
                 SqlCommand cmd = new SqlCommand(cmdSQL, con);
 

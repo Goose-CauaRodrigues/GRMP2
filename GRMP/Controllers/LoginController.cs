@@ -13,8 +13,6 @@ namespace GRMP.Controllers
             return View("LoginExibirView");
         }
 
-
-
         public IActionResult LoginProcessar(LoginViewModel Vm_Login)
         {
             try
@@ -32,11 +30,7 @@ namespace GRMP.Controllers
 
                     string senhaBanco = row["Senha"].ToString();
 
-                    var resultado = passwordHasher.VerifyHashedPassword(
-                        null,
-                        senhaBanco,
-                        Vm_Login.Senha
-                    );
+                    var resultado = passwordHasher.VerifyHashedPassword(null, senhaBanco, Vm_Login.Senha);
 
                     if (resultado == PasswordVerificationResult.Success)
                     {
@@ -57,11 +51,13 @@ namespace GRMP.Controllers
                 }
 
                 ViewBag.Erro = "Email ou senha inválidos.";
+
                 return View("LoginExibirView");
             }
             catch (Exception ex)
             {
                 ViewBag.Erro = ex.Message;
+
                 return View("LoginExibirView");
             }
         }

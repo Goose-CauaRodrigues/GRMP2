@@ -33,7 +33,7 @@ namespace GRMP.Controllers
             Os Os = new Os();
             DataTable dt = Os.SelecionarOS();
 
-            return View("ListarOSExibirView" , dt);// teste 234
+            return View("ListarOSExibirView", dt);
         }
 
         public IActionResult CriarOSExibir()
@@ -49,9 +49,7 @@ namespace GRMP.Controllers
         {
             try
             {
-                //---------------------------------
-                // Verifica sessão
-                //---------------------------------
+                // Verifica a sessão.
 
                 string idUsuario = HttpContext.Session.GetString("idUsuario");
 
@@ -60,56 +58,20 @@ namespace GRMP.Controllers
                     return RedirectToAction("LoginExibir", "Login");
                 }
 
-                //---------------------------------
-                // Cria objeto OS
-                //---------------------------------
-
                 Os os = new Os();
 
                 os.fk_idUsuario = Convert.ToInt32(idUsuario);
-
                 os.descricaoServico = OsVM.DescricaoServico;
-
-                //---------------------------------
-                // Categoria
-                //---------------------------------
-
                 os.categoria = OsVM.Categoria;
-                //---------------------------------
-                // Patrimônio
-                //---------------------------------
-
-                os.numeroPatrimonio = string.IsNullOrEmpty(OsVM.NumeroPatrimonio)
-                    ? null
-                    : OsVM.NumeroPatrimonio;
-
-                //---------------------------------
-                // Localização
-                //---------------------------------
-
+                os.numeroPatrimonio = string.IsNullOrEmpty(OsVM.NumeroPatrimonio) ? null : OsVM.NumeroPatrimonio;
                 os.bloco = OsVM.Bloco;
-
                 os.local = OsVM.Local;
-
-                //---------------------------------
-                // Dados padrão
-                //---------------------------------
-
                 os.dataSolicitacao = DateTime.Now;
-
                 os.status = 0;
-
-                //---------------------------------
-                // Inserir
-                //---------------------------------
 
                 os.Inserir();
 
                 TempData["Sucesso"] = "Ordem de serviço criada com sucesso!";
-
-                //---------------------------------
-                // Redireciona
-                //---------------------------------
 
                 return RedirectToAction("ListarOSExibir");
             }
@@ -148,358 +110,168 @@ namespace GRMP.Controllers
 
         public IActionResult AlterarOSExibir(int id)
         {
-            string idUsuario =
-                HttpContext.Session.GetString("idUsuario");
+            string idUsuario = HttpContext.Session.GetString("idUsuario");
 
-            //-----------------------------------
-            // VALIDAR LOGIN
-            //-----------------------------------
+            // Valida o Login.
 
             if (string.IsNullOrEmpty(idUsuario))
             {
-                return RedirectToAction(
-                    "LoginExibir",
-                    "Login"
-                );
+                return RedirectToAction("LoginExibir", "Login");
             }
 
-            //-----------------------------------
-            // VALIDAR NÍVEL
-            //-----------------------------------
+            // Valida o Nível.
 
-            Usuario us =
-                new Usuario();
+            Usuario us = new Usuario();
 
-            DataTable dtUsuario =
-                us.BuscarPorID(
-                    int.Parse(idUsuario)
-                );
+            DataTable dtUsuario = us.BuscarPorID(int.Parse(idUsuario));
 
             foreach (DataRow dr in dtUsuario.Rows)
             {
-                int nvAcesso =
-                    Convert.ToInt32(
-                        dr["nvAcesso"]
-                    );
+                int nvAcesso = Convert.ToInt32(dr["nvAcesso"]);
 
                 if (nvAcesso == 1)
                 {
-                    return RedirectToAction(
-                        "ListarOSExibir",
-                        "OrdemServico"
-                    );
+                    return RedirectToAction("ListarOSExibir", "OrdemServico");
                 }
 
                 else if (nvAcesso == 2)
                 {
-                    return RedirectToAction(
-                        "InicioNivelDoisMapa",
-                        "OrdemServico"
-                    );
+                    return RedirectToAction("InicioNivelDoisMapa", "OrdemServico");
                 }
             }
 
-            //-----------------------------------
-            // BUSCAR OS
-            //-----------------------------------
+            // Busca a OS.
 
-            Os os =
-                new Os();
+            Os os = new Os();
 
-            DataTable dtOS =
-                os.BuscarPorId(id);
+            DataTable dtOS = os.BuscarPorId(id);
 
-            //-----------------------------------
-            // VALIDAR EXISTÊNCIA
-            //-----------------------------------
+            // Valida a existência.
 
-            if (dtOS == null ||
-                dtOS.Rows.Count == 0)
+            if (dtOS == null || dtOS.Rows.Count == 0)
             {
-                return RedirectToAction(
-                    "ListarOSExibir",
-                    "OrdemServico"
-                );
+                return RedirectToAction("ListarOSExibir", "OrdemServico");
             }
 
-            //-----------------------------------
-            // MODEL
-            //-----------------------------------
+            OrdemServicoViewModel osVm = new OrdemServicoViewModel();
 
-            OrdemServicoViewModel osVm =
-                new OrdemServicoViewModel();
+            DataRow linha = dtOS.Rows[0];
 
-            DataRow linha =
-                dtOS.Rows[0];
+            osVm.IdOrdemServico = Convert.ToInt32(linha["idOrdemServico"]);
 
-            //-----------------------------------
-            // PREENCHER MODEL
-            //-----------------------------------
-
-            osVm.IdOrdemServico =
-                Convert.ToInt32(
-                    linha["idOrdemServico"]
-                );
-
-            osVm.FkIdUsuario =
-                Convert.ToInt32(
-                    linha["fk_idUsuario"]
-                );
+            osVm.FkIdUsuario = Convert.ToInt32(linha["fk_idUsuario"]);
 
             if (linha["fk_executor"] != DBNull.Value)
             {
-                osVm.FkExecutor =
-                    Convert.ToInt32(
-                        linha["fk_executor"]
-                    );
+                osVm.FkExecutor = Convert.ToInt32(linha["fk_executor"]);
             }
 
-            osVm.DescricaoServico =
-                linha["descricaoServico"]
-                .ToString();
+            osVm.DescricaoServico = linha["descricaoServico"].ToString();
 
-            osVm.Categoria =
-                Convert.ToInt32(
-                    linha["categoria"]
-                );
+            osVm.Categoria = Convert.ToInt32(linha["categoria"]);
 
-            osVm.NumeroPatrimonio =
-                linha["numeroPatrimonio"]
-                .ToString();
+            osVm.NumeroPatrimonio = linha["numeroPatrimonio"].ToString();
 
-            osVm.Bloco =
-                Convert.ToInt32(
-                    linha["bloco"]
-                );
+            osVm.Bloco = Convert.ToInt32(linha["bloco"]);
 
-            osVm.Local =
-                Convert.ToInt32(
-                    linha["local"]
-                );
+            osVm.Local = Convert.ToInt32(linha["local"]);
 
             if (linha["prioridade"] != DBNull.Value)
             {
-                osVm.Prioridade =
-                    Convert.ToInt32(
-                        linha["prioridade"]
-                    );
+                osVm.Prioridade = Convert.ToInt32(linha["prioridade"]);
             }
 
-            osVm.Observacoes =
-                linha["observacoes"]
-                .ToString();
+            osVm.Observacoes = linha["observacoes"].ToString();
 
-            osVm.DataSolicitacao =
-                Convert.ToDateTime(
-                    linha["dataSolicitacao"]
-                );
+            osVm.DataSolicitacao = Convert.ToDateTime(linha["dataSolicitacao"]);
 
             if (linha["dataInicio"] != DBNull.Value)
             {
-                osVm.DataInicio =
-                    Convert.ToDateTime(
-                        linha["dataInicio"]
-                    );
+                osVm.DataInicio = Convert.ToDateTime(linha["dataInicio"]);
             }
 
             if (linha["dataFinalizacao"] != DBNull.Value)
             {
-                osVm.DataFinalizacao =
-                    Convert.ToDateTime(
-                        linha["dataFinalizacao"]
-                    );
+                osVm.DataFinalizacao = Convert.ToDateTime(linha["dataFinalizacao"]);
             }
 
             if (linha["status"] != DBNull.Value)
             {
-                osVm.Status =
-                    Convert.ToInt32(
-                        linha["status"]
-                    );
+                osVm.Status = Convert.ToInt32(linha["status"]);
             }
 
-            //-----------------------------------
-            // DROPDOWN BLOCO
-            //-----------------------------------
-
-            osVm.DtBlocos =
-                BuscarBlocos();
-            osVm.DtLocais =
-                BuscarLocaisPorBlocoAlterado(osVm.Bloco);
+            osVm.DtBlocos = BuscarBlocos();
+            osVm.DtLocais = BuscarLocaisPorBlocoAlterado(osVm.Bloco);
             osVm.DtExecutores = BuscarExecutores();
 
-
-            //-----------------------------------
-            // VIEW
-            //-----------------------------------
-
-            return View(
-                "AlterarOSExibirView",
-                osVm
-            );
+            return View("AlterarOSExibirView", osVm);
         }
 
-      
         [HttpPost]
         public IActionResult AlterarOSProcessar(OrdemServicoViewModel OsVM)
         {
             try
             {
-                //---------------------------------
-                // Verifica sessão
-                //---------------------------------
+                // Verifica a sessão.
 
-                string idUsuario =
-                    HttpContext.Session.GetString(
-                        "idUsuario"
-                    );
+                string idUsuario = HttpContext.Session.GetString("idUsuario");
 
                 if (string.IsNullOrEmpty(idUsuario))
                 {
-                    return RedirectToAction(
-                        "LoginExibir",
-                        "Login"
-                    );
+                    return RedirectToAction("LoginExibir", "Login");
                 }
 
-                //---------------------------------
-                // Cria objeto OS
-                //---------------------------------
+                Os os = new Os();
 
-                Os os =
-                    new Os();
+                os.idOrdemServico = OsVM.IdOrdemServico;
 
-                //---------------------------------
-                // ID DA OS
-                //---------------------------------
+                os.fk_idUsuario = OsVM.FkIdUsuario;
 
-                os.idOrdemServico =
-                    OsVM.IdOrdemServico;
+                os.fk_executor = OsVM.FkExecutor;
 
-                //---------------------------------
-                // Usuário criador
-                //---------------------------------
+                os.descricaoServico = OsVM.DescricaoServico;
 
-                os.fk_idUsuario =
-                    OsVM.FkIdUsuario;
+                os.categoria = OsVM.Categoria;
 
-                //---------------------------------
-                // Executor
-                //---------------------------------
+                os.numeroPatrimonio = string.IsNullOrEmpty(OsVM.NumeroPatrimonio) ? null : OsVM.NumeroPatrimonio;
 
-                os.fk_executor =
-                    OsVM.FkExecutor;
+                os.bloco = OsVM.Bloco;
 
-                //---------------------------------
-                // Descrição
-                //---------------------------------
+                os.local = OsVM.Local;
 
-                os.descricaoServico =
-                    OsVM.DescricaoServico;
+                os.prioridade = OsVM.Prioridade;
 
-                //---------------------------------
-                // Categoria
-                //---------------------------------
+                os.observacoes = OsVM.Observacoes;
 
-                os.categoria =
-                    OsVM.Categoria;
+                os.dataSolicitacao = OsVM.DataSolicitacao;
 
-                //---------------------------------
-                // Patrimônio
-                //---------------------------------
+                os.dataInicio = OsVM.DataInicio;
 
-                os.numeroPatrimonio =
-                    string.IsNullOrEmpty(
-                        OsVM.NumeroPatrimonio
-                    )
-                    ? null
-                    : OsVM.NumeroPatrimonio;
+                os.dataFinalizacao = OsVM.DataFinalizacao;
 
-                //---------------------------------
-                // Localização
-                //---------------------------------
-
-                os.bloco =
-                    OsVM.Bloco;
-
-                os.local =
-                    OsVM.Local;
-
-                //---------------------------------
-                // Prioridade
-                //---------------------------------
-
-                os.prioridade =
-                    OsVM.Prioridade;
-
-                //---------------------------------
-                // Observações
-                //---------------------------------
-
-                os.observacoes =
-                    OsVM.Observacoes;
-
-                //---------------------------------
-                // Datas
-                //---------------------------------
-
-                os.dataSolicitacao =
-                    OsVM.DataSolicitacao;
-
-                os.dataInicio =
-                    OsVM.DataInicio;
-
-                os.dataFinalizacao =
-                    OsVM.DataFinalizacao;
-
-                //---------------------------------
-                // Status
-                //---------------------------------
-
-                os.status =
-                    OsVM.Status;
-
-                //---------------------------------
-                // ALTERAR
-                //---------------------------------
+                os.status = OsVM.Status;
 
                 os.Alterar();
 
                 TempData["Sucesso"] = "Ordem de serviço atualizada com sucesso!";
 
-                //---------------------------------
-                // REDIRECIONA
-                //---------------------------------
-
-                return RedirectToAction(
-                    "ListarOSExibir"
-                );
+                return RedirectToAction("ListarOSExibir");
             }
             catch (Exception ex)
             {
-                OrdemServicoViewModel model =
-                    new OrdemServicoViewModel();
+                OrdemServicoViewModel model = new OrdemServicoViewModel();
 
-                model.DtBlocos =
-                    BuscarBlocos();
+                model.DtBlocos = BuscarBlocos();
 
-                model.DtLocais =
-    BuscarLocaisPorBlocoAlterado(
-        OsVM.Bloco
-    );
+                model.DtLocais = BuscarLocaisPorBlocoAlterado(OsVM.Bloco);
 
-                model.DtExecutores =
-                    BuscarExecutores();
+                model.DtExecutores = BuscarExecutores();
 
-                ViewBag.Erro =
-                    ex.Message;
+                ViewBag.Erro = ex.Message;
 
                 TempData["Erro"] = ex.Message;
 
-                return View(
-                    "AlterarOSExibirView",
-                    model
-                );
+                return View("AlterarOSExibirView", model);
             }
         }
 
@@ -517,9 +289,6 @@ namespace GRMP.Controllers
             }
         }
 
-        //---------------------------------
-        // Buscar locais por bloco
-        //---------------------------------
         [HttpGet]
         public JsonResult BuscarLocaisPorBloco(int idBloco)
         {
@@ -535,35 +304,23 @@ namespace GRMP.Controllers
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    lista.Add(new
-                    {
-                        idLocal = row["idLocal"],
-                        nome = row["nome"]
-                    });
+                    lista.Add(new { idLocal = row["idLocal"], nome = row["nome"] });
                 }
 
                 return Json(lista);
             }
             catch (Exception ex)
             {
-                return Json(new
-                {
-                    erro = ex.Message
-                });
+                return Json(new { erro = ex.Message });
             }
         }
 
-        //<<<<<<< HEAD
-        //---------------------------------
-        // Buscar locais por bloco
-        //---------------------------------
         [HttpGet]
         public DataTable BuscarLocaisPorBlocoAlterado(int idBloco)
         {
             try
             {
                 Local Local = new Local();
-
 
                 Local.fk_idBloco = idBloco;
 
@@ -574,55 +331,13 @@ namespace GRMP.Controllers
                 throw new Exception(ex.Message);
             }
         }
-            //=======
+
         public IActionResult BaixarOSWord(int id)
         {
-            string connStr = _configuration.GetConnectionString("StringConexaoSQLServer");
+            Os ordemServico = new Os();
 
-            DataTable dt = new DataTable();
-
-            using (SqlConnection conn = new SqlConnection(connStr))
-            {
-                conn.Open();
-
-                string sql = @"
-                SELECT
-                    os.*,
-
-                    b.nome AS nomeBloco,
-                    l.nome AS nomeLocal,
-
-                    uc.nome AS nomeCriador,
-                    uc.email AS emailCriador,
-
-                    ue.nome AS nomeExecutor,
-                    ue.email AS emailExecutor
-
-                FROM OrdemServico os
-
-                LEFT JOIN Bloco b
-                    ON b.idBloco = os.Bloco
-
-                LEFT JOIN Local l
-                    ON l.idLocal = os.Local
-
-                LEFT JOIN Usuario uc
-                    ON uc.idUsuario = os.fk_idUsuario
-
-                LEFT JOIN Usuario ue
-                    ON ue.idUsuario = os.fk_executor
-
-                WHERE os.idOrdemServico = @id
-                ";
-
-                using SqlCommand cmd = new SqlCommand(sql, conn);
-
-                cmd.Parameters.AddWithValue("@id", id);
-
-                using SqlDataAdapter da = new SqlDataAdapter(cmd);
-
-                da.Fill(dt);
-            }
+            DataTable dt =
+                ordemServico.BuscarDadosWord(id);
 
             if (dt.Rows.Count == 0)
             {
@@ -633,14 +348,45 @@ namespace GRMP.Controllers
 
             string caminho = Path.Combine(Path.GetTempPath(), $"OS_{id}.docx");
 
+            int status = Convert.ToInt32(os["status"]);
+
+            string statusTexto = status switch
+            {
+                0 => "Aberto",
+                1 => "Em andamento",
+                2 => "Concluída",
+                3 => "Cancelada",
+                4 => "Em pausa",
+                _ => "Desconhecido"
+            };
+
+            string prioridadeTexto = "Não definida";
+
+            if (os["prioridade"] != DBNull.Value)
+            {
+                int prioridade = Convert.ToInt32(os["prioridade"]);
+
+                prioridadeTexto = prioridade switch
+                {
+                    1 => "Baixa",
+                    2 => "Média",
+                    3 => "Alta",
+                    _ => "Não definida"
+                };
+            }
+
+            int categoria = Convert.ToInt32(os["categoria"]);
+
+            string categoriaTexto = categoria switch
+            {
+                1 => "Infraestrutura",
+                2 => "Manutenção",
+                _ => "Desconhecida"
+            };
+
             using (var document = DocX.Create(caminho))
             {
-                string logoPath = Path.Combine(
-                    Directory.GetCurrentDirectory(),
-                    "wwwroot",
-                    "img",
-                    "senai-logo.png"
-                );
+                string logoPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img", "senai-logo.png");
 
                 var imagem = document.AddImage(logoPath);
 
@@ -669,9 +415,7 @@ namespace GRMP.Controllers
 
                 titulo.SpacingAfter(20d);
 
-                document.InsertParagraph("INFORMAÇÕES GERAIS")
-                .Bold()
-                .FontSize(16);
+                document.InsertParagraph("INFORMAÇÕES GERAIS").Bold().FontSize(16);
 
                 document.InsertParagraph("-----------------------------------");
 
@@ -681,7 +425,7 @@ namespace GRMP.Controllers
 
                 document.InsertParagraph($"Descrição: {os["descricaoServico"]}");
 
-                document.InsertParagraph($"Categoria: {os["categoria"]}");
+                document.InsertParagraph($"Categoria: {categoriaTexto}");
 
                 document.InsertParagraph($"Número Patrimônio: {os["numeroPatrimonio"]}");
 
@@ -693,22 +437,21 @@ namespace GRMP.Controllers
 
                 document.InsertParagraph($"Local: {os["nomeLocal"]}");
 
-                document.InsertParagraph($"Prioridade: {os["prioridade"]}");
+                document.InsertParagraph($"Prioridade: {prioridadeTexto}");
 
                 document.InsertParagraph($"Observações: {os["observacoes"]}");
 
-                document.InsertParagraph($"Status: {os["status"]}");
+                document.InsertParagraph($"Status: {statusTexto}");
 
                 document.InsertParagraph($"Data Solicitação: {os["dataSolicitacao"]}");
 
-                document.InsertParagraph($"Data Início: {os["dataInicio"]}");
+                string dataInicio = os["dataInicio"] != DBNull.Value ? Convert.ToDateTime(os["dataInicio"]).ToString("dd/MM/yyyy HH:mm") : "Não iniciada";
 
-                document.InsertParagraph($"Data Finalização: {os["dataFinalizacao"]}");
+                string dataFinalizacao = os["dataFinalizacao"] != DBNull.Value ? Convert.ToDateTime(os["dataFinalizacao"]).ToString("dd/MM/yyyy HH:mm") : "Não finalizada";
 
                 document.InsertParagraph("");
 
-                document.InsertParagraph("SOLICITANTE")
-                    .Bold();
+                document.InsertParagraph("SOLICITANTE").Bold();
 
                 document.InsertParagraph($"Nome: {os["nomeCriador"]}");
 
@@ -716,8 +459,7 @@ namespace GRMP.Controllers
 
                 document.InsertParagraph("");
 
-                document.InsertParagraph("EXECUTOR")
-                    .Bold();
+                document.InsertParagraph("EXECUTOR").Bold();
 
                 document.InsertParagraph($"Nome: {os["nomeExecutor"]}");
 
@@ -725,20 +467,14 @@ namespace GRMP.Controllers
 
                 document.AddFooters();
 
-                document.Footers.Odd.InsertParagraph(
-                    "Sistema de Gerenciamento de Manutenção Predial - SENAI"
-                );
+                document.Footers.Odd.InsertParagraph("Sistema de Gerenciamento de Manutenção Predial - SENAI");
 
                 document.Save();
             }
 
             byte[] fileBytes = System.IO.File.ReadAllBytes(caminho);
 
-            return File(
-                fileBytes,
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                $"OS_{id}.docx"
-            );
+            return File(fileBytes, "application/vnd.openxmlformats-officedocument.wordprocessingml.document", $"OS_{id}.docx");
         }
     }
 }

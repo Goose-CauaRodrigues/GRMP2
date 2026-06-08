@@ -1,5 +1,4 @@
-﻿/* ---------- Reset base ---------- */
-*, *::before, *::after {
+﻿*, *::before, *::after {
     box-sizing: border-box;
 }
 
@@ -128,7 +127,6 @@ body {
         text-decoration: none;
     }
 
-/* ===== Metric Cards (redesign) ===== */
 .metric-card {
     position: relative;
     background: #fff;
@@ -142,7 +140,6 @@ body {
 }
 
     .metric-card::before {
-        /* faixa lateral colorida */
         content: "";
         position: absolute;
         inset: 0 auto 0 0;
@@ -168,71 +165,71 @@ body {
     margin-bottom: 24px;
 }
 
-    .metric-card .mc-label {
-        font-size: 11px;
-        font-weight: 600;
-        letter-spacing: .06em;
-        text-transform: uppercase;
-        color: #6c757d;
-        margin-bottom: 8px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
+.metric-card .mc-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .metric-card .mc-label::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--mc-accent, #378ADD);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--mc-accent, #378ADD) 18%, transparent);
     }
 
-        .metric-card .mc-label::before {
-            content: "";
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--mc-accent, #378ADD);
-            box-shadow: 0 0 0 3px color-mix(in srgb, var(--mc-accent, #378ADD) 18%, transparent);
-        }
+.metric-card .mc-val {
+    font-size: 30px;
+    font-weight: 700;
+    line-height: 1.05;
+    color: #1a1a1a;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -.02em;
+    background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
 
-    .metric-card .mc-val {
-        font-size: 30px;
-        font-weight: 700;
-        line-height: 1.05;
-        color: #1a1a1a;
-        font-variant-numeric: tabular-nums;
-        letter-spacing: -.02em;
-        background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
+.metric-card .mc-sub {
+    font-size: 11px;
+    color: #8a93a0;
+    margin-top: 6px;
+    font-weight: 500;
+}
 
-    .metric-card .mc-sub {
-        font-size: 11px;
-        color: #8a93a0;
-        margin-top: 6px;
-        font-weight: 500;
-    }
-
-    .metric-card.mc-total {
-        --mc-accent: #7C3AED;
-    }
+.metric-card.mc-total {
+    --mc-accent: #7C3AED;
+}
 
 
-    .metric-card.mc-abertas {
-        --mc-accent: #6B7280;
-    }
+.metric-card.mc-abertas {
+    --mc-accent: #6B7280;
+}
 
-    .metric-card.mc-andamento {
-        --mc-accent: #EAB308;
-    }
+.metric-card.mc-andamento {
+    --mc-accent: #EAB308;
+}
 
-    .metric-card.mc-concluidas {
-        --mc-accent: #16A34A;
-    }
+.metric-card.mc-concluidas {
+    --mc-accent: #16A34A;
+}
 
-    .metric-card.mc-canceladas {
-        --mc-accent: #DC2626;
-    }
+.metric-card.mc-canceladas {
+    --mc-accent: #DC2626;
+}
 
-    .metric-card.mc-pausa {
-        --mc-accent: #2563EB;
-    }
+.metric-card.mc-pausa {
+    --mc-accent: #2563EB;
+}
 
 .chart-title {
     font-size: 13px;
@@ -304,12 +301,30 @@ body {
     color: #2563EB;
 }
 
+.badge-prioridade-baixa {
+    background: #63992220;
+    color: #639922;
+}
+
+.badge-prioridade-media {
+    background: #EF9F2720;
+    color: #EF9F27;
+}
+
+.badge-prioridade-alta {
+    background: #A32D2D20;
+    color: #A32D2D;
+}
+
 .badge,
 .badge-aberta,
 .badge-andamento,
 .badge-concluida,
 .badge-cancelada,
-.badge-pausa {
+.badge-pausa,
+.badge-prioridade-baixa,
+.badge-prioridade-media,
+.badge-prioridade-alta {
     display: inline-block;
     padding: 4px 10px;
     border-radius: 999px;
@@ -323,7 +338,7 @@ body {
     height: 60px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Centraliza o bloco de conteúdo na tela */
+    justify-content: center; 
     padding: 0 20px;
     flex-shrink: 0;
     width: 100%;
@@ -334,7 +349,7 @@ body {
     align-items: center;
     gap: 15px;
     width: 100%;
-    max-width: 1200px; /* Mesma largura máxima do container de baixo */
+    max-width: 1200px;
 }
 
     .topbar-left h3 {

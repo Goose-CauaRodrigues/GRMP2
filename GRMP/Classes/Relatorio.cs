@@ -1,7 +1,5 @@
 ﻿using GRMP.Models;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
-using System.Collections.Generic;
 using System.Data;
 
 namespace GRMP.Classes
@@ -10,9 +8,6 @@ namespace GRMP.Classes
     {
         SqlConnection con;
 
-        //-----------------------------
-        // Construtor
-        //-----------------------------
         public Relatorio()
         {
             try
@@ -32,9 +27,6 @@ namespace GRMP.Classes
             }
         }
 
-        //-----------------------------
-        // Selecionar Filtro
-        //-----------------------------
         public List<RelatorioModel> SelecionarFiltro(
             DateTime? dataInicial,
             DateTime? dataFinal,
@@ -46,33 +38,28 @@ namespace GRMP.Classes
         {
             try
             {
-                string cmdSQL = @"
-                    SELECT 
-                        idOrdemServico,
-                        solicitante,
-                        executor,
-                        descricaoServico,
-                        categoria,
-                        numeroPatrimonio,
-                        bloco,
-                        local,
-                        prioridade,
-                        status,
-                        observacoes,
-                        dataSolicitacao,
-                        dataInicio,
-                        dataFinalizacao,
-                        tempoConclusaoHoras
-                    FROM relatorio
-                    WHERE 1 = 1";
+                string cmdSQL = @"SELECT 
+                                    idOrdemServico,
+                                    solicitante,
+                                    executor,
+                                    descricaoServico,
+                                    categoria,
+                                    numeroPatrimonio,
+                                    bloco,
+                                    local,
+                                    prioridade,
+                                    status,
+                                    observacoes,
+                                    dataSolicitacao,
+                                    dataInicio,
+                                    dataFinalizacao,
+                                    tempoConclusaoHoras
+                                  FROM relatorio
+                                  WHERE 1 = 1";
 
                 SqlCommand cmd = new SqlCommand();
 
                 cmd.Connection = con;
-
-                // =========================
-                // DATA SOLICITAÇÃO
-                // =========================
 
                 if (dataInicial.HasValue)
                 {
@@ -88,20 +75,12 @@ namespace GRMP.Classes
                     cmd.Parameters.Add("@dataFinal", SqlDbType.DateTime).Value = dataFinal.Value;
                 }
 
-                // =========================
-                // EXECUTOR
-                // =========================
-
                 if (!string.IsNullOrEmpty(executor))
                 {
                     cmdSQL += " AND executor LIKE @executor";
 
                     cmd.Parameters.Add("@executor", SqlDbType.VarChar).Value = "%" + executor + "%";
                 }
-
-                // =========================
-                // BLOCO
-                // =========================
 
                 if (!string.IsNullOrEmpty(bloco))
                 {
@@ -110,10 +89,6 @@ namespace GRMP.Classes
                     cmd.Parameters.Add("@bloco", SqlDbType.VarChar).Value = "%" + bloco + "%";
                 }
 
-                // =========================
-                // LOCAL
-                // =========================
-
                 if (!string.IsNullOrEmpty(local))
                 {
                     cmdSQL += " AND local LIKE @local";
@@ -121,20 +96,12 @@ namespace GRMP.Classes
                     cmd.Parameters.Add("@local", SqlDbType.VarChar).Value = "%" + local + "%";
                 }
 
-                // =========================
-                // TEMPO CONCLUSÃO
-                // =========================
-
                 if (tempoConclusaoHoras.HasValue)
                 {
                     cmdSQL += " AND tempoConclusaoHoras = @tempoConclusaoHoras";
 
                     cmd.Parameters.Add("@tempoConclusaoHoras", SqlDbType.Int).Value = tempoConclusaoHoras.Value;
                 }
-
-                // =========================
-                // STATUS
-                // =========================
 
                 if (!string.IsNullOrEmpty(status))
                 {

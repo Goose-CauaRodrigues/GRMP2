@@ -10,335 +10,344 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
 <link href="~/css/Dashboard.css" rel="stylesheet" />
 
-    @{
-        // ===== PROCESSAMENTO DOS FILTROS NO SERVIDOR =====
-        var fSolicitante = Context.Request.Query["solicitante"].ToString();
-        var fExecutor = Context.Request.Query["executor"].ToString();
-        var fPeriodo = Context.Request.Query["periodo"].ToString();
-        var fStatus = Context.Request.Query["status"].ToString();
-        var fPrioridade = Context.Request.Query["prioridade"].ToString();
-        var fBloco = Context.Request.Query["bloco"].ToString();
-        var fDataDe = Context.Request.Query["dataDe"].ToString();
-        var fDataAte = Context.Request.Query["dataAte"].ToString();
+@{
+    // ===== PROCESSAMENTO DOS FILTROS NO SERVIDOR =====
+    var fSolicitante = Context.Request.Query["solicitante"].ToString();
+    var fExecutor = Context.Request.Query["executor"].ToString();
+    var fPeriodo = Context.Request.Query["periodo"].ToString();
+    var fStatus = Context.Request.Query["status"].ToString();
+    var fPrioridade = Context.Request.Query["prioridade"].ToString();
+    var fBloco = Context.Request.Query["bloco"].ToString();
+    var fDataDe = Context.Request.Query["dataDe"].ToString();
+    var fDataAte = Context.Request.Query["dataAte"].ToString();
 
-        if (string.IsNullOrWhiteSpace(fPeriodo)) fPeriodo = "todos";
+    if (string.IsNullOrWhiteSpace(fPeriodo)) fPeriodo = "todos";
 
-        DateTime? dataInicio = null;
-        DateTime? dataFim = null;
+    DateTime? dataInicio = null;
+    DateTime? dataFim = null;
 
-        if (!string.IsNullOrWhiteSpace(fDataDe) && DateTime.TryParse(fDataDe, out var dtDe)) dataInicio = dtDe;
-        if (!string.IsNullOrWhiteSpace(fDataAte) && DateTime.TryParse(fDataAte, out var dtAte)) dataFim = dtAte.Date.AddDays(1).AddTicks(-1);
+    if (!string.IsNullOrWhiteSpace(fDataDe) && DateTime.TryParse(fDataDe, out var dtDe)) dataInicio = dtDe;
+    if (!string.IsNullOrWhiteSpace(fDataAte) && DateTime.TryParse(fDataAte, out var dtAte)) dataFim = dtAte.Date.AddDays(1).AddTicks(-1);
 
-        if (dataInicio == null && dataFim == null && fPeriodo != "todos")
-        {
-            int? dias = fPeriodo switch { "mensal" => 30, "trimestral" => 90, "semestral" => 180, "anual" => 365, _ => (int?)null };
-            if (dias.HasValue) dataInicio = DateTime.Now.Date.AddDays(-dias.Value);
-        }
-
-        var solicitantes = (Model ?? new List<GRMP.Models.RelatorioModel>()).Select(x => x.solicitante).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().OrderBy(x => x).ToList();
-        var executores = (Model ?? new List<GRMP.Models.RelatorioModel>()).Select(x => x.executor).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().OrderBy(x => x).ToList();
-        var blocos = (Model ?? new List<GRMP.Models.RelatorioModel>()).Select(x => x.bloco).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().OrderBy(x => x).ToList();
-
-        var filtradas = (Model ?? new List<GRMP.Models.RelatorioModel>()).AsEnumerable();
-        if (!string.IsNullOrWhiteSpace(fSolicitante)) filtradas = filtradas.Where(x => x.solicitante == fSolicitante);
-        if (!string.IsNullOrWhiteSpace(fExecutor)) filtradas = filtradas.Where(x => x.executor == fExecutor);
-        if (!string.IsNullOrWhiteSpace(fStatus)) filtradas = filtradas.Where(x => x.status == fStatus);
-        if (!string.IsNullOrWhiteSpace(fPrioridade)) filtradas = filtradas.Where(x => x.prioridade == fPrioridade);
-        if (!string.IsNullOrWhiteSpace(fBloco)) filtradas = filtradas.Where(x => x.bloco == fBloco);
-        if (dataInicio.HasValue) filtradas = filtradas.Where(x => x.dataSolicitacao >= dataInicio.Value);
-        if (dataFim.HasValue) filtradas = filtradas.Where(x => x.dataSolicitacao <= dataFim.Value);
-
-        var lista = filtradas.ToList();
-        int paginaAtual = 1;
-
-        if (!string.IsNullOrWhiteSpace(Context.Request.Query["pagina"]))
-        {
-            paginaAtual = Convert.ToInt32(Context.Request.Query["pagina"]);
-        }
-
-        int itensPorPagina = 50;
-
-        int totalItens = lista.Count;
-
-        int totalPaginas = (int)Math.Ceiling((double)totalItens / itensPorPagina);
-
-        var listaPaginada = lista
-            .OrderByDescending(x => x.dataSolicitacao)
-            .Skip((paginaAtual - 1) * itensPorPagina)
-            .Take(itensPorPagina)
-            .ToList();
-        var total = lista.Count;
-        var abertas = lista.Count(x => x.status == "Aberta");
-        var emAndamento = lista.Count(x => x.status == "Em andamento");
-        var concluidas = lista.Count(x => x.status == "Concluída");
-        var canceladas = lista.Count(x => x.status == "Cancelada");
-        var emPausa = lista.Count(x => x.status == "Em pausa");
-
-        Func<int, string> pct = n => total > 0 ? Math.Round(n * 100.0 / total) + "% do filtro" : "—";
-        Func<int, int> pctSimples = n => total > 0 ? (int)Math.Round(n * 100.0 / total) : 0;
-
-        var prBaixa = lista.Count(x => x.prioridade == "Baixa");
-        var prMedia = lista.Count(x => x.prioridade == "Média");
-        var prAlta = lista.Count(x => x.prioridade == "Alta");
-
-        var filtrosAtivos = (!string.IsNullOrWhiteSpace(fSolicitante) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fExecutor) ? 1 : 0) + (fPeriodo != "todos" && dataInicio == null ? 1 : 0) + (!string.IsNullOrWhiteSpace(fStatus) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fPrioridade) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fBloco) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fDataDe) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fDataAte) ? 1 : 0);
+    if (dataInicio == null && dataFim == null && fPeriodo != "todos")
+    {
+        int? dias = fPeriodo switch { "mensal" => 30, "trimestral" => 90, "semestral" => 180, "anual" => 365, _ => (int?)null };
+        if (dias.HasValue) dataInicio = DateTime.Now.Date.AddDays(-dias.Value);
     }
 
-    <main class="db-wrap">
-        <h2 class="db-title">Dashboard — Ordens de Serviço</h2>
+    var solicitantes = (Model ?? new List<GRMP.Models.RelatorioModel>()).Select(x => x.solicitante).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().OrderBy(x => x).ToList();
+    var executores = (Model ?? new List<GRMP.Models.RelatorioModel>()).Select(x => x.executor).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().OrderBy(x => x).ToList();
+    var blocos = (Model ?? new List<GRMP.Models.RelatorioModel>()).Select(x => x.bloco).Where(s => !string.IsNullOrWhiteSpace(s)).Distinct().OrderBy(x => x).ToList();
 
-        <div class="filter-bar">
-            <form method="get" id="filterForm">
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <span class="filter-label">Período</span>
-                        <select name="periodo" onchange="document.getElementById('filterForm').submit()">
-                            <option value="todos" selected="@(fPeriodo == "todos")">Todos</option>
-                            <option value="mensal" selected="@(fPeriodo == "mensal")">Mensal (30 dias)</option>
-                            <option value="trimestral" selected="@(fPeriodo == "trimestral")">Trimestral (90 dias)</option>
-                            <option value="semestral" selected="@(fPeriodo == "semestral")">Semestral (180 dias)</option>
-                            <option value="anual" selected="@(fPeriodo == "anual")">Anual (365 dias)</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <span class="filter-label">Status</span>
-                        <select name="status" onchange="document.getElementById('filterForm').submit()">
-                            <option value="">Todos</option>
-                            <option value="Aberta" selected="@(fStatus == "Aberta")">Aberta</option>
-                            <option value="Em andamento" selected="@(fStatus == "Em andamento")">Em andamento</option>
-                            <option value="Concluída" selected="@(fStatus == "Concluída")">Concluída</option>
-                            <option value="Cancelada" selected="@(fStatus == "Cancelada")">Cancelada</option>
-                            <option value="Em pausa" selected="@(fStatus == "Em pausa")">Em pausa</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <span class="filter-label">Prioridade</span>
-                        <select name="prioridade" onchange="document.getElementById('filterForm').submit()">
-                            <option value="">Todas</option>
-                            <option value="Alta" selected="@(fPrioridade == "Alta")">Alta</option>
-                            <option value="Média" selected="@(fPrioridade == "Média")">Média</option>
-                            <option value="Baixa" selected="@(fPrioridade == "Baixa")">Baixa</option>
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <span class="filter-label">Bloco</span>
-                        <select name="bloco" onchange="document.getElementById('filterForm').submit()">
-                            <option value="">Todos</option>
-                            @foreach (var b in blocos)
-                            {
-                                <option value="@b" selected="@(b == fBloco)">@b</option>
-                            }
-                        </select>
-                    </div>
+    var filtradas = (Model ?? new List<GRMP.Models.RelatorioModel>()).AsEnumerable();
+    if (!string.IsNullOrWhiteSpace(fSolicitante)) filtradas = filtradas.Where(x => x.solicitante == fSolicitante);
+    if (!string.IsNullOrWhiteSpace(fExecutor)) filtradas = filtradas.Where(x => x.executor == fExecutor);
+    if (!string.IsNullOrWhiteSpace(fStatus)) filtradas = filtradas.Where(x => x.status == fStatus);
+    if (!string.IsNullOrWhiteSpace(fPrioridade)) filtradas = filtradas.Where(x => x.prioridade == fPrioridade);
+    if (!string.IsNullOrWhiteSpace(fBloco)) filtradas = filtradas.Where(x => x.bloco == fBloco);
+    if (dataInicio.HasValue) filtradas = filtradas.Where(x => x.dataSolicitacao >= dataInicio.Value);
+    if (dataFim.HasValue) filtradas = filtradas.Where(x => x.dataSolicitacao <= dataFim.Value);
+
+    var lista = filtradas.ToList();
+    int paginaAtual = 1;
+
+    if (!string.IsNullOrWhiteSpace(Context.Request.Query["pagina"]))
+    {
+        paginaAtual = Convert.ToInt32(Context.Request.Query["pagina"]);
+    }
+
+    int itensPorPagina = 50;
+
+    int totalItens = lista.Count;
+
+    int totalPaginas = (int)Math.Ceiling((double)totalItens / itensPorPagina);
+
+    var listaPaginada = lista
+        .OrderByDescending(x => x.dataSolicitacao)
+        .Skip((paginaAtual - 1) * itensPorPagina)
+        .Take(itensPorPagina)
+        .ToList();
+    var total = lista.Count;
+    var abertas = lista.Count(x => x.status == "Aberta");
+    var emAndamento = lista.Count(x => x.status == "Em andamento");
+    var concluidas = lista.Count(x => x.status == "Concluída");
+    var canceladas = lista.Count(x => x.status == "Cancelada");
+    var emPausa = lista.Count(x => x.status == "Em pausa");
+
+    Func<int, string> pct = n => total > 0 ? Math.Round(n * 100.0 / total) + "% do filtro" : "—";
+    Func<int, int> pctSimples = n => total > 0 ? (int)Math.Round(n * 100.0 / total) : 0;
+
+    var prBaixa = lista.Count(x => x.prioridade == "Baixa");
+    var prMedia = lista.Count(x => x.prioridade == "Média");
+    var prAlta = lista.Count(x => x.prioridade == "Alta");
+
+    var filtrosAtivos = (!string.IsNullOrWhiteSpace(fSolicitante) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fExecutor) ? 1 : 0) + (fPeriodo != "todos" && dataInicio == null ? 1 : 0) + (!string.IsNullOrWhiteSpace(fStatus) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fPrioridade) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fBloco) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fDataDe) ? 1 : 0) + (!string.IsNullOrWhiteSpace(fDataAte) ? 1 : 0);
+}
+
+<main class="db-wrap">
+    <h2 class="db-title">Dashboard — Ordens de Serviço</h2>
+
+    <div class="filter-bar">
+        <form method="get" id="filterForm">
+            <div class="filter-row">
+                <div class="filter-group">
+                    <span class="filter-label">Período</span>
+                    <select name="periodo" onchange="document.getElementById('filterForm').submit()">
+                        <option value="todos" selected="@(fPeriodo == "todos")">Todos</option>
+                        <option value="mensal" selected="@(fPeriodo == "mensal")">Mensal (30 dias)</option>
+                        <option value="trimestral" selected="@(fPeriodo == "trimestral")">Trimestral (90 dias)</option>
+                        <option value="semestral" selected="@(fPeriodo == "semestral")">Semestral (180 dias)</option>
+                        <option value="anual" selected="@(fPeriodo == "anual")">Anual (365 dias)</option>
+                    </select>
                 </div>
-
-                <div class="filter-row">
-                    <div class="filter-group">
-                        <span class="filter-label">Solicitante</span>
-                        <select name="solicitante" onchange="document.getElementById('filterForm').submit()">
-                            <option value="">Todos</option>
-                            @foreach (var s in solicitantes)
-                            {
-                                <option value="@s" selected="@(s == fSolicitante)">@s</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <span class="filter-label">Executor</span>
-                        <select name="executor" onchange="document.getElementById('filterForm').submit()">
-                            <option value="">Todos</option>
-                            @foreach (var e in executores)
-                            {
-                                <option value="@e" selected="@(e == fExecutor)">@e</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="filter-group">
-                        <span class="filter-label">Data Inicial (De)</span>
-                        <input type="date" name="dataDe" value="@fDataDe" onchange="document.getElementById('filterForm').submit()" />
-                    </div>
-                    <div class="filter-group">
-                        <span class="filter-label">Data Final (Até)</span>
-                        <input type="date" name="dataAte" value="@fDataAte" onchange="document.getElementById('filterForm').submit()" />
-                    </div>
+                <div class="filter-group">
+                    <span class="filter-label">Status</span>
+                    <select name="status" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todos</option>
+                        <option value="Aberta" selected="@(fStatus == "Aberta")">Aberta</option>
+                        <option value="Em andamento" selected="@(fStatus == "Em andamento")">Em andamento</option>
+                        <option value="Concluída" selected="@(fStatus == "Concluída")">Concluída</option>
+                        <option value="Cancelada" selected="@(fStatus == "Cancelada")">Cancelada</option>
+                        <option value="Em pausa" selected="@(fStatus == "Em pausa")">Em pausa</option>
+                    </select>
                 </div>
-
-                @if (filtrosAtivos > 0)
-                {
-                    <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
-                        <a href="@Url.Action(ViewContext.RouteData.Values["action"]?.ToString(), ViewContext.RouteData.Values["controller"]?.ToString())" class="btn-clear-filter">
-                            Limpar Filtros
-                        </a>
-                    </div>
-                }
-            </form>
-        </div>
-
-        <div id="active-tags" class="active-tags">
-            @if (dataInicio == null && dataFim == null && fPeriodo != "todos")
-            {
-                <span class="filter-tag">Período ativo <a href="?@Html.Raw(JavaScriptQueryString("periodo"))">×</a></span>
-            }
-            @if (!string.IsNullOrWhiteSpace(fStatus))
-            {
-                <span class="filter-tag">Status: @fStatus <a href="?@Html.Raw(JavaScriptQueryString("status"))">×</a></span>
-            }
-            @if (!string.IsNullOrWhiteSpace(fPrioridade))
-            {
-                <span class="filter-tag">Prioridade: @fPrioridade <a href="?@Html.Raw(JavaScriptQueryString("prioridade"))">×</a></span>
-            }
-            @if (!string.IsNullOrWhiteSpace(fBloco))
-            {
-                <span class="filter-tag">Bloco: @fBloco <a href="?@Html.Raw(JavaScriptQueryString("bloco"))">×</a></span>
-            }
-            @if (!string.IsNullOrWhiteSpace(fSolicitante))
-            {
-                <span class="filter-tag">Sol: @fSolicitante <a href="?@Html.Raw(JavaScriptQueryString("solicitante"))">×</a></span>
-            }
-            @if (!string.IsNullOrWhiteSpace(fExecutor))
-            {
-                <span class="filter-tag">Exe: @fExecutor <a href="?@Html.Raw(JavaScriptQueryString("executor"))">×</a></span>
-            }
-            @if (!string.IsNullOrWhiteSpace(fDataDe))
-            {
-                <span class="filter-tag">De: @fDataDe <a href="?@Html.Raw(JavaScriptQueryString("dataDe"))">×</a></span>
-            }
-            @if (!string.IsNullOrWhiteSpace(fDataAte))
-            {
-                <span class="filter-tag">Até: @fDataAte <a href="?@Html.Raw(JavaScriptQueryString("dataAte"))">×</a></span>
-            }
-        </div>
-
-        <div class="metric-grid">
-            <div class="metric-card mc-total">
-                <div class="mc-label">Total OS</div>
-                <div class="mc-val">@total</div>
-                <div class="mc-sub">*</div>
-            </div>
-            <div class="metric-card mc-abertas">
-                <div class="mc-label">Abertas</div>
-                <div class="mc-val">@abertas</div>
-                <div class="mc-sub">@pct(abertas)</div>
-            </div>
-            <div class="metric-card mc-andamento">
-                <div class="mc-label">Em andamento</div>
-                <div class="mc-val">@emAndamento</div>
-                <div class="mc-sub">@pct(emAndamento)</div>
-            </div>
-            <div class="metric-card mc-concluidas">
-                <div class="mc-label">Concluídas</div>
-                <div class="mc-val">@concluidas</div>
-                <div class="mc-sub">@pct(concluidas)</div>
-            </div>
-            <div class="metric-card mc-canceladas">
-                <div class="mc-label">Canceladas</div>
-                <div class="mc-val">@canceladas</div>
-                <div class="mc-sub">@pct(canceladas)</div>
-            </div>
-            <div class="metric-card mc-pausa">
-                <div class="mc-label">Em pausa</div>
-                <div class="mc-val">@emPausa</div>
-                <div class="mc-sub">@pct(emPausa)</div>
-            </div>
-        </div>
-
-        <div class="charts-grid">
-            <div class="charts-card">
-                <p class="chart-title">OS por status</p>
-                <div style="height: 250px; position: relative;">
-                    <canvas id="graficoStatus"></canvas>
+                <div class="filter-group">
+                    <span class="filter-label">Prioridade</span>
+                    <select name="prioridade" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todas</option>
+                        <option value="Alta" selected="@(fPrioridade == "Alta")">Alta</option>
+                        <option value="Média" selected="@(fPrioridade == "Média")">Média</option>
+                        <option value="Baixa" selected="@(fPrioridade == "Baixa")">Baixa</option>
+                    </select>
                 </div>
-            </div>
-            <div class="charts-card">
-                <p class="chart-title">OS por prioridade</p>
-                <div style="height: 250px; position: relative;">
-                    <canvas id="graficoPrioridade"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="os-table-card" style="background: #fff; border-radius: 12px; border: 1px solid #eee; overflow: hidden;">
-            <div style="padding: 1rem; border-bottom: 1px solid #eee; font-weight: 600; display: flex; justify-content: space-between;">
-                <span>Ordens de serviço</span>
-                <span style="background: #eee; padding: 2px 8px; border-radius: 4px; font-size: 12px;">@total registros</span>
-            </div>
-            <div style="overflow-x: auto;">
-                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                    <thead style="background: #f8f9fa; text-align: left;">
-                        <tr>
-                            <th style="padding: 12px;">ID</th>
-                            <th style="padding: 12px;">Solicitante</th>
-                            <th style="padding: 12px;">Executor</th>
-                            <th style="padding: 12px;">Status</th>
-                            <th style="padding: 12px;">Prioridade</th>
-                            <th style="padding: 12px;">Bloco</th>
-                            <th style="padding: 12px;">Data</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (!lista.Any())
+                <div class="filter-group">
+                    <span class="filter-label">Bloco</span>
+                    <select name="bloco" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todos</option>
+                        @foreach (var b in blocos)
                         {
-                            <tr><td colspan="7" style="padding: 2rem; text-align: center; color: #888;">Nenhuma OS encontrada.</td></tr>
+                            <option value="@b" selected="@(b == fBloco)">@b</option>
                         }
-                        else
-                        {
-                            foreach (var item in listaPaginada)
-                            {
-                                <tr>
-                                    <td style="padding: 12px; border-top: 1px solid #eee; font-family: monospace;">@item.idOrdemServico</td>
-                                    <td style="padding: 12px; border-top: 1px solid #eee;">@item.solicitante</td>
-                                    <td style="padding: 12px; border-top: 1px solid #eee;">@item.executor</td>
-                                    <td style="padding: 12px; border-top: 1px solid #eee;">
-                                        <span class="
-                                            @(item.status == "Aberta" ? "badge-aberta" :
-                                                    item.status == "Em andamento" ? "badge-andamento" :
-                                                    item.status == "Concluída" ? "badge-concluida" :
-                                                    item.status == "Cancelada" ? "badge-cancelada" :
-                                                    item.status == "Em pausa" ? "badge-pausa" :
-                                                    "badge")
-                                            ">
-                                            @item.status
-                                        </span>
-                                    </td>
-                                    <td style="padding: 12px; border-top: 1px solid #eee;">@item.prioridade</td>
-                                    <td style="padding: 12px; border-top: 1px solid #eee;">@item.bloco</td>
-                                    <td style="padding: 12px; border-top: 1px solid #eee; color: #888;">@item.dataSolicitacao.ToString("dd/MM/yyyy")</td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
+                    </select>
+                </div>
             </div>
 
-            <!-- PAGINAÇÃO AQUI -->
-            @if (totalPaginas > 1)
+            <div class="filter-row">
+                <div class="filter-group">
+                    <span class="filter-label">Solicitante</span>
+                    <select name="solicitante" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todos</option>
+                        @foreach (var s in solicitantes)
+                        {
+                            <option value="@s" selected="@(s == fSolicitante)">@s</option>
+                        }
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Executor</span>
+                    <select name="executor" onchange="document.getElementById('filterForm').submit()">
+                        <option value="">Todos</option>
+                        @foreach (var e in executores)
+                        {
+                            <option value="@e" selected="@(e == fExecutor)">@e</option>
+                        }
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Data Inicial (De)</span>
+                    <input type="date" name="dataDe" value="@fDataDe" onchange="document.getElementById('filterForm').submit()" />
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Data Final (Até)</span>
+                    <input type="date" name="dataAte" value="@fDataAte" onchange="document.getElementById('filterForm').submit()" />
+                </div>
+            </div>
+
+            @if (filtrosAtivos > 0)
             {
-                <div class="paginacao">
-
-                    @if (paginaAtual > 1)
-                    {
-                        <a href="?@MontarQuery(paginaAtual - 1)">
-                            ← Anterior
-                        </a>
-                    }
-
-                    <span>
-                        Página @paginaAtual de @totalPaginas
-                    </span>
-
-                    @if (paginaAtual < totalPaginas)
-                    {
-
-                        <a href="?@MontarQuery(paginaAtual + 1)">
-                            Próxima →
-                        </a>
-                    }
-
+                <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+                    <a href="@Url.Action(ViewContext.RouteData.Values["action"]?.ToString(), ViewContext.RouteData.Values["controller"]?.ToString())" class="btn-clear-filter">
+                        Limpar Filtros
+                    </a>
                 </div>
             }
+        </form>
+    </div>
 
+    <div id="active-tags" class="active-tags">
+        @if (dataInicio == null && dataFim == null && fPeriodo != "todos")
+        {
+            <span class="filter-tag">Período ativo <a href="?@Html.Raw(JavaScriptQueryString("periodo"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fStatus))
+        {
+            <span class="filter-tag">Status: @fStatus <a href="?@Html.Raw(JavaScriptQueryString("status"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fPrioridade))
+        {
+            <span class="filter-tag">Prioridade: @fPrioridade <a href="?@Html.Raw(JavaScriptQueryString("prioridade"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fBloco))
+        {
+            <span class="filter-tag">Bloco: @fBloco <a href="?@Html.Raw(JavaScriptQueryString("bloco"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fSolicitante))
+        {
+            <span class="filter-tag">Sol: @fSolicitante <a href="?@Html.Raw(JavaScriptQueryString("solicitante"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fExecutor))
+        {
+            <span class="filter-tag">Exe: @fExecutor <a href="?@Html.Raw(JavaScriptQueryString("executor"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fDataDe))
+        {
+            <span class="filter-tag">De: @fDataDe <a href="?@Html.Raw(JavaScriptQueryString("dataDe"))">×</a></span>
+        }
+        @if (!string.IsNullOrWhiteSpace(fDataAte))
+        {
+            <span class="filter-tag">Até: @fDataAte <a href="?@Html.Raw(JavaScriptQueryString("dataAte"))">×</a></span>
+        }
+    </div>
+
+    <div class="metric-grid">
+        <div class="metric-card mc-total">
+            <div class="mc-label">Total OS</div>
+            <div class="mc-val">@total</div>
+            <div class="mc-sub">*</div>
+        </div>
+        <div class="metric-card mc-abertas">
+            <div class="mc-label">Abertas</div>
+            <div class="mc-val">@abertas</div>
+            <div class="mc-sub">@pct(abertas)</div>
+        </div>
+        <div class="metric-card mc-andamento">
+            <div class="mc-label">Em andamento</div>
+            <div class="mc-val">@emAndamento</div>
+            <div class="mc-sub">@pct(emAndamento)</div>
+        </div>
+        <div class="metric-card mc-concluidas">
+            <div class="mc-label">Concluídas</div>
+            <div class="mc-val">@concluidas</div>
+            <div class="mc-sub">@pct(concluidas)</div>
+        </div>
+        <div class="metric-card mc-canceladas">
+            <div class="mc-label">Canceladas</div>
+            <div class="mc-val">@canceladas</div>
+            <div class="mc-sub">@pct(canceladas)</div>
+        </div>
+        <div class="metric-card mc-pausa">
+            <div class="mc-label">Em pausa</div>
+            <div class="mc-val">@emPausa</div>
+            <div class="mc-sub">@pct(emPausa)</div>
         </div>
     </div>
+
+    <div class="charts-grid">
+        <div class="charts-card">
+            <p class="chart-title">OS por status</p>
+            <div style="height: 250px; position: relative;">
+                <canvas id="graficoStatus"></canvas>
+            </div>
+        </div>
+        <div class="charts-card">
+            <p class="chart-title">OS por prioridade</p>
+            <div style="height: 250px; position: relative;">
+                <canvas id="graficoPrioridade"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="os-table-card" style="background: #fff; border-radius: 12px; border: 1px solid #eee; overflow: hidden;">
+        <div style="padding: 1rem; border-bottom: 1px solid #eee; font-weight: 600; display: flex; justify-content: space-between;">
+            <span>Ordens de serviço</span>
+            <span style="background: #eee; padding: 2px 8px; border-radius: 4px; font-size: 12px;">@total registros</span>
+        </div>
+        <div style="overflow-x: auto;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                <thead style="background: #f8f9fa; text-align: left;">
+                    <tr>
+                        <th style="padding: 12px;">ID</th>
+                        <th style="padding: 12px;">Solicitante</th>
+                        <th style="padding: 12px;">Executor</th>
+                        <th style="padding: 12px;">Status</th>
+                        <th style="padding: 12px;">Prioridade</th>
+                        <th style="padding: 12px;">Bloco</th>
+                        <th style="padding: 12px;">Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!lista.Any())
+                    {
+                        <tr><td colspan="7" style="padding: 2rem; text-align: center; color: #888;">Nenhuma OS encontrada.</td></tr>
+                    }
+                    else
+                    {
+                        foreach (var item in listaPaginada)
+                        {
+                            <tr>
+                                <td style="padding: 12px; border-top: 1px solid #eee; font-family: monospace;">@item.idOrdemServico</td>
+                                <td style="padding: 12px; border-top: 1px solid #eee;">@item.solicitante</td>
+                                <td style="padding: 12px; border-top: 1px solid #eee;">@item.executor</td>
+                                <td style="padding: 12px; border-top: 1px solid #eee;">
+                                    <span class="
+                                        @(item.status == "Aberta" ? "badge-aberta" :
+                                                  item.status == "Em andamento" ? "badge-andamento" :
+                                                  item.status == "Concluída" ? "badge-concluida" :
+                                                  item.status == "Cancelada" ? "badge-cancelada" :
+                                                  item.status == "Em pausa" ? "badge-pausa" :
+                                                  "badge")
+                                        ">
+                                        @item.status
+                                    </span>
+                                </td>
+                                <td style="padding: 12px; border-top: 1px solid #eee;">
+                                    <span class="
+                                        @(item.prioridade == "Baixa" ? "badge-prioridade-baixa" :
+                                              item.prioridade == "Média" ? "badge-prioridade-media" :
+                                              item.prioridade == "Alta" ? "badge-prioridade-alta" :
+                                              "badge")
+                                        ">
+                                        @item.prioridade
+                                    </span>
+                                </td>
+                                <td style="padding: 12px; border-top: 1px solid #eee;">@item.bloco</td>
+                                <td style="padding: 12px; border-top: 1px solid #eee; color: #888;">@item.dataSolicitacao.ToString("dd/MM/yyyy")</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PAGINAÇÃO AQUI -->
+        @if (totalPaginas > 1)
+        {
+            <div class="paginacao">
+
+                @if (paginaAtual > 1)
+                {
+                    <a href="?@MontarQuery(paginaAtual - 1)">
+                        ← Anterior
+                    </a>
+                }
+
+                <span>
+                    Página @paginaAtual de @totalPaginas
+                </span>
+
+                @if (paginaAtual < totalPaginas)
+                {
+
+                    <a href="?@MontarQuery(paginaAtual + 1)">
+                        Próxima →
+                    </a>
+                }
+
+            </div>
+        }
+
+    </div>
+</div>
 </main>
 
 @functions {

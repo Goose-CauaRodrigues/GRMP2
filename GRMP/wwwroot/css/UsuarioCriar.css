@@ -1,8 +1,4 @@
-﻿/* =========================
-   RESET
-========================= */
-
-* {
+﻿* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -15,20 +11,12 @@ body {
     color: #1f1f1f;
 }
 
-/* =========================
-   CONTAINER
-========================= */
-
 .container-os {
     width: 100%;
     max-width: 900px;
     margin: 40px auto;
     padding: 0 20px;
 }
-
-/* =========================
-   HEADER
-========================= */
 
 .header-pagina {
     display: flex;
@@ -50,10 +38,6 @@ body {
         font-size: 15px;
     }
 
-/* =========================
-   BOTÃO VOLTAR
-========================= */
-
 .btn-voltar {
     background: #ff0000;
     color: white;
@@ -70,10 +54,6 @@ body {
         background: #d00000;
     }
 
-/* =========================
-   CARD FORMULÁRIO
-========================= */
-
 .card-formulario {
     background: white;
     border: 1px solid #e4e4e4;
@@ -84,10 +64,6 @@ body {
     gap: 25px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.04);
 }
-
-/* =========================
-   CAMPOS
-========================= */
 
 .grupo-form {
     display: flex;
@@ -127,26 +103,14 @@ body {
             cursor: not-allowed;
         }
 
-/* =========================
-   TEXTAREA
-========================= */
-
 textarea {
     resize: vertical;
     min-height: 120px;
 }
 
-/* =========================
-   GRID FULL
-========================= */
-
 .grupo-full {
     grid-column: 1 / -1;
 }
-
-/* =========================
-   BOTÕES
-========================= */
 
 .acoes-form {
     grid-column: 1 / -1;
@@ -171,19 +135,11 @@ textarea {
         background: #d10000;
     }
 
-/* =========================
-   VALIDAÇÃO
-========================= */
-
 .field-validation-error {
     color: #c10000;
     font-size: 13px;
     margin-top: 6px;
 }
-
-/* =========================
-   RESPONSIVO
-========================= */
 
 @media (max-width: 720px) {
 

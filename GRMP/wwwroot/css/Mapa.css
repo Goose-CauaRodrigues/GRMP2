@@ -1,8 +1,4 @@
-﻿/* =========================================================
-   SENAI · Mapa de Manutenção Predial
-   Paleta oficial (mesma do projeto Building Care MVP)
-   ========================================================= */
-:root {
+﻿:root {
     --senai-red: hsl(0, 75%, 35%);
     --senai-red-glow: hsl(0, 80%, 48%);
     --senai-red-deep: hsl(0, 70%, 22%);
@@ -24,7 +20,6 @@
     --gradient-hero: linear-gradient(135deg, hsl(0 70% 22%) 0%, hsl(0 75% 35%) 50%, hsl(0 80% 28%) 100%);
 }
 
-/* ---------- Base ---------- */
 * {
     box-sizing: border-box;
 }
@@ -41,7 +36,6 @@ html, body {
     overflow-x: hidden;
 }
 
-/* ---------- Header SENAI (opcional) ---------- */
 .senai-header {
     width: 100%;
     margin-left: calc(50% - 50vw);
@@ -83,7 +77,6 @@ html, body {
     letter-spacing: .02em;
 }
 
-/* ---------- Layout ---------- */
 .map-wrapper {
     display: grid;
     grid-template-columns: 1fr min(420px, 100%);
@@ -102,33 +95,30 @@ html, body {
     }
 }
 
-/* ---------- Mapa ---------- */
 .map-area {
     position: relative;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 0; /* ← era 12px */
+    padding: 0; 
     box-shadow: var(--shadow-soft);
-    overflow: hidden; /* ← garante que a img respeita o border-radius */
+    overflow: hidden; 
 }
 
     .map-area img {
         width: 100%;
         display: block;
-        border-radius: var(--radius); /* ← assume o radius direto */
+        border-radius: var(--radius);
         user-select: none;
         -webkit-user-drag: none;
     }
 
-    /* Áreas clicáveis — cada <a> cobre TODO o mapa, mas o clip-path
-   do .bloco interno limita tanto a área visual quanto o clique */
     .map-area a {
         position: absolute;
-        inset: 0; /* cobre o mapa inteiro (posicionamento base) */
+        inset: 0; 
         display: block;
         text-decoration: none;
-        pointer-events: none; /* desativa clique na âncora; só o .bloco responde */
+        pointer-events: none; 
     }
 
 .bloco {
@@ -136,7 +126,7 @@ html, body {
     inset: 0;
     cursor: pointer;
     background: transparent;
-    pointer-events: all; /* reativa o clique apenas dentro do clip-path */
+    pointer-events: all;
     transition: background var(--transition), filter var(--transition);
 }
 
@@ -145,7 +135,6 @@ html, body {
         filter: drop-shadow(0 0 6px hsl(0 80% 48% / .35));
     }
 
-/* ---------- Pin ---------- */
 .pin {
     position: absolute;
     width: 20px;
@@ -178,14 +167,12 @@ html, body {
     }
 }
 
-/* ---------- Painel lateral ---------- */
 .side-panel {
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow-soft);
     padding: 20px;
-    /* IMPORTANTE */
     height: fit-content;
     max-height: 596px;
     overflow-y: auto;
@@ -205,7 +192,6 @@ html, body {
         line-height: 1.5;
     }
 
-/* Abas (opcional) */
 .tabs {
     display: flex;
     gap: 4px;
@@ -236,7 +222,6 @@ html, body {
             border-bottom-color: var(--senai-red);
         }
 
-/* Cards de chamados */
 .chamado-card {
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
@@ -277,7 +262,6 @@ html, body {
         color: var(--text-muted);
     }
 
-/* Badge de status */
 .status-badge {
     display: inline-block;
     padding: 2px 8px;
@@ -305,7 +289,6 @@ html, body {
         background: #1a7edb;
     }
 
-/* ---------- Scrollbar discreta ---------- */
 .side-panel ::-webkit-scrollbar {
     width: 6px;
 }
