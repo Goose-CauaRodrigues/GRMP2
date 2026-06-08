@@ -1,88 +1,14 @@
-﻿@* Dashboard.cshtml *@
-@model List<GRMP.Models.RelatorioModel>
+﻿@model List<GRMP.Models.RelatorioModel>
 @using System.Linq
 
+@{
+    ViewData["Title"] = "Dashboard OS · SENAI";
+}
 
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard OS · SENAI</title>
-
-    <!-- Fontes e Estilos Base -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
-
-    <!-- Seus arquivos CSS originais -->
-    <link href="~/css/Dashboard.css" rel="stylesheet" />
-
-    <style>
-            /* =========================================================
-                                                                                   SENAI · Estilos do Header (Corrigidos para evitar deslocamento)
-                                                                                   ========================================================= */
-            :root {
-                --senai-red: hsl(0, 75%, 35%);
-                --senai-red-glow: hsl(0, 80%, 48%);
-                --gradient-hero: linear-gradient(135deg, hsl(0 70% 22%) 0%, hsl(0 75% 35%) 50%, hsl(0 80% 28%) 100%);
-                --shadow-soft: 0 10px 30px -10px hsl(0 70% 15% / 0.14);
-                --transition: .25s cubic-bezier(.4, 0, .2, 1);
-            }
-
-            html, body {
-                margin: 0;
-                padding: 0;
-                width: 100%;
-                overflow-x: hidden;
-            }
-
-            .senai-header {
-                position: relative;
-                left: 50%;
-                right: 50%;
-                margin-left: -50vw;
-                margin-right: -50vw;
-                width: 100vw;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 14px 28px;
-                background: var(--gradient-hero);
-                color: white;
-                box-sizing: border-box;
-            }
-
-                .senai-header .brand {
-                    display: flex;
-                    align-items: center;
-                    gap: 16px;
-                }
-
-            .senai-badge {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                padding: 6px 14px;
-                background: #fff;
-                color: var(--senai-red);
-                font-weight: 900;
-                font-style: italic;
-                letter-spacing: .08em;
-                font-size: 18px;
-                transform: skewX(-8deg);
-                box-shadow: 0 4px 12px hsl(0 70% 10% / .35);
-            }
-
-            .senai-header h1 {
-                font-size: 16px;
-                font-weight: 600;
-                margin: 0;
-                letter-spacing: .02em;
-            }
-    </style>
-</head>
-<body>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet" />
+<link href="~/css/Dashboard.css" rel="stylesheet" />
 
     @{
         // ===== PROCESSAMENTO DOS FILTROS NO SERVIDOR =====
@@ -487,6 +413,3 @@
     options: { responsive: true, maintainAspectRatio: false }
     });
 </script>
-
-</body>
-</html>
