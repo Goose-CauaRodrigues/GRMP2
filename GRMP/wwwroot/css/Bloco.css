@@ -1,79 +1,15 @@
-﻿:root {
-    --senai-red: hsl(0, 75%, 35% );
-    --senai-red-glow: hsl(0, 80%, 48%);
-    --senai-red-deep: hsl(0, 70%, 22%);
-    --senai-red-soft: hsl(0, 75%, 96%);
-    --bg: hsl(0, 0%, 98%);
-    --surface: hsl(0, 0%, 100%);
-    --border: hsl(0, 0%, 90%);
-    --text: hsl(0, 0%, 10%);
-    --text-muted: hsl(0, 0%, 42%);
-    --status-open: hsl(0, 75%, 45%);
-    --status-progress: hsl(38, 92%, 50%);
-    --status-done: hsl(150, 60%, 40%);
-    --status-pending: hsl(0, 0%, 46%);
-    --radius: 14px;
-    --radius-sm: 10px;
-    --shadow-soft: 0 10px 30px -10px hsl(0 70% 15% / 0.14);
-    --shadow-hover: 0 20px 40px -12px hsl(0 70% 15% / 0.22);
-    --transition: .25s cubic-bezier(.4, 0, .2, 1);
-    --gradient-hero: linear-gradient(135deg, hsl(0 70% 22%) 0%, hsl(0 75% 35%) 50%, hsl(0 80% 28%) 100%);
-}
-
-/* Reset base */
+﻿/* Reset base */
 *, *::before, *::after {
     box-sizing: border-box;
 }
 
 body {
-    margin: 0;
     font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     background: var(--bg);
     color: var(--text);
     -webkit-font-smoothing: antialiased;
     min-height: 100vh;
-}
-
-/* Header */
-.senai-header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 14px 28px;
-    background: var(--gradient-hero);
-    color: #fff;
-    box-shadow: var(--shadow-soft);
-}
-
-    .senai-header .brand {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-    }
-
-.senai-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 6px 14px;
-    background: #fff;
-    color: var(--senai-red);
-    font-weight: 900;
-    font-style: italic;
-    letter-spacing: .08em;
-    font-size: 18px;
-    transform: skewX(-8deg);
-    box-shadow: 0 4px 12px hsl(0 70% 10% / .35);
-}
-
-.senai-header h1 {
-    font-size: 16px;
-    font-weight: 600;
-    margin: 0;
-    letter-spacing: .02em;
-}
+}   
 
 /* Layout principal */
 .bloco-wrapper {
